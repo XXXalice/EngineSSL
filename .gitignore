@@ -108,3 +108,5 @@ venv.bak/
 .DS_Store
 
 enginessl/crawler/wikipedia.vector.bin
+
+.idea/
