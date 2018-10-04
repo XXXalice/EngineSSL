@@ -19,7 +19,7 @@ class Kernel:
             keyword_query, num_query = 'p={}'.format(keyword), 'n={}'.format()
 
     def crawling(self, mode, q):
-        if mode == ''
+        pass
 
     def scrape(self, body):
         pass
