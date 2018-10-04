@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*__pycache__/
 *.py[cod]
 *$py.class
 
@@ -105,7 +105,7 @@ venv.bak/
 
 
 # custom
-.DS_Store
+*.DS_Store
 
 enginessl/crawler/wikipedia.vector.bin
 
