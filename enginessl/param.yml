@@ -1,3 +1,4 @@
 crawler:
-  target_num:
+  target_num: 81
   dropout_img_squares:
+  user_agent:
