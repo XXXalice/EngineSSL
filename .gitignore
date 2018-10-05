@@ -109,4 +109,6 @@ venv.bak/
 
 enginessl/crawler/wikipedia.vector.bin
 
+enginessl/wordcollector/wikipedia.vector.bin
+
 .idea/
