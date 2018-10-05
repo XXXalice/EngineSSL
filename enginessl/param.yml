@@ -1,4 +1,10 @@
 crawler:
-  target_num: 123
-  dropout_img_squares:
-  user_agent:
+  target_num: 2
+  user_agent: 'Mozilla/5.0'
+  mail: 'euthanasia045@gmail.com'
+  wait_sec: 0.1
+
+  for_expart:
+    dropout_img_squares: False
+    output_imglog: False
+    parser: 'lxml'
