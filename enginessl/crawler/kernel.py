@@ -1,5 +1,6 @@
 import os
 import sys
+import requests
 
 class Kernel:
 
@@ -9,17 +10,23 @@ class Kernel:
         print(self.params)
 
     def get_url(self, keyword):
-        import requests
         get_num = int(self.params['crawler']['target_num'])
+        ua = self.params['crawler']['user_agent'] if self.params['crawler']['user_agent'] != None else ""
+        self.fetcher = Fetcher(ua)
         if keyword == "" or keyword == None or get_num == None or int(get_num) <= 0:
             print("[QueryError] An abnormality was found in the search query.")
             exit()
-        access_iter, diff_num = int(get_num / 60), int(get_num % 60)
-        for step in range(2,access_iter+2):
-            keyword_query, num_query = 'p={}'.format(keyword), 'n={}'.format()
+        access_iter, diff_num = int(get_num / 60.1), int(get_num % 60)
+        # multiple_access_mode = True if access_iter != 0 else False
+        urls = []
+        for step in range(1,access_iter+2):
+            keyword_query = 'p={}'.format(keyword)
+            if step != 1:
+                keyword_query += str(step)
+            num_query = 'n={}'.format(diff_num if step == access_iter+1 else 60)
+            full_query = '?'+ keyword_query + '&' + num_query
+            print(full_query)
 
-    def crawling(self, mode, q):
-        pass
 
     def scrape(self, body):
         pass
@@ -39,6 +46,13 @@ class Kernel:
             return
         return param_dict
 
+
+class Fetcher:
+
+    def __init__(self, ua):
+        self.send_header = {
+            'User-Agent': ua
+        }
 
 
 if __name__ == '__main__':
