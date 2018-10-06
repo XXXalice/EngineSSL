@@ -29,10 +29,10 @@ class Kernel:
                 keyword_query += ' ' + str(step)
             num_query = 'n={}'.format(diff_num if step == access_iter+1 else 60)
             full_query = '?'+ keyword_query + '&' + num_query
-            html_datas.append(self.fetcher.fetch(full_query))
+            html_datas.append(self.fetcher.fetch_html(full_query))
         self.check_html(html_datas)
-        all_img_urls = [self.scrape(page) for page in html_datas]
-
+        all_img_urls = [url for onepage_urls in [self.scrape(page) for page in html_datas] for url in onepage_urls]
+        return all_img_urls
 
     def check_html(self, htmls):
         if None in htmls:
@@ -41,12 +41,11 @@ class Kernel:
     def scrape(self, html):
         bs = bs4.BeautifulSoup(html, self.params['crawler']['for_expart']['parser'])
         onepage_img_tags = [a.img.get('src') for a in bs.find_all('a', attrs={'target': 'imagewin'}) if not a.img.get('src').endswith('.gif')]
-        # print(onepage_img_tags)
-        # print(len(onepage_img_tags))
+        return onepage_img_tags
 
-
-
-
+    def save_img(self, urls):
+        for url in urls:
+            img = self.fetcher.fetch_img(url)
 
 
     def _metadata_config(self):
@@ -74,8 +73,9 @@ class Fetcher:
         }
         self.wait = wait
         self.target_server = target_server
+        self.timeout = 3
 
-    def fetch(self, q):
+    def fetch_html(self, q):
         sleep(self.wait)
         send_url = self.target_server + q
         response = requests.get(send_url, headers=self.send_header)
@@ -84,9 +84,15 @@ class Fetcher:
             return None
         return response.text
 
-
+    def fetch_img(self, url):
+        sleep(self.wait)
+        response = requests.get(url, headers=self.send_header, timeout=self.timeout)
+        if response.status_code != 200:
+            err = Exception("http status:{}".format(response.status_code))
+            raise err
+        return response.content
 
 
 if __name__ == '__main__':
     a = Kernel()
-    a.get_url("suiseiseki")
+    urls = a.get_url("suiseiseki")
