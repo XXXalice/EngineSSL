@@ -4,14 +4,19 @@ from time import sleep
 import requests
 import bs4
 
+
 class Kernel:
 
     def __init__(self):
-        self.meta = self._metadata_config()
-        self.params = self._read_yaml(str(self.meta[1]))
-        print(self.params)
+        try:
+            self.meta = self._metadata_config()
+            self.params = self._read_yaml(str(self.meta[1]))
+        except:
+            sys.stderr.write("[InstanceError] Metadata is incomplete.")
+            exit()
 
     def get_url(self, keyword):
+        self.mk_dir(keyword)
         get_num = int(self.params['crawler']['target_num'])
         ua = self.params['crawler']['user_agent'] if self.params['crawler']['user_agent'] != None else ""
         mail = self.params['crawler']['mail'] if self.params['crawler']['mail'] != None else ""
@@ -26,13 +31,30 @@ class Kernel:
         for step in range(1,access_iter+2):
             keyword_query = 'p={}'.format(keyword)
             if step != 1:
-                keyword_query += ' ' + str(step)
+                keyword_query += (' ' + str(step))
             num_query = 'n={}'.format(diff_num if step == access_iter+1 else 60)
             full_query = '?'+ keyword_query + '&' + num_query
             html_datas.append(self.fetcher.fetch_html(full_query))
         self.check_html(html_datas)
         all_img_urls = [url for onepage_urls in [self.scrape(page) for page in html_datas] for url in onepage_urls]
         return all_img_urls
+
+    def mk_dir(self, keyword):
+        from datetime import datetime
+        datapath = self.meta[2]
+        if not os.path.exists(datapath):
+            os.makedirs(datapath)
+        now = datetime.now()
+        current_time = '_{y}_{m}_{d}_{h}_{mi}_{s}'.format(y=str(now.year), m=str(now.month), d=str(now.day),
+                                                      h=str(now.hour), mi=str(now.minute), s=str(now.second))
+        dirname = os.path.join(datapath, keyword+current_time)
+        try:
+            os.mkdir(dirname)
+            self.made_imgdir = dirname
+            return
+        except:
+            sys.stderr.write("[MkdirError] There is a deficiency in folder construction.")
+            exit()
 
     def check_html(self, htmls):
         if None in htmls:
@@ -44,8 +66,20 @@ class Kernel:
         return onepage_img_tags
 
     def save_img(self, urls):
+        success_count = 0
+        ext = self.params['crawler']['ext']
         for url in urls:
             img = self.fetcher.fetch_img(url)
+            if img != None:
+                success_count += 1
+            else:
+                print('download faild.')
+            img_name = '{:03}.{}'.format(success_count, ext)
+            with open(os.path.join(self.made_imgdir + '/' +img_name), "wb") as save:
+                print('downloaded from :{}'.format(url))
+                save.write(img)
+
+
 
 
     def _metadata_config(self):
@@ -78,7 +112,10 @@ class Fetcher:
     def fetch_html(self, q):
         sleep(self.wait)
         send_url = self.target_server + q
-        response = requests.get(send_url, headers=self.send_header)
+        response = requests.get(send_url, headers=self.send_header, timeout=self.timeout)
+        if response.status_code != 200:
+            err = Exception("http status:{}".format(response.status_code))
+            raise err
         mimetype = response.headers['content-type']
         if mimetype.split(';')[0] != 'text/html':
             return None
@@ -90,9 +127,13 @@ class Fetcher:
         if response.status_code != 200:
             err = Exception("http status:{}".format(response.status_code))
             raise err
+        mimetype = response.headers['content-type']
+        if 'image' not in mimetype:
+            return None
         return response.content
 
 
 if __name__ == '__main__':
     a = Kernel()
-    urls = a.get_url("suiseiseki")
+    urls = a.get_url("ねねっち")
+    a.save_img(urls=urls)
