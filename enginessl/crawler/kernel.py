@@ -32,7 +32,10 @@ class Kernel:
             keyword_query = 'p={}'.format(keyword)
             if step != 1:
                 keyword_query += (' ' + str(step))
-            num_query = 'n={}'.format(diff_num if step == access_iter+1 else 60)
+            if get_num != 60:
+                num_query = 'n={}'.format(diff_num if step == access_iter+1 else 60)
+            else:
+                num_query = 'n={}'.format(60)
             full_query = '?'+ keyword_query + '&' + num_query
             html_datas.append(self.fetcher.fetch_html(full_query))
         self.check_html(html_datas)
@@ -135,5 +138,5 @@ class Fetcher:
 
 if __name__ == '__main__':
     a = Kernel()
-    urls = a.get_url("ねねっち")
+    urls = a.get_url("gopherくん")
     a.save_img(urls=urls)
