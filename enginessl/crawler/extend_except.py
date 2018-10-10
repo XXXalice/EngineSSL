@@ -5,3 +5,7 @@ class QueryError(Exception):
 class HTTPError(Exception):
     print("[HTTPError] Response result is incomplete.")
     exit()
+
+class CrawlingError(Exception):
+    print("[CrawlingError] Failed to crawl.")
+    exit()
