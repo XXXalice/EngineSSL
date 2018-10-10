@@ -15,9 +15,9 @@ class Kernel:
             sys.stderr.write("[InstanceError] Metadata is incomplete.")
             exit()
 
-    def get_url(self, keyword):
+    def get_url(self, keyword, num):
         self.mk_dir(keyword)
-        get_num = int(self.params['crawler']['target_num'])
+        get_num = int(self.params['crawler']['target_num']) if num != '' else num
         ua = self.params['crawler']['user_agent'] if self.params['crawler']['user_agent'] != None else ""
         mail = self.params['crawler']['mail'] if self.params['crawler']['mail'] != None else ""
         wait = self.params['crawler']['wait_sec'] if self.params['crawler']['wait_sec'] != None else 1.0
@@ -136,7 +136,9 @@ class Fetcher:
         return response.content
 
 
+
+# kernel test
 if __name__ == '__main__':
     a = Kernel()
-    urls = a.get_url("gopherくん")
+    urls = a.get_url("岡尚大")
     a.save_img(urls=urls)
