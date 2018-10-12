@@ -1,12 +1,6 @@
-from crawler import system as cr
-import os
+from crawler import system
 import sys
 
-clawler = cr.Clawler()
-if len(sys.argv) == 2:
-    clawler.crawl(keyword=sys.argv[1], num='')
-elif len(sys.argv == 3):
-    clawler.crawl(keyword=sys.argv[2], num=sys.argv[3])
-else:
-    print("error.")
-    exit()
+c = system.Clawler(sys.argv[1:])
+c.crawl()
+c.save_img()
