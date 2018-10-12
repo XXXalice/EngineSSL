@@ -9,10 +9,10 @@ class Kernel:
 
     def __init__(self):
         try:
-            self.meta = self._metadata_config()
-            self.params = self._read_yaml(str(self.meta[1]))
+            self.meta = self.metadata_config()
+            self.params = self.read_yaml(str(self.meta[1]))
         except:
-            sys.stderr.write("[InstanceError] Metadata is incomplete.")
+            sys.stderr.write("[InstanceError] Metadata is incomplete.\n")
             exit()
 
     def get_url(self, keyword, num):
@@ -23,7 +23,7 @@ class Kernel:
         wait = self.params['crawler']['wait_sec'] if self.params['crawler']['wait_sec'] != None else 1.0
         self.fetcher = Fetcher(ua=ua, mail=mail, wait=wait, target_server=str(self.meta[0]))
         if keyword == "" or keyword == None or get_num == None or int(get_num) <= 0:
-            print("[QueryError] An abnormality was found in the search query.")
+            print("[QueryError] An abnormality was found in the search query..")
             exit()
         access_iter, diff_num = int(get_num / 60.1), int(get_num % 60)
         # multiple_access_mode = True if access_iter != 0 else False
@@ -71,6 +71,7 @@ class Kernel:
     def save_img(self, urls):
         success_count = 0
         ext = self.params['crawler']['ext']
+        print('a')
         for url in urls:
             img = self.fetcher.fetch_img(url)
             if img != None:
@@ -82,15 +83,12 @@ class Kernel:
                 print('downloaded from :{}'.format(url))
                 save.write(img)
 
-
-
-
-    def _metadata_config(self):
-        with open('.crawler_metadata', 'r') as f:
+    def metadata_config(self):
+        with open('crawler/.crawler_metadata', 'r') as f:
             config = f.readlines()
         return [conf.strip() for conf in config]
 
-    def _read_yaml(self, uri):
+    def read_yaml(self, uri):
         import yaml
         try:
             with open(uri, 'r') as d:
@@ -138,7 +136,7 @@ class Fetcher:
 
 
 # kernel test
-if __name__ == '__main__':
-    a = Kernel()
-    urls = a.get_url("岡尚大")
-    a.save_img(urls=urls)
+# if __name__ == '__main__':
+#     a = Kernel()
+#     urls = a.get_url("岡尚大")
+#     a.save_img(urls=urls)

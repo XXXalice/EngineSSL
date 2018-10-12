@@ -1,11 +1,14 @@
 class QueryError(Exception):
-    print("[QueryError] An abnormality was found in the search query.")
-    exit()
+    def err(self):
+        print("[QueryError] An abnormality was found in the search query.")
+        exit()
 
 class HTTPError(Exception):
-    print("[HTTPError] Response result is incomplete.")
-    exit()
+    def err(self):
+        print("[HTTPError] Response result is incomplete.")
+        exit()
 
 class CrawlingError(Exception):
-    print("[CrawlingError] Failed to crawl.")
-    exit()
+    def err(self):
+        print("[CrawlingError] Failed to crawl.")
+        exit()
