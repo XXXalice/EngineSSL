@@ -1,4 +1,4 @@
-import crawler as cr
+from crawler import system as cr
 import os
 import sys
 
