@@ -1,10 +1,10 @@
-from kernel import Kernel
-from extend_except import CrawlingError
+from . import kernel
+from .extend_except import CrawlingError
 
-class Clawler(Kernel):
+class Clawler():
 
     def __init__(self):
-        self.c = Kernel()
+        self.c = kernel.Kernel()
         self.urls = None
 
     def crawl(self, keyword, num):
