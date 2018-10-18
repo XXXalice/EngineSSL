@@ -107,9 +107,7 @@ venv.bak/
 # custom
 *.DS_Store
 
-enginessl/crawler/wikipedia.vector.bin
-
-enginessl/wordcollector/src/wikipedia.vector.bin
+*.bin
 
 .idea/
 
