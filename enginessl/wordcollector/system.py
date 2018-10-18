@@ -3,7 +3,7 @@ import kernel
 class WordCollector(kernel.Kernel):
 
     def __init__(self):
-        super().__init__('wikipedia.vector.bin')
+        super().__init__('wikipedia.bin')
         self.fnc = ['super().get_sim({},{})', 'super().get_notsim({},{})']
 
     def get_words(self, word, num, sim=False):
