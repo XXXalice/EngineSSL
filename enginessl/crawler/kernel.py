@@ -71,7 +71,6 @@ class Kernel:
     def save_img(self, urls):
         success_count = 0
         ext = self.params['crawler']['ext']
-        print('a')
         for url in urls:
             img = self.fetcher.fetch_img(url)
             if img != None:
