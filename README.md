@@ -14,6 +14,8 @@ It is a classifier creation method that combines web technology and deep learnin
 
 * Automatic generation of API for inference
 
+* Publish as OSS
+
 
 ![archtechture](./src/master_arch.png)
 
