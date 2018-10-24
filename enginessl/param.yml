@@ -1,8 +1,8 @@
 crawler:
-  target_num: 50
+  target_num: 200
   user_agent: 'Mozilla/5.0'
   mail: 'euthanasia045@gmail.com'
-  wait_sec: 0.1
+  wait_sec: 0.01
   ext: 'png'
 
   for_expart:
@@ -10,3 +10,8 @@ crawler:
     output_imglog: False
     parser: 'lxml'
     save_bin: False
+
+ml:
+  model: 'MobileNet' # NoneでoriginalNN
+  test_data_rate: 0.3
+  grayscale: True
