@@ -19,11 +19,14 @@ class Kernel():
     def data_split(self, validation=False):
         test_num = int(len(self.datas) * self.params['ml']['test_data_rate'])
         train_num = len(self.datas) - test_num
-        self.x_train = self.datas[:train_num]
-        self.x_test = self.datas[-test_num:]
+        self.x_train_raw = self.datas[:train_num]
+        self.x_test_raw = self.datas[-test_num:]
 
 
     def data_preprocess(self,gray=True):
+        pass
+
+    def labeling(self, one_hot=True):
         pass
 
     def read_yaml(self, uri):
@@ -43,4 +46,3 @@ class Kernel():
 if __name__ == '__main__':
     k = Kernel()
     k.data_split()
-    print(len(k.x_train), len(k.x_test))
