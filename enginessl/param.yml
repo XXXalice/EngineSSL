@@ -12,6 +12,7 @@ crawler:
     save_bin: False
 
 ml:
-  model: 'MobileNet' # NoneでoriginalNN
+  model: 'MobileNet' # None: originalNN
   test_data_rate: 0.3
   grayscale: True
+  img_size_xy: 100
