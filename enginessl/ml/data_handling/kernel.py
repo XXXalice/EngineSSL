@@ -34,6 +34,7 @@ class Kernel():
         self.y_test = []
         data_container = [self.x_train, self.x_test]
         label_container = [self.y_train, self.y_test]
+        size = [self.params['ml']['img_size_xy']]*2 if not self.params['ml']['img_size_xy'] == None else size
         for label, valid in enumerate((self.x_train_raw, self.x_test_raw)):
             for img_path in valid:
                 try:
@@ -74,8 +75,10 @@ class OpponentImage(Kernel):
         self.data_split()
         self.data_preprocess_basic()
         self.ancestors = [self.x_train, self.y_train, self.x_test, self.y_test]
-        self.__gc_superclassvals()
+        # self.__gc_superclassvals()
 
+    def make_fuzzyimg(self, decay):
+        pass
 
     def __gc_superclassvals(self):
         import gc
@@ -86,8 +89,6 @@ class OpponentImage(Kernel):
             except Exception as e:
                 print(e)
                 exit()
-
-
 
 
 # kernel test
