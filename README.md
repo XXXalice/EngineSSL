@@ -1,6 +1,6 @@
 # EngineSSL （ESSL）
 
-![logo](/Users/umemiya/Desktop/EngineSSL/src/essl_logo.png)
+![logo](./src/essl_logo.png)
 
 ## Engine semi supervised learning（ESSL）
 
