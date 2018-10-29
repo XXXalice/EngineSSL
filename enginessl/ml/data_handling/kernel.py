@@ -2,7 +2,7 @@ import numpy as np
 import glob
 import sys
 import os
-from keras.preprocessing.image import load_img, img_to_array, ImageDataGenerator
+from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 
 class Kernel():
 
@@ -27,7 +27,7 @@ class Kernel():
         self.x_train_raw = self.datas[:train_num]
         self.x_test_raw = self.datas[-test_num:]
 
-    def data_preprocess_basic(self, gray=True, size=(100,100)):
+    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float32):
         self.x_train = []
         self.y_train = []
         self.x_test = []
@@ -47,8 +47,10 @@ class Kernel():
                     continue
                 else:
                     print('encoded img.[{}]'.format(img_path))
-            self.x_train = list(map(lambda img_bin: np.float16(img_bin)/255, self.x_train))
-            self.x_test = list(map(lambda img_bin: np.float16(img_bin) / 255, self.x_test))
+            # self.x_train = list(map(lambda img_bin: np.float16(img_bin)/255, self.x_train))
+            # self.x_test = list(map(lambda img_bin: np.float16(img_bin) / 255, self.x_test))
+            self.x_train = list(map(lambda img_bin: precision(img_bin) / 255, self.x_train))
+            self.x_test = list(map(lambda img_bin: precision(img_bin) / 255, self.x_test))
         print('data shape {}'.format(self.x_train[0].shape))
 
     def labeling(self, one_hot=True):
@@ -66,7 +68,6 @@ class Kernel():
 
 
 from PIL import Image, ImageChops, ImageOps, ImageDraw
-
 #generate image of opponent
 class OpponentImage(Kernel):
 
@@ -75,10 +76,19 @@ class OpponentImage(Kernel):
         self.data_split()
         self.data_preprocess_basic()
         self.ancestors = [self.x_train, self.y_train, self.x_test, self.y_test]
+        self.decay = self.params['oppoimg']['decay']
         # self.__gc_superclassvals()
 
     def make_fuzzyimg(self, decay):
         pass
+
+    def anal_ances(self):
+        pass
+
+    def test_show(self):
+        import matplotlib.pyplot as plt
+        ex_img = array_to_img(self.ancestors[0][0])
+        ex_img.save('test.png')
 
     def __gc_superclassvals(self):
         import gc
@@ -97,3 +107,4 @@ if __name__ == '__main__':
     # k.data_split()
     # k.data_preprocess_basic()
     oppi = OpponentImage()
+    oppi.test_show()
