@@ -16,3 +16,6 @@ ml:
   test_data_rate: 0.3
   grayscale: True
   img_size_xy: 100
+
+oppoimg:
+  decay: 0.3
