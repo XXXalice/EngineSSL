@@ -15,6 +15,6 @@ class WordCollector(kernel.Kernel):
 
 
 
-wc = WordCollector()
-words = wc.get_words('月', 5)
-print(words)
+# wc = WordCollector()
+# words = wc.get_words('月', 5)
+# print(words)
