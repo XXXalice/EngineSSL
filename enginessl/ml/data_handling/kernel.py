@@ -27,7 +27,7 @@ class Kernel():
         self.x_train_raw = self.datas[:train_num]
         self.x_test_raw = self.datas[-test_num:]
 
-    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float32):
+    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float16):
         self.x_train = []
         self.y_train = []
         self.x_test = []
@@ -75,19 +75,34 @@ class OpponentImage(Kernel):
         Kernel.__init__(self)
         self.data_split()
         self.data_preprocess_basic()
-        self.ancestors = [self.x_train, self.y_train, self.x_test, self.y_test]
+        self.ancestors = [self.x_train, self.x_test]
         self.decay = self.params['oppoimg']['decay']
         # self.__gc_superclassvals()
+        self.datas = self.make_fuzzyimg(decay=self.decay, effect='s_random')
 
-    def make_fuzzyimg(self, decay):
-        pass
+    def make_fuzzyimg(self, decay, effect):
+        import effect_func as ef
+        e_dict = {
+            's_random': lambda x: ef.simple_random(x),
+            'swap': lambda x: ef.swap(x)
+        }
+        oppotrain = []
+        oppotest = []
+        for bins in self.ancestors:
+            for bin in bins:
+                effected_bin = e_dict[effect](bin)
+                print(effected_bin)
+                oppotrain.append(effected_bin)
+                break
+        # self.__test_show(oppotrain[0])
+
 
     def anal_ances(self):
         pass
 
-    def test_show(self):
+    def __test_show(self, np_img):
         import matplotlib.pyplot as plt
-        ex_img = array_to_img(self.ancestors[0][0])
+        ex_img = array_to_img(np_img)
         ex_img.save('test.png')
 
     def __gc_superclassvals(self):
@@ -107,4 +122,3 @@ if __name__ == '__main__':
     # k.data_split()
     # k.data_preprocess_basic()
     oppi = OpponentImage()
-    oppi.test_show()
