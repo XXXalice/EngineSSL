@@ -157,6 +157,7 @@ class OpponentImage(Kernel):
 
 # kernel test
 if __name__ == '__main__':
+    pass
     # k = Kernel()
     # k.data_split()
     # k.data_preprocess_basic()
