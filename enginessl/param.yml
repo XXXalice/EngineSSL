@@ -19,3 +19,4 @@ ml:
 
 oppoimg:
   decay: 0.3
+  mode: 's_random'
