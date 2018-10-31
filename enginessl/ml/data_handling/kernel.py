@@ -128,7 +128,7 @@ class OpponentImage(Kernel):
                 else:
                     print('generated fuzzyimg.{}'.format(img_count+1))
         print('fuzzy mode {}'.format(effect))
-        # self.__test_show(self.ancestors[0][150])
+        # self.test_show(self.ancestors[0][150])
 
     def anal_ances(self):
         pass
@@ -139,7 +139,7 @@ class OpponentImage(Kernel):
         return (self.x_train, self.x_test, self.y_train, self.x_test)
 
 
-    def __test_show(self, np_img):
+    def test_show(self, np_img):
         import matplotlib.pyplot as plt
         ex_img = array_to_img(np_img.reshape(100,100,1))
         ex_img.save('test.png')
