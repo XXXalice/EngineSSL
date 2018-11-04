@@ -11,3 +11,4 @@ class DataHandling(kernel.OpponentImage):
 
     def test_show(self, img_bin):
         self.oppo.test_show()
+

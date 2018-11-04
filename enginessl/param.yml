@@ -12,10 +12,10 @@ crawler:
     save_bin: False
 
 ml:
-  model: 'MobileNet' # None: originalNN
+  model: 'MobileNetV2' # None: originalNN
   test_data_rate: 0.3
   grayscale: True
-  img_size_xy: 100
+  img_size_xy: 100 # must 71 < num
 
 oppoimg:
   decay: 0.3
