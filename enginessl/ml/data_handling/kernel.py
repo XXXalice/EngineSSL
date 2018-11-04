@@ -138,7 +138,6 @@ class OpponentImage(Kernel):
         self.y_test = to_categorical(self.y_test, num_classes=2)
         return (self.x_train, self.x_test, self.y_train, self.x_test)
 
-
     def test_show(self, np_img):
         import matplotlib.pyplot as plt
         ex_img = array_to_img(np_img.reshape(100,100,1))

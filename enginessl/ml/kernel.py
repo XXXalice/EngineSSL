@@ -30,9 +30,9 @@ class Kernel():
             else:
                 return loaded_model
 
-        if self.read_tensor_shape(self.train_data[0][0]) == True:
+        if self.read_tensor_shape(self.train_data[0][0]) is True and not os.path.exists(save_path_master + app + self.params['ml']['savemodel_ext']):
             self.ances_model = exec_dict[app]()
-            self.ances_model.save(save_path_master + app + '.h5py')
+            self.ances_model.save(save_path_master + app + self.params['ml']['savemodel_ext'])
 
     def read_tensor_shape(self, ex):
         try:
@@ -61,3 +61,11 @@ class Kernel():
             return
         return param_dict
 
+
+#test kernel
+if __name__ == '__main__':
+    from data_handling.system import DataHandling
+    d = DataHandling()
+    datas = d.get_builtup_data()
+    k = Kernel(datas)
+    k.generate_model()
