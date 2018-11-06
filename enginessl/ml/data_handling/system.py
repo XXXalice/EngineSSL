@@ -1,5 +1,6 @@
 from . import kernel
 
+#bug
 class DataHandling(kernel.OpponentImage):
 
     def __init__(self):
@@ -11,4 +12,3 @@ class DataHandling(kernel.OpponentImage):
 
     def test_show(self, img_bin):
         self.oppo.test_show()
-
