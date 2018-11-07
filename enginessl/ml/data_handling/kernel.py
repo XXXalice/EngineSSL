@@ -4,6 +4,8 @@ import sys
 import os
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
+sys.path.append(os.pardir)
+from common_handler.path_handler import get_abspath
 
 # Generate conflicting images fully automatically :)
 
@@ -18,7 +20,9 @@ from keras.utils import to_categorical
 class Kernel():
 
     def __init__(self):
-        datas_path = '../../data/img/'
+        # datas_path = '../../data/img/'
+        _datas_path = get_abspath(target='a')
+        print(_datas_path)
         datas_dir = os.listdir(path=datas_path)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
@@ -155,8 +159,8 @@ class OpponentImage(Kernel):
 
 
 # kernel test
-if __name__ == '__main__':
-    pass
+# if __name__ == '__main__':
+#     pass
     # k = Kernel()
     # k.data_split()
     # k.data_preprocess_basic()
