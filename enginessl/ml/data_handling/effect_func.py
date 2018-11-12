@@ -30,3 +30,6 @@ def ancestral_scale_random_v2(img_bin):
 
 def swap(img_bin):
     pass
+
+def use_gradcam(img_bin):
+    pass
