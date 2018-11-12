@@ -21,7 +21,7 @@ class Kernel():
 
     def __init__(self):
         # datas_path = '../../data/img/'
-        _datas_path = get_abspath(target='a')
+        _datas_path = get_abspath(target='img')
         print(_datas_path)
         datas_dir = os.listdir(path=datas_path)
         if '.DS_Store' in datas_dir:
