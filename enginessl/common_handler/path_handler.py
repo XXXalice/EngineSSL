@@ -13,7 +13,7 @@ def get_abspath(target):
     target_abspath = recursive_search(target, fold_li)
     return target_abspath
 
-def get_user_env():
+def get_user_env(root_envs):
     pass
 
 def recursive_search(target, search_li):
