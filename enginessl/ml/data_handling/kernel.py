@@ -20,7 +20,7 @@ from common_handler.path_handler import get_abspath
 class Kernel():
 
     def __init__(self):
-        # datas_path = '../../data/img/'
+        datas_path = '../data/img/'
         _datas_path = get_abspath(target='img')
         print(_datas_path)
         datas_dir = os.listdir(path=datas_path)
@@ -28,7 +28,7 @@ class Kernel():
             datas_dir.remove('.DS_Store')
         try:
             self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
-            self.params = self.read_yaml('../../param.yml')
+            self.params = self.read_yaml('../param.yml')
             self.datas = glob.glob(datas_path + datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
             self.datas.sort()
         except Exception as e:
