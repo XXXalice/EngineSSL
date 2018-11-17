@@ -21,8 +21,8 @@ class Kernel():
 
     def __init__(self):
         datas_path = '../data/img/'
-        _datas_path = get_abspath(target='img')
-        print(_datas_path)
+        # _datas_path = get_abspath(target='img')
+        # print(_datas_path)
         datas_dir = os.listdir(path=datas_path)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
@@ -88,6 +88,8 @@ class Kernel():
 
 from PIL import Image, ImageChops, ImageOps, ImageDraw
 #generate image of opponent
+
+
 class OpponentImage(Kernel):
 
     def __init__(self):
@@ -102,7 +104,7 @@ class OpponentImage(Kernel):
         self.datas = self.make_fuzzyimg(decay=self.decay, effect=self.mode)
 
     def make_fuzzyimg(self, decay, effect):
-        import effect_func as ef
+        from . import effect_func as ef
 
         e_dict = {
             's_random': lambda x: ef.simple_random(x),
@@ -130,7 +132,7 @@ class OpponentImage(Kernel):
                     print('cant generate fuzzyimg.')
                     continue
                 else:
-                    print('generated fuzzyimg.{}'.format(img_count+1))
+                    print('generated fuzzyimg. num:{}'.format(img_count+1))
         print('fuzzy mode {}'.format(effect))
         # self.test_show(self.ancestors[0][150])
 
