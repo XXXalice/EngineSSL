@@ -1,6 +1,5 @@
 from . import kernel
 
-#bug
 class DataHandling(kernel.OpponentImage):
 
     def __init__(self):
