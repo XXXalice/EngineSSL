@@ -42,7 +42,7 @@ class Kernel():
         self.x_train_raw = self.datas[:train_num]
         self.x_test_raw = self.datas[-test_num:]
 
-    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float16):
+    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float32):
         self.x_train = []
         self.y_train = []
         self.x_test = []
