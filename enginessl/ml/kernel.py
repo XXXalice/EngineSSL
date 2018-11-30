@@ -22,7 +22,9 @@ class Kernel():
 
         def __mbnv2(tensor_shape):
             try:
-                loaded_model = MobileNetV2(include_top=False, weights='imagenet', input_tensor=tensor_shape)
+                input_tensor = Input(shape=tensor_shape)
+                loaded_model = MobileNetV2(include_top=False, weights='imagenet')
+                # loaded_model = MobileNetV2(include_top=False, weights='imagenet', input_tensor=input_tensor)
             except Exception as err:
                 print('cant load model. plz check your tensorflow and Keras version.')
                 sys.stdout.write(str(err))
@@ -30,9 +32,9 @@ class Kernel():
             else:
                 return loaded_model
 
-        if self.read_tensor_shape(self.train_data[0][0]) is True and not os.path.exists(save_path_master + app + self.params['ml']['savemodel_ext']):
-            self.ances_model = exec_dict[app]()
-            self.ances_model.save(save_path_master + app + self.params['ml']['savemodel_ext'])
+        if self.read_tensor_shape(self.train_data[0][0]) is True and not os.path.exists(save_path_master + app + '.' + self.params['ml']['savemodel_ext']):
+            self.ances_model = exec_dict[app](self.train_data[0][0].shape)
+            self.ances_model.save(save_path_master + app + '.' + self.params['ml']['savemodel_ext'])
 
     def read_tensor_shape(self, ex):
         try:
