@@ -1,5 +1,6 @@
 import sys
 import os
+import pathlib
 sys.path.append(os.pardir)
 
 ABSOLUTE_APP_NAME = 'enginessl'
@@ -30,3 +31,21 @@ def split_front_absapp(li):
     except:
         print('target error.')
         exit()
+
+
+def get_path(locate, axis, target):
+    parts = []
+    for folder in locate.split('/')[::-1]:
+        parts.insert(0, folder)
+        if folder == axis:
+            break
+    abspath = []
+    abspath.append(locate.split(parts[0])[0]+parts[0])
+    search_items = os.listdir(abspath[0])
+    search_items.remove('.DS_Store')
+    search_items_handled = ['/' + item for item in search_items]
+    for item in search_items_handled:
+        fullpath = abspath[0] + item
+        while len(os.listdir(fullpath)) != 0:
+            abspath.append(fullpath)
+            
