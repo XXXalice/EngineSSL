@@ -17,6 +17,8 @@ def simple_random(img_bin):
     # print(type(img_bin))
     # print(maxis)
     # print(minis)
+
+
     print(img_bin)
     re_bin = np.random.permutation(img_bin)
     print(re_bin)
