@@ -2,10 +2,11 @@ import numpy as np
 import glob
 import sys
 import os
+import pathlib
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
-sys.path.append(os.pardir)
-from common_handler.path_handler import get_abspath
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+from common_handler.path_handler import get_path
 
 # Generate conflicting images fully automatically :)
 
@@ -21,8 +22,11 @@ class Kernel():
 
     def __init__(self):
         datas_path = '../data/img/'
+        base = os.path.dirname(os.path.abspath(__file__))
         # _datas_path = get_abspath(target='img')
         # print(_datas_path)
+        datas_path2 = get_path(base, 'enginessl', 'img')
+        print(datas_path2)
         datas_dir = os.listdir(path=datas_path)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
@@ -33,7 +37,7 @@ class Kernel():
             self.datas.sort()
         except Exception as e:
             sys.stderr.write(str(e))
-            print()
+            print("error cant read datas.")
             exit()
 
     def data_split(self, validation=False):
@@ -161,9 +165,8 @@ class OpponentImage(Kernel):
 
 
 # kernel test
-# if __name__ == '__main__':
-#     pass
-    # k = Kernel()
+if __name__ == '__main__':
+    k = Kernel()
     # k.data_split()
     # k.data_preprocess_basic()
     # oppi = OpponentImage()
