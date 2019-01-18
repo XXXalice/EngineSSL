@@ -1,12 +1,11 @@
 import numpy as np
-import glob
 import sys
 import os
-import pathlib
+import glob
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from common_handler.path_handler import get_path
+from common_handler.path_handler import get_path_with_glob
 
 # Generate conflicting images fully automatically :)
 
@@ -21,19 +20,15 @@ from common_handler.path_handler import get_path
 class Kernel():
 
     def __init__(self):
-        datas_path = '../data/img/'
-        base = os.path.dirname(os.path.abspath(__file__))
-        # _datas_path = get_abspath(target='img')
-        # print(_datas_path)
-        datas_path2 = get_path(base, 'enginessl', 'img')
-        print(datas_path2)
-        datas_dir = os.listdir(path=datas_path)
+        exec_path = os.path.dirname(os.path.abspath(__file__))
+        base = 'enginessl'
+        datas_dir = get_path_with_glob(exec_path, base, 'data/img')
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
         try:
             self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
-            self.params = self.read_yaml('../param.yml')
-            self.datas = glob.glob(datas_path + datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
+            self.params = self.read_yaml(get_path_with_glob(exec_path, base, 'param.yml'))
+            self.datas = glob.glob('**' + datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
             self.datas.sort()
         except Exception as e:
             sys.stderr.write(str(e))

@@ -1,6 +1,6 @@
 import sys
 import os
-import pathlib
+import glob
 sys.path.append(os.pardir)
 
 ABSOLUTE_APP_NAME = 'enginessl'
@@ -32,7 +32,6 @@ def split_front_absapp(li):
         print('target error.')
         exit()
 
-
 def get_path(locate, axis, target):
     parts = []
     for folder in locate.split('/')[::-1]:
@@ -42,10 +41,36 @@ def get_path(locate, axis, target):
     abspath = []
     abspath.append(locate.split(parts[0])[0]+parts[0])
     search_items = os.listdir(abspath[0])
-    search_items.remove('.DS_Store')
+    if '.DS_Store' in search_items:
+        search_items.remove('.DS_Store')
     search_items_handled = ['/' + item for item in search_items]
+    # print(search_items_handled)
+
+    def __fetch(folder_path):
+        """
+        :param folder_path: 掘る対象
+        :return: folder_path内のパス list
+        """
+        return os.listdir(folder_path)
+
     for item in search_items_handled:
         fullpath = abspath[0] + item
-        while len(os.listdir(fullpath)) != 0:
-            abspath.append(fullpath)
-            
+        # while len(os.listdir(fullpath)) != 0:
+        #     abspath.append(fullpath)
+        new_path = __fetch(fullpath)
+        abspath.extend(new_path)
+        print(abspath)
+        try:
+            new_path_items = ['/' + item for item in new_path.split('/')[-1] if '.' not in item]
+            search_items_handled.extend(new_path_items)
+            print(search_items_handled)
+        except:
+            break
+
+def get_path_with_glob(locate, axis, target):
+    try:
+        dir_list = os.listdir(path=glob.glob(str(locate).split(axis)[0] + '**/{}'.format(target), recursive=True)[0])
+        return dir_list
+    except:
+        file = glob.glob(str(locate).split(axis)[0] + '**/{}'.format(target), recursive=True)[0]
+        return file
