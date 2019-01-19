@@ -74,3 +74,11 @@ def get_path_with_glob(locate, axis, target):
     except:
         file = glob.glob(str(locate).split(axis)[0] + '**/{}'.format(target), recursive=True)[0]
         return file
+
+def get_abspath_with_glob(locate, target):
+    try:
+        dir_list = os.listdir(path=glob.glob(str(locate) + '**/{}'.format(target), recursive=True)[0])
+        return dir_list
+    except:
+        file = glob.glob(str(locate) + '**/{}'.format(target), recursive=True)[0]
+        return file
