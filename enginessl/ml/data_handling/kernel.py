@@ -5,7 +5,7 @@ import glob
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-from common_handler.path_handler import get_path_with_glob, get_abspath_with_glob
+from common_handler.path_handler import get_path_with_glob
 # Generate conflicting images fully automatically :)
 
 # [usage]
@@ -151,7 +151,7 @@ class OpponentImage(Kernel):
         # self.test_show(self.ancestors[0][150])
 
     def save_fuzzyimg(self, np_img, num):
-        absdatas_dir = get_abspath_with_glob(self.exec_path, 'data')
+        absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data')
         if '.DS_Store' in absdatas_dir:
             absdatas_dir.remove('.DS_Store')
         if not os.path.exists(absdatas_dir[0] + '/fuzzies'):
