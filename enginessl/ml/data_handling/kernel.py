@@ -6,7 +6,6 @@ from keras.preprocessing.image import load_img, img_to_array, array_to_img, save
 from keras.utils import to_categorical
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from common_handler.path_handler import get_path_with_glob, get_abspath_with_glob
-
 # Generate conflicting images fully automatically :)
 
 # [usage]
