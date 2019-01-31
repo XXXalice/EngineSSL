@@ -23,6 +23,7 @@ class Kernel():
         base = 'enginessl'
         img_dir = 'data/img'
         datas_dir = get_path_with_glob(self.exec_path, base, img_dir)
+        print(datas_dir)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
         try:
@@ -151,16 +152,13 @@ class OpponentImage(Kernel):
         # self.test_show(self.ancestors[0][150])
 
     def save_fuzzyimg(self, np_img, num):
-        absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data')
-        if '.DS_Store' in absdatas_dir:
-            absdatas_dir.remove('.DS_Store')
-        if not os.path.exists(absdatas_dir[0] + '/fuzzies'):
-            os.mkdir(absdatas_dir[0] + '/fuzzies')
-        elif not os.path.exists(os.path.join(absdatas_dir[0], 'fuzzies', get_path_with_glob(self.exec_path, 'enginessl', 'img'))):
-            fuzzies_dir = os.path.join(absdatas_dir[0], 'fuzzies', get_path_with_glob(self.exec_path, 'enginessl', 'img'))
-            os.mkdir(fuzzies_dir)
+        datas_dir_name = get_path_with_glob(self.exec_path, 'enginessl', 'data/img')[0]
+        absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data', abs=True)
+        fuzzies_save_dir = os.path.join(absdatas_dir[0], datas_dir_name, 'fuzzies')
+        if not os.path.exists(fuzzies_save_dir):
+            os.mkdir(fuzzies_save_dir)
         ex_img = array_to_img(np_img.reshape(100,100,1))
-        ex_img.save(os.path.join(fuzzies_dir, '{0:03d}.png'.format(num)))
+        ex_img.save(os.path.join(fuzzies_save_dir, '{0:03d}.png'.format(num)))
 
     def anal_ances(self):
         pass
@@ -193,4 +191,3 @@ if __name__ == '__main__':
     # k.data_preprocess_basic()
     oppi = OpponentImage()
     datasets = oppi.return_datafiles()
-    print(datasets)
