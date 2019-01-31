@@ -67,13 +67,24 @@ def get_path(locate, axis, target):
         except:
             break
 
-def get_path_with_glob(locate, axis, target):
+def get_path_with_glob(locate, axis, target, abs=False):
+    rm_dsstore = lambda l: l.remove('.DS_Store')
     try:
         dir_list = os.listdir(path=glob.glob(str(locate).split(axis)[0] + '**/{}'.format(target), recursive=True)[0])
-        return dir_list
+        if '.DS_Store' in dir_list:
+            rm_dsstore(dir_list)
+        if abs == False:
+            return dir_list
+        else:
+            absdir_list = [os.path.join(str(locate).split(axis)[0], axis, target, path) for path in dir_list]
+            return absdir_list
     except:
         file = glob.glob(str(locate).split(axis)[0] + '**/{}'.format(target), recursive=True)[0]
-        return file
+        if abs == False:
+            return file
+        else:
+            absfile = os.path.abspath(file)
+            return absfile
 
 # def get_abspath_with_glob(locate, target):
 #     print(locate)
