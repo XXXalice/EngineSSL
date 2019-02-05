@@ -19,9 +19,7 @@ def simple_random(img_bin):
     # print(minis)
 
 
-    print(img_bin)
     re_bin = np.random.permutation(img_bin)
-    print(re_bin)
     return re_bin
 
 def ancestral_scale_random(img_bin):

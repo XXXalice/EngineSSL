@@ -23,7 +23,6 @@ class Kernel():
         base = 'enginessl'
         img_dir = 'data/img'
         datas_dir = get_path_with_glob(self.exec_path, base, img_dir)
-        print(datas_dir)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
         try:
@@ -31,7 +30,7 @@ class Kernel():
             self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
             # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
             self.img_dir_abspath = os.path.join(self.exec_path.split(base)[0], base, img_dir, datas_dir[0])
-            self.datas = [self.img_dir_abspath + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, datas_dir[0])]
+            self.datas = [self.img_dir_abspath + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, datas_dir[0]) if img_name is not 'fuzzies']
             self.datas.sort()
         except Exception as e:
             sys.stderr.write(str(e))
@@ -42,12 +41,12 @@ class Kernel():
         #     import pprint
         #     pprint.pprint(self.datas)
 
-    def data_split(self, validation=False):
+    def data_split(self, datas, validation=False):
         try:
-            test_num = int(len(self.datas) * self.params['ml']['test_data_rate'])
-            train_num = len(self.datas) - test_num
-            self.x_train_raw = self.datas[:train_num]
-            self.x_test_raw = self.datas[-test_num:]
+            test_num = int(len(datas) * self.params['ml']['test_data_rate'])
+            train_num = len(datas) - test_num
+            self.x_train_raw = datas[:train_num]
+            self.x_test_raw = datas[-test_num:]
         except Exception as err:
             sys.stdout.write(str(err))
         else:
@@ -107,17 +106,28 @@ class OpponentImage(Kernel):
 
     def __init__(self):
         Kernel.__init__(self)
-        self.data_split()
+        self.data_split(self.datas)
         self.data_preprocess_basic()
         self.ancestors = [self.x_train, self.x_test]
         self.ancestors_label = [self.y_train, self.y_test]
         self.decay = self.params['oppoimg']['decay']
         self.mode = self.params['oppoimg']['mode']
         # self.__gc_superclassvals()
-        self.datas = self.make_fuzzyimg(decay=self.decay, effect=self.mode)
+        # self.fuzzy_datas = self.exe_oppo()
+        print(len(self.ancestors[0]))
+        print(len(self.x_train), len(self.x_test))
+
+    def exe_oppo(self):
+        self.make_fuzzyimg(decay=self.decay, effect=self.mode)
+        if hasattr(self, 'fuzzies_save_dir'):
+            print(os.listdir(self.fuzzies_save_dir))
+            return os.listdir(self.fuzzies_save_dir)
+        else:
+            print('Error in OpponentImg.')
+            exit()
 
     def make_fuzzyimg(self, decay, effect, img_save=True):
-        import effect_func as ef
+        from . import effect_func as ef
 
         e_dict = {
             's_random': lambda x: ef.simple_random(x),
@@ -126,6 +136,7 @@ class OpponentImage(Kernel):
             'as_randomv2': lambda x: ef.ancestral_scale_random_v2(x)
         }
 
+        success_num = 0
         for i, img_bins in enumerate(self.ancestors):
             flat_img_bins = [*map(lambda img_bin: np.ravel(img_bin), img_bins)]
             for img_count, flat_img_bin in enumerate(flat_img_bins):
@@ -145,20 +156,21 @@ class OpponentImage(Kernel):
                     print('cant generate fuzzyimg.')
                     continue
                 else:
+                    success_num += 1
                     if img_save == True:
-                        self.save_fuzzyimg(np_img=effected_bin, num=img_count+1)
-                    print('generated fuzzyimg. num:{}'.format(img_count+1))
+                        self.save_fuzzyimg(np_img=effected_bin, num=success_num)
+                    print('generated fuzzyimg. num:{}'.format(success_num))
         print('fuzzy mode {}'.format(effect))
         # self.test_show(self.ancestors[0][150])
 
     def save_fuzzyimg(self, np_img, num):
         datas_dir_name = get_path_with_glob(self.exec_path, 'enginessl', 'data/img')[0]
         absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data', abs=True)
-        fuzzies_save_dir = os.path.join(absdatas_dir[0], datas_dir_name, 'fuzzies')
-        if not os.path.exists(fuzzies_save_dir):
-            os.mkdir(fuzzies_save_dir)
+        self.fuzzies_save_dir = os.path.join(absdatas_dir[0], datas_dir_name, 'fuzzies')
+        if not os.path.exists(self.fuzzies_save_dir):
+            os.mkdir(self.fuzzies_save_dir)
         ex_img = array_to_img(np_img.reshape(100,100,1))
-        ex_img.save(os.path.join(fuzzies_save_dir, '{0:03d}.png'.format(num)))
+        ex_img.save(os.path.join(self.fuzzies_save_dir, '{0:03d}.png'.format(num)))
 
     def anal_ances(self):
         pass
