@@ -53,25 +53,25 @@ class Kernel():
         else:
             print('splited datas. test:{test}  train:{train}'.format(test=len(self.x_train_raw), train=len(self.x_test_raw)))
 
-    def data_preprocess_basic(self, gray=True, size=(100,100), precision=np.float32):
+    def data_preprocess_basic(self, gray=True, size=(100,100), label=0, precision=np.float32):
         self.x_train = []
         self.y_train = []
         self.x_test = []
         self.y_test = []
         size = [self.params['ml']['img_size_xy']]*2 if not self.params['ml']['img_size_xy'] == None else size
-        for label, valid in enumerate([self.x_train_raw, self.x_test_raw]):
+        for tr_or_ts, valid in enumerate([self.x_train_raw, self.x_test_raw]):
             for img_path in valid:
                 try:
                     img = load_img(img_path, color_mode='grayscale', target_size=tuple(size))
                     img_bin = img_to_array(img)
                     # data_container[label].append(img_bin)
-                    if label == 0:
+                    if tr_or_ts == 0:
                         self.x_train.append(img_bin)
-                        self.y_train.append([0])
+                        self.y_train.append([label])
                         print('encoded img for train.[{}]'.format(img_path))
-                    elif label == 1:
+                    elif tr_or_ts == 1:
                         self.x_test.append(img_bin)
-                        self.y_test.append([0])
+                        self.y_test.append([label])
                         print('encoded img for test.[{}]'.format(img_path))
                 except:
                     print('cant preprocessed image.[{}]'.format(img_path))
@@ -184,10 +184,10 @@ class OpponentImage(Kernel):
                 exit()
 
 
-# kernel test
-if __name__ == '__main__':
-    k = Kernel()
-    # k.data_split()
-    # k.data_preprocess_basic()
-    oppi = OpponentImage()
-    datasets = oppi.return_datafiles()
+# # kernel test
+# if __name__ == '__main__':
+#     k = Kernel()
+#     k.data_split()
+#     k.data_preprocess_basic()
+#     oppi = OpponentImage()
+#     datasets = oppi.return_datafiles()
