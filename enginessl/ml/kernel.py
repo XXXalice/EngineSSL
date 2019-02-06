@@ -7,13 +7,15 @@ from keras import optimizers
 
 class Kernel():
 
-    def __init__(self, train_data):
-        self.params = self.read_yaml('../param.yml')
+    def __init__(self, param_path):
+        self.params = self.read_yaml(param_path)
         self.wh = self.params['ml']['img_size_xy'] #正方形
         self.ances_model = None
-        self.train_data = train_data
+        self.train_data = None
 
-    def generate_model(self, app='MobileNetV2'):
+    def generate_model(self, train_data, app='MobileNetV2'):
+
+        self.train_data = train_data
 
         save_path_master = './models/'
         exec_dict = {
@@ -32,7 +34,7 @@ class Kernel():
             else:
                 return loaded_model
 
-        if self.read_tensor_shape(self.train_data[0][0]) is True and not os.path.exists(save_path_master + app + '.' + self.params['ml']['savemodel_ext']):
+        if self.read_tensor_shape(self.train_data[0][0]) == True and not os.path.exists(save_path_master + app + '.' + self.params['ml']['savemodel_ext']):
             self.ances_model = exec_dict[app](self.train_data[0][0].shape)
             self.ances_model.save(save_path_master + app + '.' + self.params['ml']['savemodel_ext'])
 
@@ -63,11 +65,23 @@ class Kernel():
             return
         return param_dict
 
+    def get_origin_data(self, save_testimg=False):
+        from data_handling import system as dh_api
+        try:
+            dh = dh_api.DataHandling()
+            origin_data = dh.get_builtup_data()
+            if save_testimg == True:
+                dh.test_show(origin_data[0][-1])
+            return origin_data
+        except Exception as err:
+            sys.stdout.write(str(err))
+            return
+
 
 #test kernel
-if __name__ == '__main__':
-    from data_handling.system import DataHandling
-    d = DataHandling()
-    datas = d.get_builtup_data()
-    k = Kernel(datas)
-    k.generate_model()
+# if __name__ == '__main__':
+#     from data_handling.system import DataHandling
+#     d = DataHandling()
+#     datas = d.get_builtup_data()
+#     k = Kernel(datas)
+#     k.generate_model()
