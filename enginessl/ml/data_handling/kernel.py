@@ -30,7 +30,7 @@ class Kernel():
             self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
             # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
             self.img_dir_abspath = os.path.join(self.exec_path.split(base)[0], base, img_dir, datas_dir[0])
-            self.datas = [self.img_dir_abspath + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, datas_dir[0]) if img_name is not 'fuzzies']
+            self.datas = [self.img_dir_abspath + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, datas_dir[0]) if str(img_name) != 'fuzzies']
             self.datas.sort()
         except Exception as e:
             sys.stderr.write(str(e))
@@ -113,15 +113,18 @@ class OpponentImage(Kernel):
         self.decay = self.params['oppoimg']['decay']
         self.mode = self.params['oppoimg']['mode']
         # self.__gc_superclassvals()
-        # self.fuzzy_datas = self.exe_oppo()
+        # self.exe_oppo()
+        self.make_fuzzyimg(decay=self.decay, effect=self.mode)
         print(len(self.ancestors[0]))
         print(len(self.x_train), len(self.x_test))
+        print(self.y_train, self.y_test)
 
     def exe_oppo(self):
         self.make_fuzzyimg(decay=self.decay, effect=self.mode)
         if hasattr(self, 'fuzzies_save_dir'):
-            print(os.listdir(self.fuzzies_save_dir))
-            return os.listdir(self.fuzzies_save_dir)
+            oppoimgs = [self.fuzzies_save_dir + '/' + oppoimg for oppoimg in os.listdir(self.fuzzies_save_dir)]
+            oppoimgs.sort()
+            return oppoimgs
         else:
             print('Error in OpponentImg.')
             exit()
@@ -178,7 +181,7 @@ class OpponentImage(Kernel):
     def return_datafiles(self):
         self.y_train = to_categorical(self.y_train, num_classes=2)
         self.y_test = to_categorical(self.y_test, num_classes=2)
-        return (self.x_train, self.x_test, self.y_train, self.x_test)
+        return (self.x_train, self.x_test, self.y_train, self.y_test)
 
     def test_show(self, np_img):
         import matplotlib.pyplot as plt
