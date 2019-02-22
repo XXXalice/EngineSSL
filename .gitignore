@@ -114,3 +114,5 @@ venv.bak/
 enginessl/data/img/
 
 enginessl/ml/models/
+
+test/prc/src/argmentations/
