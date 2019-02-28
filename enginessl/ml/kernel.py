@@ -10,6 +10,11 @@ class Kernel():
     def __init__(self, param_path):
         self.params = self.read_yaml(param_path)
         self.wh = self.params['ml']['img_size_xy'] #正方形
+        self.using_user_network = False
+        if self.params['ml']['model'] == 'origin':
+            self.using_user_network = True
+            import network
+            user_nn = network.TestNet()
         self.ances_model = None
         self.train_data = None
 

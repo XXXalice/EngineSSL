@@ -12,7 +12,7 @@ crawler:
     save_bin: False
 
 ml:
-  model: 'MobileNetV2' # None: originalNN
+  model: 'origin' # 'origin': originalNN in ./ml/network.py
   test_data_rate: 0.3
   grayscale: True
   img_size_xy: 100 # must 71 < num
