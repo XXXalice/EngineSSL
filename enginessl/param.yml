@@ -17,7 +17,7 @@ ml:
   test_data_rate: 0.3
   grayscale: True
   img_size_xy: 100 # must 71 < num
-  savemodel_ext: 'h5py'
+  savemodel_ext: 'h5'
 
 oppoimg:
   decay: 0.3
