@@ -112,6 +112,7 @@ venv.bak/
 .idea/
 
 enginessl/data/img/
+enginessl/data/models/
 
 enginessl/ml/models/
 
