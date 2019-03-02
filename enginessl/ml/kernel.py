@@ -13,8 +13,13 @@ class Kernel():
         self.using_user_network = False
         if self.params['ml']['model'] == 'origin':
             self.using_user_network = True
-            import network
-            user_nn = network.TestNet()
+            if self.params['ml']['use_easymode'] == True:
+                sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+                import network_easymode
+                user_nn = network_easymode.Network(self.params)
+            else:
+                import network
+                user_nn = network.TestNet(self.params)
         self.ances_model = None
         self.train_data = None
 
