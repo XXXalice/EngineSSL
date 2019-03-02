@@ -16,16 +16,18 @@ class Kernel():
             if self.params['ml']['use_easymode'] == True:
                 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
                 import network_easymode
-                user_nn = network_easymode.Network(self.params)
+                self.user_nn = network_easymode.Network(self.params)
             else:
                 import network
-                user_nn = network.TestNet(self.params)
+                self.user_nn = network.TestNet(self.params)
         self.ances_model = None
         self.train_data = None
 
-    def generate_model(self, train_data, app='MobileNetV2'):
+    def generate_model(self, app='MobileNetV2'):
 
-        self.train_data = train_data
+        #easymodeがオンになって居た場合それを使用する
+        if self.params['ml']['use_easymode'] == True:
+            return self.user_nn.mynet()
 
         save_path_master = './models/'
         exec_dict = {
@@ -57,6 +59,10 @@ class Kernel():
         else:
             return True
 
+    def training(self, model, datas):
+        self.user_nn.train(model=model, datas=datas)
+
+
     def fine_tuning(self):
         #dense
         if not self.ances_model is None:
@@ -76,7 +82,7 @@ class Kernel():
         return param_dict
 
     def get_origin_data(self, save_testimg=False):
-        from data_handling import system as dh_api
+        from .data_handling import system as dh_api
         try:
             dh = dh_api.DataHandling()
             origin_data = dh.get_builtup_data()
