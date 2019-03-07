@@ -1,9 +1,8 @@
-import sys
 import os
 
 import numpy as np
 import keras
-from keras.models import Sequential, Model
+from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 
@@ -24,8 +23,8 @@ class Network():
         model.add(Dense(256))
         model.add(Activation('relu'))
         model.add(Dropout(0.25))
-        model.add(Dense(2))
-        model.add(Activation('softmax'))
+        model.add(Dense(1))
+        model.add(Activation('sigmoid'))
 
         return model
 
@@ -44,7 +43,7 @@ class Network():
         model.fit(x_train,
                   y_train,
                   batch_size=16,
-                  epochs=5,
+                  epochs=10,
                   validation_data=(x_test, y_test),
                   verbose=2
                   )
