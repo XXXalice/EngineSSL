@@ -1,9 +1,7 @@
 import sys
 import os
-from keras.models import Sequential, Model
 from keras.applications import MobileNetV2
-from keras.layers import Input, Activation, Dropout, Flatten, Dense
-from keras import optimizers
+from keras.layers import Input
 
 class Kernel():
 
