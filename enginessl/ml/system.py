@@ -8,7 +8,7 @@ class MachineLearning(mlkernel.Kernel):
 
     def get_datas(self):
         '''
-        :return: tuple(self.x_train, self.x_test, self.y_train, self.y_test)
+        :return: tuple(x_train, x_test, y_train, y_test)
         '''
         self.datas = self.Ml.get_origin_data()
         return self.datas

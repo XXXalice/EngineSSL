@@ -31,9 +31,11 @@ class Network():
     def train(self, model, datas):
         x_train = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[0]])
         x_test = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[1]])
-        # y_train = keras.utils.to_categorical(datas[2], 2)
-        # y_test = keras.utils.to_categorical(datas[3], 2)
+        # y_train = keras.utils.to_categorical(datas[2], 1)
+        # y_test = keras.utils.to_categorical(datas[3], 1)
         y_train, y_test = datas[-2:]
+
+
 
         for layer in model.layers:
             layer.trainable = True
@@ -45,7 +47,7 @@ class Network():
                   batch_size=16,
                   epochs=10,
                   validation_data=(x_test, y_test),
-                  verbose=2
+                  verbose=1
                   )
         os.makedirs('./data/models', exist_ok=True)
         model.save('./data/models/'+'easymode.h5')
