@@ -79,7 +79,7 @@ class Kernel():
             return
         return param_dict
 
-    def get_origin_data(self, save_testimg=False):
+    def get_origin_data(self, save_testimg=True):
         from .data_handling import system as dh_api
         try:
             dh = dh_api.DataHandling()
