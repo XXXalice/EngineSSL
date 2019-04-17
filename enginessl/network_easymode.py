@@ -33,7 +33,7 @@ class Network():
         model.add(Flatten())
         model.add(Dense(512, activation='relu'))
         model.add(Dense(256, activation='relu'))
-        model.add(Dense(1, activation='sigmoid'))
+        model.add(Dense(2, activation='softmax'))
 
         return model
 
@@ -60,10 +60,10 @@ class Network():
                       metrics=['accuracy'])
         model.fit(x_train,
                   y_train,
-                  batch_size=16,
-                  epochs=10,
+                  batch_size=32,
+                  epochs=30,
                   validation_data=(x_test, y_test),
                   verbose=1
                   )
-        os.makedirs('./data/models', exist_ok=True)
-        model.save('./data/models/'+'easymode.h5')
+        os.makedirs('./models', exist_ok=True)
+        model.save('./models/'+'easymode.h5')
