@@ -114,6 +114,4 @@ venv.bak/
 enginessl/data/img/
 enginessl/data/models/
 
-enginessl/ml/models/
-
 enginessl/models/
