@@ -66,11 +66,11 @@ class Kernel():
                     # data_container[label].append(img_bin)
                     if tr_or_ts == 0:
                         self.x_train.append(img_bin)
-                        self.y_train.append([label])
+                        self.y_train.append(label)
                         print('encoded img for train.[{}]'.format(img_path))
                     elif tr_or_ts == 1:
                         self.x_test.append(img_bin)
-                        self.y_test.append([label])
+                        self.y_test.append(label)
                         print('encoded img for test.[{}]'.format(img_path))
                 except:
                     print('cant preprocessed image.[{}]'.format(img_path))
@@ -151,10 +151,10 @@ class OpponentImage(Kernel):
                     # self.ancestors_label[i].append([1])
                     if i == 0:
                         self.x_train.append(effected_bin)
-                        self.y_train.append([1])
+                        self.y_train.append(1)
                     elif i == 1:
                         self.x_test.append(effected_bin)
-                        self.y_test.append([1])
+                        self.y_test.append(1)
                 except:
                     print('cant generate fuzzyimg.')
                     continue
