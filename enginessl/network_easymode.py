@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 import keras
+from PIL import Image
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
@@ -37,7 +38,10 @@ class Network():
 
         return model
 
-    def train(self, model, datas):
+    def train(self, model, datas, data_check=True):
+        if data_check == True:
+            self.datas = datas
+            self._data_check()
         x_train = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[0]])
         x_test = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[1]])
 
@@ -66,3 +70,32 @@ class Network():
                   )
         os.makedirs('./models', exist_ok=True)
         model.save('./models/'+'easymode.h5')
+
+    def _data_check(self):
+        x_train, y_train, y_train, y_train = self.datas
+        flat_x = x_train[0]
+        reshape_x = flat_x.reshape(100, 100, -1)
+        flat_oppo_x = x_train[-1]
+        reshape_oppo_x = flat_oppo_x.reshape(100, 100, -1)
+        check_arr = [flat_x, reshape_x, flat_oppo_x, reshape_oppo_x]
+
+        print('-'*30)
+        print('start data check.','\n'*2)
+        for check_img in check_arr:
+            print(type(check_img))
+            print(check_img.shape)
+            print(check_img)
+
+
+        savedir = './test/check_imgs/'
+        os.makedirs(savedir, exist_ok=True)
+        for idx, check_img in enumerate(check_arr):
+            try:
+                img = Image.fromarray(np.uint8(check_img))
+                img.save(savedir + 'test_img{}.jpg'.format(idx))
+                print('saved img.')
+            except Exception as e:
+                print('cant read img.')
+                continue
+        print('\n'*2, 'finish data check.')
+        print('-' * 30)
