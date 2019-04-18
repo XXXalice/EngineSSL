@@ -113,3 +113,5 @@ venv.bak/
 
 enginessl/data/img/
 enginessl/data/models/
+
+*.h5
