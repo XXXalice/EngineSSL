@@ -52,7 +52,6 @@ class Network():
 
 
 
-
         for layer in model.layers:
             layer.trainable = True
         model.compile(loss='categorical_crossentropy',
@@ -61,7 +60,7 @@ class Network():
         model.fit(x_train,
                   y_train,
                   batch_size=32,
-                  epochs=30,
+                  epochs=15,
                   validation_data=(x_test, y_test),
                   verbose=1
                   )
