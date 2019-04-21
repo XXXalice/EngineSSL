@@ -95,7 +95,7 @@ class Network():
                 img.save(savedir + 'test_img{}.jpg'.format(idx))
                 print('saved img.')
             except Exception as e:
-                print('cant read img.')
+                print('cant read img.', e)
                 continue
         print('\n'*2, 'finish data check.')
         print('-' * 30)
