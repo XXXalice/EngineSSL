@@ -2,7 +2,7 @@ crawler:
   target_num: 200
   user_agent: 'Mozilla/5.0'
   mail: 'euthanasia045@gmail.com'
-  wait_sec: 0.01
+  wait_sec: 0.1
   ext: 'png'
 
   for_expart:
