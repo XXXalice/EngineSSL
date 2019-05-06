@@ -12,7 +12,7 @@ It is a classifier creation method that combines web technology and deep learnin
 
 * Can create sort machines with one word
 
-* High Performance
+* High Performance?
 
 * MIT license
 
