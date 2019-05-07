@@ -6,6 +6,7 @@ from PIL import Image
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
+from keras.preprocessing.image import array_to_img
 
 class Network():
     def __init__(self, params):
@@ -42,24 +43,26 @@ class Network():
         if data_check == True:
             self.datas = datas
             self._data_check()
-        x_train = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[0]])
-        x_test = np.array([flat_img.reshape(100, 100, -1) for flat_img in datas[1]])
-
+        x_train = [flat_img.reshape(100, 100, 1) for flat_img in datas[0]]
+        x_test = [flat_img.reshape(100, 100, 1) for flat_img in datas[1]]
         # y_train = keras.utils.to_categorical(datas[2], 2)
         # y_test = keras.utils.to_categorical(datas[3], 2)
+        x_train = np.asarray(x_train)
+        x_test = np.asarray(x_test)
         y_train, y_test = datas[-2:]
-
-        print('x_train:', x_train.shape)
-        print('x_test:', x_test.shape)
-        print('y_train:', y_train.shape)
-        print('y_test:', y_test.shape)
+        print(y_train[0])
+        print(y_train[-1])
+        print('x_train:', len(x_train), np.array(x_train).shape)
+        print('x_test:', len(x_test), np.array(x_test).shape)
+        print('y_train:', len(y_train), np.array(y_train).shape)
+        print('y_test:', len(y_test), np.array(y_test).shape)
 
 
 
         for layer in model.layers:
             layer.trainable = True
         model.compile(loss='categorical_crossentropy',
-                      optimizer=keras.optimizers.Adam(),
+                      optimizer=keras.optimizers.SGD(),
                       metrics=['accuracy'])
         model.fit(x_train,
                   y_train,
@@ -72,11 +75,11 @@ class Network():
         model.save('./models/'+'easymode.h5')
 
     def _data_check(self):
-        x_train, y_train, y_train, y_train = self.datas
+        x_train, y_train, x_test, y_test = self.datas
         flat_x = x_train[0]
-        reshape_x = flat_x.reshape(100, 100, -1)
+        reshape_x = flat_x.reshape(100, 100)
         flat_oppo_x = x_train[-1]
-        reshape_oppo_x = flat_oppo_x.reshape(100, 100, -1)
+        reshape_oppo_x = flat_oppo_x.reshape(100, 100)
         check_arr = [flat_x, reshape_x, flat_oppo_x, reshape_oppo_x]
 
         print('-'*30)
@@ -86,12 +89,11 @@ class Network():
             print(check_img.shape)
             print(check_img)
 
-
         savedir = './test/check_imgs/'
         os.makedirs(savedir, exist_ok=True)
         for idx, check_img in enumerate(check_arr):
             try:
-                img = Image.fromarray(np.uint8(check_img))
+                img = array_to_img(check_img)
                 img.save(savedir + 'test_img{}.jpg'.format(idx))
                 print('saved img.')
             except Exception as e:
