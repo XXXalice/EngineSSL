@@ -61,7 +61,7 @@ class Kernel():
         for tr_or_ts, valid in enumerate([self.x_train_raw, self.x_test_raw]):
             for img_path in valid:
                 try:
-                    img = load_img(img_path, color_mode='grayscale', target_size=tuple(size))
+                    img = load_img(img_path, color_mode='grayscale', target_size=size)
                     img_bin = img_to_array(img)
                     # data_container[label].append(img_bin)
                     if tr_or_ts == 0:
@@ -79,8 +79,8 @@ class Kernel():
                     pass
             # self.x_train = list(map(lambda img_bin: np.float16(img_bin)/255, self.x_train))
             # self.x_test = list(map(lambda img_bin: np.float16(img_bin) / 255, self.x_test))
-            self.x_train = list(map(lambda img_bin: np.ravel(precision(img_bin) / 255), self.x_train))
-            self.x_test = list(map(lambda img_bin: np.ravel(precision(img_bin) / 255), self.x_test))
+            self.x_train = list(map(lambda img_bin: np.ravel(precision(img_bin) / 255.0), self.x_train))
+            self.x_test = list(map(lambda img_bin: np.ravel(precision(img_bin) / 255.0), self.x_test))
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
