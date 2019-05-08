@@ -7,4 +7,3 @@ class TestNet():
         self.wh = params['ml']['img_size_xy']
 
 
-
