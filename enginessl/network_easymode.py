@@ -12,7 +12,6 @@ class Network():
     def __init__(self, params):
         print('easymode_test_ok')
         self.hw = params['ml']['img_size_xy']
-
     def mynet(self):
         model = Sequential()
         # model.add(Conv2D(32, (3, 3), padding='same', input_shape=(self.hw, self.hw, 1)))
@@ -34,60 +33,60 @@ class Network():
         model.add(MaxPooling2D((2, 2)))
         model.add(Flatten())
         model.add(Dense(512, activation='relu'))
-        model.add(Dense(256, activation='relu'))
+        model.add(Dropout(0.5))
         model.add(Dense(2, activation='softmax'))
 
         return model
 
     def train(self, model, datas, data_check=True):
-        if data_check == True:
-            self.datas = datas
-            self._data_check()
+
         x_train = [flat_img.reshape(100, 100, 1) for flat_img in datas[0]]
         x_test = [flat_img.reshape(100, 100, 1) for flat_img in datas[1]]
-        # y_train = keras.utils.to_categorical(datas[2], 2)
-        # y_test = keras.utils.to_categorical(datas[3], 2)
-        x_train = np.asarray(x_train)
-        x_test = np.asarray(x_test)
+        x_train = np.asarray(x_train).astype('float32')
+        x_test = np.asarray(x_test).astype('float32')
         y_train, y_test = datas[-2:]
-        print(y_train[0])
-        print(y_train[-1])
-        print('x_train:', len(x_train), np.array(x_train).shape)
-        print('x_test:', len(x_test), np.array(x_test).shape)
-        print('y_train:', len(y_train), np.array(y_train).shape)
-        print('y_test:', len(y_test), np.array(y_test).shape)
+
+        if data_check == True:
+            self.datas = (x_train, x_test, y_train, y_test)
+            self._data_check()
+
+        print('x_train:', len(x_train), x_train.shape)
+        print('x_test:', len(x_test), x_test.shape)
+        print('y_train:', len(y_train), y_train.shape)
+        print('y_test:', len(y_test), y_test.shape)
 
 
 
-        for layer in model.layers:
-            layer.trainable = True
+        # for layer in model.layers:
+        #     layer.trainable = True
         model.compile(loss='categorical_crossentropy',
-                      optimizer=keras.optimizers.SGD(),
+                      optimizer='SGD',
                       metrics=['accuracy'])
-        model.fit(x_train,
-                  y_train,
-                  batch_size=32,
-                  epochs=15,
-                  validation_data=(x_test, y_test),
-                  verbose=1
-                  )
-        os.makedirs('./models', exist_ok=True)
-        model.save('./models/'+'easymode.h5')
+        # model.fit(x_train,
+        #           y_train,
+        #           batch_size=5,
+        #           epochs=200,
+        #           validation_data=(x_test, y_test),
+        #           verbose=1
+        #           )
+        # os.makedirs('./models', exist_ok=True)
+        # model.save('./models/'+'easymode.h5')
 
     def _data_check(self):
-        x_train, y_train, x_test, y_test = self.datas
-        flat_x = x_train[0]
-        reshape_x = flat_x.reshape(100, 100)
+        x_train, x_test, y_train, y_test = self.datas
+        flat_x = x_train[3]
+        reshape_x = flat_x.reshape(100, 100, 1)
         flat_oppo_x = x_train[-1]
-        reshape_oppo_x = flat_oppo_x.reshape(100, 100)
+        reshape_oppo_x = flat_oppo_x.reshape(100, 100, 1)
         check_arr = [flat_x, reshape_x, flat_oppo_x, reshape_oppo_x]
 
         print('-'*30)
         print('start data check.','\n'*2)
+        print(type(y_train))
+        print(y_train)
         for check_img in check_arr:
             print(type(check_img))
             print(check_img.shape)
-            print(check_img)
 
         savedir = './test/check_imgs/'
         os.makedirs(savedir, exist_ok=True)
