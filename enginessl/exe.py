@@ -19,8 +19,6 @@ import sys
 def main():
     Ml = ml_api.MachineLearning()
     datas = Ml.get_datas()
-    print('y_train', datas[2])
-    print('y_test', datas[3])
     model = Ml.build_model()
     model.summary()
     Ml.train_model(model=model, datas=datas)
