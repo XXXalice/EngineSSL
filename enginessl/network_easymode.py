@@ -62,15 +62,15 @@ class Network():
         model.compile(loss='categorical_crossentropy',
                       optimizer='SGD',
                       metrics=['accuracy'])
-        # model.fit(x_train,
-        #           y_train,
-        #           batch_size=5,
-        #           epochs=200,
-        #           validation_data=(x_test, y_test),
-        #           verbose=1
-        #           )
-        # os.makedirs('./models', exist_ok=True)
-        # model.save('./models/'+'easymode.h5')
+        model.fit(x_train,
+                  y_train,
+                  batch_size=5,
+                  epochs=200,
+                  validation_data=(x_test, y_test),
+                  verbose=0
+                  )
+        os.makedirs('./models', exist_ok=True)
+        model.save('./models/'+'easymode.h5')
 
     def _data_check(self):
         x_train, x_test, y_train, y_test = self.datas
