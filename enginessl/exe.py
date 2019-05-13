@@ -1,11 +1,11 @@
-import sys
-import os
+# import sys
+# import os
+#
+# from crawler import system as crawler_api
+# from ml import system as ml_api
+# from etc import system_metadata as opt
 
-from crawler import system as crawler_api
-from ml import system as ml_api
-from etc import system_metadata as opt
-import sys
-
+from network_easymode_highspeed import NetworkHighspeed
 
 # if len(sys.argv) <= 1:
 #     print(opt.help)
@@ -17,11 +17,16 @@ import sys
 # c.save_img()
 
 def main():
-    Ml = ml_api.MachineLearning()
-    datas = Ml.get_datas()
+    # Ml = ml_api.MachineLearning()
+    # datas = Ml.get_datas()
+    # model = Ml.build_model()
+    # model.summary()
+    # Ml.train_model(model=model, datas=datas)
+    Ml = NetworkHighspeed('./param.yml')
     model = Ml.build_model()
-    model.summary()
-    Ml.train_model(model=model, datas=datas)
+    preprocessing_datas = Ml.correct_datas()
+    Ml.train(model, preprocessing_datas)
+
 
 if __name__ == '__main__':
     main()
