@@ -13,12 +13,20 @@ class MachineLearning(mlkernel.Kernel):
         self.datas = self.Ml.get_origin_data()
         return self.datas
 
+    def get_preprocessed_data(self):
+        '''
+        :return: tuple(x_train, x_test, y_train, y_test) #分割済み
+        '''
+        self.datas = self.Ml.correct_datas()
+        return self.datas
+
     def build_model(self):
         self.model = self.Ml.generate_model()
         return self.model
 
-    def train_model(self, model, datas):
-        self.Ml.training(model=model, datas=datas)
+    def train_model(self, model, datas, save_name):
+        self.Ml.training(model=model, datas=datas, save_name=save_name)
 
     def fine_tuning_model(self):
         pass
+

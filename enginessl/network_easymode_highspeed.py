@@ -10,8 +10,7 @@ from keras.preprocessing.image import array_to_img, img_to_array, load_img
 from sklearn.model_selection import train_test_split
 
 class NetworkHighspeed():
-    def __init__(self, param_path):
-        params = self.__read_yaml(param_path)
+    def __init__(self, params):
         self.dsstore = '.DS_Store'
         self.hw = params['ml']['img_size_xy'] #pixel
         self.color = params['ml']['grayscale'] #boolean
@@ -20,6 +19,7 @@ class NetworkHighspeed():
         target_dir_name.remove('.DS_Store')
         self.target_data_dir = './data/img/' + target_dir_name[0]
         self.num_classes = 2
+        self.model_ext = params['model']['savemodel_ext']
 
     def correct_datas(self):
         x = []
@@ -56,7 +56,7 @@ class NetworkHighspeed():
         model.add(Dense(self.num_classes, activation='softmax'))
         return model
 
-    def train(self, model, preprocessing_datas):
+    def train(self, model, preprocessing_datas, save_name):
         x_train, x_test, y_train, y_test = preprocessing_datas
         model.compile(
             loss='categorical_crossentropy',
@@ -67,10 +67,12 @@ class NetworkHighspeed():
             x_train,
             y_train,
             batch_size=5,
-            epochs=100,
+            epochs=80,
             validation_data=(x_test, y_test),
             verbose=1
         )
+        os.makedirs('./model', exist_ok=True)
+        model.save('./model/' + save_name + self.model_ext)
 
     def __read_yaml(self, uri):
         import yaml
