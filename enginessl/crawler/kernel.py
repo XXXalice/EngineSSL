@@ -6,7 +6,6 @@ import bs4
 
 
 class Kernel:
-
     def __init__(self):
         try:
             self.meta = self.metadata_config()
