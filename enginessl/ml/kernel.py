@@ -13,19 +13,22 @@ class Kernel():
             self.using_user_network = True
             if self.params['ml']['use_easymode'] == True:
                 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-                import network_easymode
-                self.user_nn = network_easymode.Network(self.params)
+                import network_easymode_highspeed
+                self.user_nn = network_easymode_highspeed.NetworkHighspeed(self.params)
             else:
                 import network
                 self.user_nn = network.TestNet(self.params)
         self.ances_model = None
         self.train_data = None
 
+    def correct_datas(self):
+        return self.user_nn.correct_datas()
+
     def generate_model(self, app='MobileNetV2'):
 
         #easymodeがオンになって居た場合それを使用する
         if self.params['ml']['use_easymode'] == True:
-            return self.user_nn.mynet()
+            return self.user_nn.build_model()
 
         save_path_master = './models/'
         exec_dict = {
@@ -57,9 +60,8 @@ class Kernel():
         else:
             return True
 
-    def training(self, model, datas):
-        self.user_nn.train(model=model, datas=datas)
-
+    def training(self, model, datas, save_name):
+        self.user_nn.train(model=model, preprocessing_datas=datas, save_name=save_name)
 
     def fine_tuning(self):
         #dense
