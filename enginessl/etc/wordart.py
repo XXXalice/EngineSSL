@@ -1,5 +1,6 @@
 from pyfiglet import Figlet
 
-f = Figlet(font='slant')
-fuc = f.renderText('FUCK YOU NAOHIRO OKA')
-print(fuc)
+def print_logo(font):
+    f = Figlet(font=font)
+    logo = f.renderText('ESSL')
+    print(logo, end='')
