@@ -19,7 +19,7 @@ class NetworkHighspeed():
         target_dir_name.remove('.DS_Store')
         self.target_data_dir = './data/img/' + target_dir_name[0]
         self.num_classes = 2
-        self.model_ext = params['model']['savemodel_ext']
+        self.model_ext = params['ml']['savemodel_ext']
 
     def correct_datas(self):
         x = []
@@ -67,12 +67,12 @@ class NetworkHighspeed():
             x_train,
             y_train,
             batch_size=5,
-            epochs=80,
+            epochs=20,
             validation_data=(x_test, y_test),
             verbose=1
         )
         os.makedirs('./model', exist_ok=True)
-        model.save('./model/' + save_name + self.model_ext)
+        model.save('./model/' + save_name[0] + '.' + self.model_ext)
 
     def __read_yaml(self, uri):
         import yaml
