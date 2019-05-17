@@ -111,7 +111,7 @@ venv.bak/
 
 .idea/
 
-enginessl/data/img/
-enginessl/data/models/
+enginessl/data/
+enginessl/data/
 
 *.h5
