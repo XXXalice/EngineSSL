@@ -1,6 +1,6 @@
 import os
 from time import sleep
-from flask import Flask, request, send_from_directory, render_template, redirect
+from flask import Flask, request, send_from_directory, render_template
 from keras.models import Sequential, load_model
 from keras.preprocessing.image import img_to_array
 from werkzeug.utils import secure_filename
