@@ -5,6 +5,7 @@ from ml import system as ml_api
 from ml.data_handling import system as data_api
 from etc import system_metadata as opt
 from etc import wordart
+from pred_app import auto_startup, pred_app
 
 
 def main():
@@ -20,7 +21,9 @@ def main():
     ml = ml_api.MachineLearning()
     preprocessed_datas = ml.get_preprocessed_data()
     model = ml.build_model()
-    ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
+    made_model_name = ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
+    app = pred_app.PredApp(sys.argv[1:], 'not_{}'.format(sys.argv[1:]))
+    app.run(made_model_name)
 
 
 if __name__ == '__main__':

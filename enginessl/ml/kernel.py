@@ -61,7 +61,7 @@ class Kernel():
             return True
 
     def training(self, model, datas, save_name):
-        self.user_nn.train(model=model, preprocessing_datas=datas, save_name=save_name)
+        return self.user_nn.train(model=model, preprocessing_datas=datas, save_name=save_name)
 
     def fine_tuning(self):
         #dense
