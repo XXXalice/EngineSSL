@@ -115,4 +115,4 @@ enginessl/data/
 
 *.h5
 
-pred_app/
+pred_app/uploads
