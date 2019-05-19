@@ -11,9 +11,14 @@
             <input type="file" name="img_file" value="choose">
             <input type="submit" value="predict" class="btn">
         </form>
-        {% if img_path %}
-            <p><img src="{{ img_path }}"></p>
-        {% endif %}
+            {% if img_path %}
+                <p><img src="{{ img_path }}"></p>
+            {% endif %}
+        <div id="predicted_status">
+            {% if result %}
+                <p>{{ result }}</p>
+            {% endif %}
+        </div>
     </div>
   </div>
 </body>
