@@ -25,8 +25,6 @@ class PredApp:
         self.graph = tf.get_default_graph()
 
     def run(self, made_model_name):
-
-
         @self.app.route('/')
         def admin_test():
             return render_template('admin.html')
@@ -45,10 +43,11 @@ class PredApp:
                             print(model)
                             propreccing_img = img_to_array(load_img(img_path, color_mode='grayscale', target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img])
-                            result = model.predict(infer_target)
+                            result = model.predict(infer_target, batch_size=1, verbose=0)[0].argmax()
+                            result = self.classes[result]
                         except Exception as e:
                             return render_template('index.html', img_path=img_path, result=str(e))
-                        return render_template('index.html', img_path=img_path, result=str(result))
+                        return render_template('index.html', img_path=img_path, result=result)
                     else:
                         return '''
                         <p>許可されていない拡張子です</p>
