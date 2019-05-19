@@ -16,7 +16,8 @@ class NetworkHighspeed():
         self.color = params['ml']['grayscale'] #boolean
         self.t_rate = params['ml']['test_data_rate'] #float
         target_dir_name = os.listdir('./data/img')
-        target_dir_name.remove('.DS_Store')
+        if '.DS_Store' in target_dir_name:
+            target_dir_name.remove('.DS_Store')
         self.target_data_dir = './data/img/' + target_dir_name[0]
         self.num_classes = 2
         self.model_ext = params['ml']['savemodel_ext']
@@ -71,8 +72,17 @@ class NetworkHighspeed():
             validation_data=(x_test, y_test),
             verbose=1
         )
-        os.makedirs('./model', exist_ok=True)
-        model.save('./model/' + save_name[0] + '.' + self.model_ext)
+        try:
+            os.makedirs('./model', exist_ok=True)
+            model.save('./model/' + save_name[0] + '.' + self.model_ext)
+            made_model_name = save_name[0]+ '.' + self.model_ext
+        except Exception as e:
+            sys.stderr.write(str(e))
+            sys.exit(0)
+        finally:
+            print('The operation has ended.')
+            return made_model_name
+
 
     def __read_yaml(self, uri):
         import yaml

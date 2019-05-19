@@ -25,7 +25,7 @@ class MachineLearning(mlkernel.Kernel):
         return self.model
 
     def train_model(self, model, datas, save_name):
-        self.Ml.training(model=model, datas=datas, save_name=save_name)
+        return self.Ml.training(model=model, datas=datas, save_name=save_name)
 
     def fine_tuning_model(self):
         pass
