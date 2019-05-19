@@ -25,7 +25,6 @@ class Kernel():
         return self.user_nn.correct_datas()
 
     def generate_model(self, app='MobileNetV2'):
-
         #easymodeがオンになって居た場合それを使用する
         if self.params['ml']['use_easymode'] == True:
             return self.user_nn.build_model()
