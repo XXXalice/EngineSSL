@@ -1,10 +1,13 @@
 import os
 import sys
+import numpy as np
 from flask import Flask, request, send_from_directory, render_template
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
-import tensorflow as tf # measure of multi threads bug in keras.
+
+# measure of multi threads bug in keras.
+import tensorflow as tf
 
 
 class PredApp:
@@ -19,34 +22,39 @@ class PredApp:
         self.allow_ext = set(['jpeg', 'jpg', 'png', 'gif'])
         self.port = 3553
         self.host = 'localhost'
+        self.graph = tf.get_default_graph()
 
     def run(self, made_model_name):
+
+
         @self.app.route('/')
         def admin_test():
             return render_template('admin.html')
 
         @self.app.route('/pred', methods=['GET', 'POST'])
         def pred():
-            if request.method == 'POST':
-                img_file = request.files['img_file']
-                if img_file and self.__allowed_file(img_file.filename):
-                    fname = secure_filename(img_file.filename)
-                    img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
-                    img_path = './uploads/' + fname
-                    try:
-                        model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], made_model_name))
-                        print(model)
-                        propreccing_img = img_to_array(load_img(img_path, color_mode='grayscale', target_size=(self.img_size, self.img_size)))
-                        result = model.predict(propreccing_img)
-                    except Exception as e:
-                        return render_template('index.html', img_path=img_path, result=str(e))
-                    return render_template('index.html', img_path=img_path, result=str(result))
+            with self.graph.as_default():
+                if request.method == 'POST':
+                    img_file = request.files['img_file']
+                    if img_file and self.__allowed_file(img_file.filename):
+                        fname = secure_filename(img_file.filename)
+                        img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
+                        img_path = './uploads/' + fname
+                        try:
+                            model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], made_model_name))
+                            print(model)
+                            propreccing_img = img_to_array(load_img(img_path, color_mode='grayscale', target_size=(self.img_size, self.img_size)))
+                            infer_target = np.array([propreccing_img])
+                            result = model.predict(infer_target)
+                        except Exception as e:
+                            return render_template('index.html', img_path=img_path, result=str(e))
+                        return render_template('index.html', img_path=img_path, result=str(result))
+                    else:
+                        return '''
+                        <p>許可されていない拡張子です</p>
+                        '''
                 else:
-                    return '''
-                    <p>許可されていない拡張子です</p>
-                    '''
-            else:
-                return render_template('index.html')
+                    return render_template('index.html')
 
         @self.app.route('/uploads/<fname>')
         def uploaded_file(fname):
