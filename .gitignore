@@ -112,6 +112,7 @@ venv.bak/
 .idea/
 
 enginessl/data/
-enginessl/data/
 
 *.h5
+
+pred_app/
