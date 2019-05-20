@@ -7,6 +7,7 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.utils.np_utils import to_categorical
 from keras.preprocessing.image import img_to_array, load_img
+from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 
 class NetworkHighspeed():
@@ -59,9 +60,10 @@ class NetworkHighspeed():
 
     def train(self, model, preprocessing_datas, save_name):
         x_train, x_test, y_train, y_test = preprocessing_datas
+        es_cb = EarlyStopping(monitor='val_loss', patience=0, verbose=0, mode='auto')
         model.compile(
             loss='categorical_crossentropy',
-            optimizer='SGD',
+            optimizer='Adam',
             metrics=['accuracy']
         )
         self.hist = model.fit(
@@ -70,7 +72,8 @@ class NetworkHighspeed():
             batch_size=5,
             epochs=15,
             validation_data=(x_test, y_test),
-            verbose=1
+            verbose=1,
+            callbacks=[es_cb]
         )
         try:
             os.makedirs('./model', exist_ok=True)
