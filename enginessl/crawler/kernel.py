@@ -71,7 +71,10 @@ class Kernel:
         success_count = 0
         ext = self.params['crawler']['ext']
         for url in urls:
-            img = self.fetcher.fetch_img(url)
+            try:
+                img = self.fetcher.fetch_img(url)
+            except:
+                continue
             if img != None:
                 success_count += 1
             else:
