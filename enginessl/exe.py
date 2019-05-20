@@ -29,6 +29,5 @@ def main():
 def print_model_arch(model):
     model.summary()
 
-
 if __name__ == '__main__':
     main()
