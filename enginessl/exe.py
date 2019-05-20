@@ -23,6 +23,7 @@ def main():
     model = ml.build_model()
     made_model_name = ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
     app = pred_app.PredApp(sys.argv[1], 'not_{}'.format(sys.argv[1]))
+    app.debug = True
     app.run(made_model_name)
 
 def print_model_arch(model):
