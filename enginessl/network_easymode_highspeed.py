@@ -6,7 +6,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.utils.np_utils import to_categorical
-from keras.preprocessing.image import array_to_img, img_to_array, load_img
+from keras.preprocessing.image import img_to_array, load_img
 from sklearn.model_selection import train_test_split
 
 class NetworkHighspeed():
@@ -30,7 +30,7 @@ class NetworkHighspeed():
         for index, data_dir in enumerate([self.target_data_dir, fuzzies_data_dir]):
             datas = glob.glob(data_dir + '/*.png')
             for data in datas:
-                img = load_img(data, color_mode=color, target_size=(self.hw, self.hw))
+                img = load_img(data, color_mode='grayscale', target_size=(self.hw, self.hw))
                 img_array = img_to_array(img)
                 x.append(img_array)
                 y.append(index)
@@ -68,7 +68,7 @@ class NetworkHighspeed():
             x_train,
             y_train,
             batch_size=5,
-            epochs=20,
+            epochs=15,
             validation_data=(x_test, y_test),
             verbose=1
         )
