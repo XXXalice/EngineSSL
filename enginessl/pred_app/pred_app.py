@@ -1,7 +1,9 @@
 import os
 import sys
+import random
+import string
 import numpy as np
-from flask import Flask, request, send_from_directory, render_template
+from flask import Flask, request, send_from_directory, render_template, redirect, url_for
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
@@ -12,10 +14,11 @@ import tensorflow as tf
 
 class PredApp:
     def __init__(self, *args):
-        self.app = Flask(__name__)
+        self.app = Flask(__name__, static_url_path='')
         self.classes = args if len(args) != 1 else args[0]
         self.img_size = 100
-        self.upload_folder = './uploads/'
+        print(self.classes)
+        self.upload_folder = './uploads'
         os.makedirs(self.upload_folder, exist_ok=True)
         self.app.config['UPLOAD_FOLDER'] = self.upload_folder
         self.app.config['MODEL_DIR'] = './model/'
@@ -37,17 +40,19 @@ class PredApp:
                     if img_file and self.__allowed_file(img_file.filename):
                         fname = secure_filename(img_file.filename)
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
-                        img_path = './uploads/' + fname
+                        img_path = os.path.join(os.getcwd(), 'uploads', fname)
                         try:
                             model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], made_model_name))
                             print(model)
-                            propreccing_img = img_to_array(load_img(img_path, color_mode='grayscale', target_size=(self.img_size, self.img_size)))
-                            infer_target = np.array([propreccing_img])
-                            result = model.predict(infer_target, batch_size=1, verbose=0)[0].argmax()
-                            result = self.classes[result]
+                            print(img_path)
+                            propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
+                            infer_target = np.array([propreccing_img]).astype('float32') / 255
+                            result = model.predict(infer_target, verbose=0, batch_size=1)
+                            print(result)
+                            result = self.classes[result[0].argmax()]
                         except Exception as e:
                             return render_template('index.html', img_path=img_path, result=str(e))
-                        return render_template('index.html', img_path=img_path, result=result)
+                        return render_template('index.html', img_path=img_path, result=str(result))
                     else:
                         return '''
                         <p>許可されていない拡張子です</p>
@@ -58,6 +63,7 @@ class PredApp:
         @self.app.route('/uploads/<fname>')
         def uploaded_file(fname):
             return send_from_directory(self.app.config['UPLOAD_FOLDER'], fname)
+
         self.__startup_browser(port=self.port, host=self.host)
 
     def __startup_browser(self, port=3553, host='localhost'):
@@ -67,13 +73,16 @@ class PredApp:
             sys.stderr.write(str(e))
             sys.exit(0)
 
+    def __random_str(self, n):
+        return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(n)])
+
     def __allowed_file(self, fname):
         return '.' in fname and fname.split('.', 1)[1] in self.allow_ext
 
     def __load_model(self, made_model_name):
         return load_model(made_model_name)
 
-if __name__ == '__main__':
-    a = PredApp()
-    a.app.debug=True
-    a.run()
+# if __name__ == '__main__':
+#     a = PredApp()
+#     a.app.debug=True
+#     a.run()
