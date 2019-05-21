@@ -17,7 +17,8 @@
             {% endif %}
         <div id="predicted_status">
             {% if result %}
-                <p>{{ result }}</p>
+                <p>{{ result[0] }}</p>
+                <p>{{ result[1] }}</p>
             {% endif %}
         </div>
     </div>
