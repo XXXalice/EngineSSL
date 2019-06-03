@@ -1,5 +1,6 @@
 #!/usr/local/var/pyenv/versions/anaconda3-5.2.0/envs/ml/bin/python
 import sys
+import argparse
 from crawler import system as crawler_api
 from ml import system as ml_api
 from ml.data_handling import system as data_api
@@ -12,11 +13,36 @@ def main():
     wordart.print_logo('big')
     if len(sys.argv) <= 1:
         print(opt.help)
-        exit()
-    c = crawler_api.Clawler(sys.argv[1:])
+        sys.exit(0)
+
+    parser = argparse.ArgumentParser(description='engine ssl')
+    parser.add_argument('-t', '--target', help='target name.')
+    parser.add_argument('-nt', '--nottarget', help='not target name.', nargs='*')
+
+    p_args = parser.parse_args()
+
+    c = crawler_api.Clawler([p_args.target])
     c.crawl()
     c.save_img()
-    #対立画像を作る
+    if p_args.nottarget != None:
+        for nt in p_args.nottarget:
+            c = crawler_api.Clawler([nt])
+            c.crawl()
+            c.save_img()
+
+    ''' TODO:
+        
+        クローラーapiの改善
+        ・フォルダ名return
+        ・tqdm
+        ・nottarget枚数の自動推定（各ラベルごとに同じくらいの枚数になるようにする）
+        
+        それに伴う学習apiの改善
+        ・フォルダ名を指定して教師化
+        ・self-training
+        ・ファインチューニング
+    '''
+    # 対立画像を作る
     data = data_api.DataHandling()
     ml = ml_api.MachineLearning()
     preprocessed_datas = ml.get_preprocessed_data()
