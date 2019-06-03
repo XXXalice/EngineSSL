@@ -14,21 +14,21 @@ def main():
     if len(sys.argv) <= 1:
         print(opt.help)
         sys.exit(0)
-
     parser = argparse.ArgumentParser(description='engine ssl')
     parser.add_argument('-t', '--target', help='target name.')
     parser.add_argument('-nt', '--nottarget', help='not target name.', nargs='*')
-
     p_args = parser.parse_args()
 
+    img_folpath = []
     c = crawler_api.Clawler([p_args.target])
     c.crawl()
-    c.save_img()
+    img_folpath.append(c.save_img(rtn_folpath=True))
     if p_args.nottarget != None:
         for nt in p_args.nottarget:
             c = crawler_api.Clawler([nt])
             c.crawl()
-            c.save_img()
+            img_folpath.append(c.save_img(rtn_folpath=True))
+    print(img_folpath)
 
     ''' TODO:
         
@@ -36,21 +36,20 @@ def main():
         ・フォルダ名return
         ・tqdm
         ・nottarget枚数の自動推定（各ラベルごとに同じくらいの枚数になるようにする）
-        
         それに伴う学習apiの改善
         ・フォルダ名を指定して教師化
         ・self-training
         ・ファインチューニング
     '''
     # 対立画像を作る
-    data = data_api.DataHandling()
-    ml = ml_api.MachineLearning()
-    preprocessed_datas = ml.get_preprocessed_data()
-    model = ml.build_model()
-    made_model_name = ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
-    app = pred_app.PredApp(sys.argv[1], 'not_{}'.format(sys.argv[1]))
-    app.debug = True
-    app.run(made_model_name)
+    # data = data_api.DataHandling()
+    # ml = ml_api.MachineLearning()
+    # preprocessed_datas = ml.get_preprocessed_data()
+    # model = ml.build_model()
+    # made_model_name = ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
+    # app = pred_app.PredApp(sys.argv[1], 'not_{}'.format(sys.argv[1]))
+    # app.debug = True
+    # app.run(made_model_name)
 
 def print_model_arch(model):
     model.summary()
