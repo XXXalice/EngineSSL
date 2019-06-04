@@ -42,7 +42,7 @@ def main():
         ・ファインチューニング
     '''
     # 対立画像を作る
-    # data = data_api.DataHandling()
+    data = data_api.DataHandling(image_tanks=list(map(lambda path: path.split('/')[-1], img_folpath)))
     # ml = ml_api.MachineLearning()
     # preprocessed_datas = ml.get_preprocessed_data()
     # model = ml.build_model()
