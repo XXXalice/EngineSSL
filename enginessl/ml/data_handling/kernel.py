@@ -18,20 +18,36 @@ from common_handler.path_handler import get_path_with_glob
 
 class Kernel():
 
-    def __init__(self):
+    def __init__(self, image_tanks=[]):
         self.exec_path = os.path.dirname(os.path.abspath(__file__))
         base = 'enginessl'
         img_dir = 'data/img'
         datas_dir = get_path_with_glob(self.exec_path, base, img_dir)
         if '.DS_Store' in datas_dir:
             datas_dir.remove('.DS_Store')
+        if len(image_tanks) >= 1:
+            """ラベル2が複数存在する場合"""
+            self.datas_wrapper = []
+            target_dir = []
+            for dir_name in datas_dir:
+                if dir_name in image_tanks:
+                    target_dir.append(dir_name)
+            """ターゲットデータディレクトリ更新"""
+            datas_dir = target_dir
+            print(datas_dir)
+
+
         try:
             self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
             self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
             # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
-            self.img_dir_abspath = os.path.join(self.exec_path.split(base)[0], base, img_dir, datas_dir[0])
-            self.datas = [self.img_dir_abspath + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, datas_dir[0]) if str(img_name) != 'fuzzies']
-            self.datas.sort()
+            self.img_dir_abspath = []
+            for idx, dir_name in enumerate(datas_dir):
+                self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
+                self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+                self.datas.sort()
+                self.datas_wrapper.append(self.datas)
+                print('finish. {}'.format(dir_name))
         except Exception as e:
             sys.stderr.write(str(e))
             print("error cant read datas.")
@@ -103,9 +119,16 @@ from PIL import Image, ImageChops, ImageOps, ImageDraw
 
 
 class OpponentImage(Kernel):
-
-    def __init__(self):
-        Kernel.__init__(self)
+    """
+    対立的画像の生成クラス
+    データ前処理用クラスを継承している
+    """
+    def __init__(self, image_tanks):
+        self.multiple_models = False if len(image_tanks) <= 1 else True
+        if self.multiple_models:
+            Kernel.__init__(self, image_tanks)
+        else:
+            Kernel.__init__(self)
         self.data_split(self.datas)
         self.data_preprocess_basic()
         self.ancestors = [self.x_train, self.x_test]

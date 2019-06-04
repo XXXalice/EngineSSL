@@ -1,5 +1,5 @@
 crawler:
-  target_num: 100
+  target_num: 5
   user_agent: 'Mozilla/5.0'
   mail: 'euthanasia045@gmail.com'
   wait_sec: 0.1

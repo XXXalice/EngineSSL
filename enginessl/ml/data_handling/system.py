@@ -3,9 +3,10 @@ from . import kernel
 
 class DataHandling(kernel.OpponentImage):
 
-    def __init__(self):
+    def __init__(self, image_tanks=[]):
         print('Data processing execution.')
-        self.oppo = kernel.OpponentImage()
+        self.oppo = kernel.OpponentImage(image_tanks)
+        print('labels :{}'.format(self.labels))
 
     def get_builtup_data(self):
         """
