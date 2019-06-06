@@ -6,7 +6,7 @@ class DataHandling(kernel.OpponentImage):
     def __init__(self, image_tanks=[]):
         print('Data processing execution.')
         self.oppo = kernel.OpponentImage(image_tanks)
-        print('labels :{}'.format(self.labels))
+        print('labels :{}'.format(self.oppo.labels))
 
     def get_builtup_data(self):
         """
