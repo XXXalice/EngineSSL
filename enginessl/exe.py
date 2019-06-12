@@ -21,6 +21,7 @@ def main():
 
     img_folpath = []
     c = crawler_api.Clawler([p_args.target])
+    c.delete_datas_dir()
     c.crawl()
     img_folpath.append(c.save_img(rtn_folpath=True))
     if p_args.nottarget != None:
