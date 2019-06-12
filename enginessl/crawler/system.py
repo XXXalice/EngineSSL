@@ -1,5 +1,8 @@
 from . import kernel
 from . import extend_except as ex
+import inspect
+import os
+import shutil
 
 class Clawler(kernel.Kernel):
     """
@@ -28,3 +31,12 @@ class Clawler(kernel.Kernel):
             return rtn
         else:
             raise ex.CrawlingError
+
+    def delete_datas_dir(self):
+        """
+        data/img配下を全削除
+        :return: なし
+        """
+        data_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'data')
+        shutil.rmtree(data_path)
+        print('init data stacks.')

@@ -35,6 +35,8 @@ class Kernel():
             """ターゲットデータディレクトリ更新"""
             datas_dir = target_dir
             print(datas_dir)
+        else:
+            self.datas_wrapper = None
 
 
         try:
@@ -46,7 +48,8 @@ class Kernel():
                 self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
                 self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
                 self.datas.sort()
-                self.datas_wrapper.append(self.datas)
+                if not self.datas_wrapper is None:
+                    self.datas_wrapper.append(self.datas)
                 print('finish. {}'.format(dir_name))
         except Exception as e:
             sys.stderr.write(str(e))
