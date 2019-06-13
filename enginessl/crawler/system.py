@@ -23,7 +23,7 @@ class Clawler(kernel.Kernel):
     def save_img(self, rtn_folpath=False):
         """
         フォルダを作成し画像を収集する
-        :return: 作成したフォルダの絶対パス
+        :return: 作成したフォルダの相対パス
         """
         if self.urls:
             super().save_img(self.urls)
