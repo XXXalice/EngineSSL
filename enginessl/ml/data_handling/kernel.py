@@ -34,10 +34,8 @@ class Kernel():
                     target_dir.append(dir_name)
             """ターゲットデータディレクトリ更新"""
             datas_dir = target_dir
-            print(datas_dir)
         else:
             self.datas_wrapper = None
-
 
         try:
             self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
@@ -45,11 +43,12 @@ class Kernel():
             # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
             self.img_dir_abspath = []
             for idx, dir_name in enumerate(datas_dir):
-                self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
-                self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                self.datas.sort()
-                if not self.datas_wrapper is None:
-                    self.datas_wrapper.append(self.datas)
+                if idx == 0:
+                    self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
+                    self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+                    self.datas.sort()
+                else:
+                    self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
                 print('finish. {}'.format(dir_name))
         except Exception as e:
             sys.stderr.write(str(e))

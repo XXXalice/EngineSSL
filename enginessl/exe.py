@@ -32,7 +32,6 @@ def main():
     print(img_folpath)
 
     ''' TODO:
-        
         クローラーapiの改善
         ・フォルダ名return
         ・tqdm
