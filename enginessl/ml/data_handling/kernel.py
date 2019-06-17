@@ -37,23 +37,20 @@ class Kernel():
         else:
             self.datas_wrapper = None
 
-        try:
-            self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
-            self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
-            # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
-            self.img_dir_abspath = []
-            for idx, dir_name in enumerate(datas_dir):
-                if idx == 0:
-                    self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
-                    self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                    self.datas.sort()
-                else:
-                    self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                print('finish. {}'.format(dir_name))
-        except Exception as e:
-            sys.stderr.write(str(e))
-            print("error cant read datas.")
-            exit()
+        self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
+        self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
+        # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
+        self.img_dir_abspath = []
+        for idx, dir_name in enumerate(datas_dir):
+            print('dir:', dir_name)
+            self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
+            if idx == 0:
+                self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+                self.datas.sort()
+            else:
+                self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+                self.oppo_datas.sort()
+            print('finish. {}'.format(dir_name))
         else:
             pass
         #     import pprint
