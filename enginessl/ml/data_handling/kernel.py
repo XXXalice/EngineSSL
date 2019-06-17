@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 import os
-import glob
+import gc
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
@@ -51,12 +51,15 @@ class Kernel():
                 self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
                 self.oppo_datas.sort()
             print('finish. {}'.format(dir_name))
-        else:
-            pass
-        #     import pprint
-        #     pprint.pprint(self.datas)
+
 
     def data_split(self, datas, validation=False):
+        """
+        データ分割
+        :param datas: 分割対象のリスト
+        :param validation:
+        :return: 分割後のタプル
+        """
         try:
             test_num = int(len(datas) * self.params['ml']['test_data_rate'])
             train_num = len(datas) - test_num
@@ -66,14 +69,15 @@ class Kernel():
             sys.stdout.write(str(err))
         else:
             print('splited datas. test:{test}  train:{train}'.format(test=len(self.x_train_raw), train=len(self.x_test_raw)))
+            return (self.x_train_raw, self.x_test_raw)
 
-    def data_preprocess_basic(self, gray=True, size=(100,100), label=0, precision=np.float32):
+    def data_preprocess_basic(self, splited_datas, gray=True, size=(100,100), label=0, precision=np.float32):
         self.x_train = []
         self.y_train = []
         self.x_test = []
         self.y_test = []
         size = [self.params['ml']['img_size_xy']]*2 if not self.params['ml']['img_size_xy'] == None else size
-        for tr_or_ts, valid in enumerate([self.x_train_raw, self.x_test_raw]):
+        for tr_or_ts, valid in enumerate([splited_datas[0], splited_datas[1]]):
             for img_path in valid:
                 try:
                     img = load_img(img_path, color_mode='grayscale', target_size=size)
@@ -113,23 +117,31 @@ class Kernel():
         return param_dict
 
 
-from PIL import Image, ImageChops, ImageOps, ImageDraw
-#generate image of opponent
-
-
 class OpponentImage(Kernel):
     """
     対立的画像の生成クラス
     データ前処理用クラスを継承している
     """
     def __init__(self, image_tanks):
+        self.x_train_raw = []
+        self.x_test_raw = []
         self.multiple_models = False if len(image_tanks) <= 1 else True
+        train, test = [], []
         if self.multiple_models:
             Kernel.__init__(self, image_tanks)
+            for d in (self.datas, self.oppo_datas):
+                splited = self.data_split(d)
+                train.append(splited[0])
+                test.append(splited[1])
         else:
             Kernel.__init__(self)
-        self.data_split(self.datas)
-        self.data_preprocess_basic()
+            splited = self.data_split(self.datas)
+            train.append(splited[0])
+            test.append(splited[1])
+        train = sum(train, [])
+        test = sum(test, [])
+        self.data_preprocess_basic(splited_datas=(train, test))
+        self.__gc_vals(train, test)
         self.ancestors = [self.x_train, self.x_test]
         self.ancestors_label = [self.y_train, self.y_test]
         self.decay = self.params['oppoimg']['decay']
@@ -210,15 +222,13 @@ class OpponentImage(Kernel):
         ex_img = array_to_img(np_img.reshape(100,100,1))
         ex_img.save('test.png')
 
-    def __gc_superclassvals(self):
-        import gc
-        rm_ivals = [ival for ival in list(self.__dict__.keys()) if ival is not 'ancestors']
-        for rm_ival in rm_ivals:
+    def __gc_vals(self, *objs):
+        for rm_ival in objs:
             try:
                 del rm_ival
-            except Exception as e:
-                print(e)
-                exit()
+            except:
+                continue
+        gc.collect()
 
 
 # # kernel test
