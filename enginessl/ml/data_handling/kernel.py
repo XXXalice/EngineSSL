@@ -72,6 +72,15 @@ class Kernel():
             return (self.x_train_raw, self.x_test_raw)
 
     def data_preprocess_basic(self, splited_datas, gray=True, size=(100,100), label=0, precision=np.float32):
+        """
+        単一語句のデータ前処理
+        :param splited_datas:
+        :param gray:
+        :param size:
+        :param label:
+        :param precision:
+        :return:
+        """
         self.x_train = []
         self.y_train = []
         self.x_test = []
@@ -103,7 +112,9 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def labeling(self, one_hot=True):
+    def data_preprocess(self):
+        """2つ以上の単語が与えられた際の前処理
+        """
         pass
 
     def read_yaml(self, uri):
@@ -146,12 +157,8 @@ class OpponentImage(Kernel):
         self.ancestors_label = [self.y_train, self.y_test]
         self.decay = self.params['oppoimg']['decay']
         self.mode = self.params['oppoimg']['mode']
-        # self.__gc_superclassvals()
         # self.exe_oppo()
         self.make_fuzzyimg(decay=self.decay, effect=self.mode)
-        print(len(self.ancestors[0]))
-        print(len(self.x_train), len(self.x_test))
-        print(self.y_train, self.y_test)
 
     def exe_oppo(self):
         self.make_fuzzyimg(decay=self.decay, effect=self.mode)
