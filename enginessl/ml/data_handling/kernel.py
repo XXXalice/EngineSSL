@@ -113,9 +113,25 @@ class Kernel():
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
     def data_preprocess(self):
-        """2つ以上の単語が与えられた際の前処理
         """
-        pass
+        2つ以上の単語が与えられた際の前処理
+        画像のフルパスを受け取る
+        """
+        targets = self.datas
+        not_targets = self.oppo_datas
+        self.x_train = []
+        self.x_test = []
+        self.y_train = []
+        self.y_test = []
+        size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
+        for target in targets:
+            img_bin = img_to_array(load_img(target, color_mode='grayscale', target_size=(100, 100)))
+            self.x_train.append(img_bin)
+            self
+
+
+
+
 
     def read_yaml(self, uri):
         import yaml
