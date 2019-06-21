@@ -4,6 +4,7 @@ import os
 import gc
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
+from sklearn.model_selection import train_test_split
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from common_handler.path_handler import get_path_with_glob
 # Generate conflicting images fully automatically :)
@@ -112,25 +113,36 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def data_preprocess(self):
+    def data_preprocess(self, flatten=True, color_mode='grayscale'):
         """
         2つ以上の単語が与えられた際の前処理
         画像のフルパスを受け取る
         """
+        def norm(x):
+            try:
+                x = np.asarray(x)
+            except:
+                pass
+            finally:
+                x = x.astype('float32')
+                x /= 255.0
+                return x
+
         targets = self.datas
         not_targets = self.oppo_datas
-        self.x_train = []
-        self.x_test = []
-        self.y_train = []
-        self.y_test = []
+        x = []
+        y = []
         size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
-        for target in targets:
-            img_bin = img_to_array(load_img(target, color_mode='grayscale', target_size=(100, 100)))
-            self.x_train.append(img_bin)
-            self
-
-
-
+        for idx, target in enumerate(targets, not_targets):
+            img_bin = img_to_array(load_img(target, color_mode=color_mode, target_size=size))
+            x.append(img_bin)
+            y.append(idx)
+        y = np.asarray(y)
+        if flatten:
+            x = [np.ravel(img_bin) for img_bin in x]
+        x = norm(x)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_late'])
+        return (self.x_train, self.x_test, self.y_train, self.y_test)
 
 
     def read_yaml(self, uri):
