@@ -133,15 +133,16 @@ class Kernel():
         x = []
         y = []
         size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
-        for idx, target in enumerate(targets, not_targets):
-            img_bin = img_to_array(load_img(target, color_mode=color_mode, target_size=size))
-            x.append(img_bin)
-            y.append(idx)
+        for idx, datas in enumerate([targets, not_targets]):
+            for data in datas:
+                img_bin = img_to_array(load_img(data, color_mode=color_mode, target_size=size))
+                x.append(img_bin)
+                y.append(idx)
         y = np.asarray(y)
         if flatten:
             x = [np.ravel(img_bin) for img_bin in x]
         x = norm(x)
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_late'])
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
         return (self.x_train, self.x_test, self.y_train, self.y_test)
 
 
@@ -162,8 +163,6 @@ class OpponentImage(Kernel):
     データ前処理用クラスを継承している
     """
     def __init__(self, image_tanks):
-        self.x_train_raw = []
-        self.x_test_raw = []
         self.multiple_models = False if len(image_tanks) <= 1 else True
         train, test = [], []
         if self.multiple_models:
