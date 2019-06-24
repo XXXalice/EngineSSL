@@ -16,8 +16,8 @@ class Clawler(kernel.Kernel):
         super().__init__()
         self.urls = None
 
-    def crawl(self):
-        self.urls = super().get_url(self.keyword, self.num)
+    def crawl(self, multiple=1):
+        self.urls = super().get_url(self.keyword, num=self.num, multiple=multiple)
         print(len(self.urls))
 
     def save_img(self, rtn_folpath=False):
