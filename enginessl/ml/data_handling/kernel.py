@@ -7,6 +7,7 @@ from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from common_handler.path_handler import get_path_with_glob
+from tqdm import tqdm
 # Generate conflicting images fully automatically :)
 
 # [usage]
@@ -134,7 +135,7 @@ class Kernel():
         y = []
         size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
         for idx, datas in enumerate([targets, not_targets]):
-            for data in datas:
+            for data in tqdm(datas):
                 img_bin = img_to_array(load_img(data, color_mode=color_mode, target_size=size))
                 x.append(img_bin)
                 y.append(idx)

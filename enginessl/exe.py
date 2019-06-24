@@ -32,9 +32,9 @@ def main():
     print(img_folpath)
 
     ''' TODO:
-        クローラーapiの改善
-        ・フォルダ名return
-        ・tqdm
+        クローラーapiの改善 done
+        ・フォルダ名return done
+        ・tqdm done
         ・nottarget枚数の自動推定（各ラベルごとに同じくらいの枚数になるようにする）
         それに伴う学習apiの改善
         ・フォルダ名を指定して教師化
@@ -42,8 +42,10 @@ def main():
         ・ファインチューニング
     '''
     # 対立画像を作る
-    data = data_api.DataHandling(target_label=str(p_args.target) ,image_tanks=list(map(lambda path: path.split('/')[-1], img_folpath)))
-    x_train, x_test, y_train, y_test = data.get_builtup_data_not_include_noise()
+    target_label = str(p_args.target)
+    image_tanks = list(map(lambda path: path.split('/')[-1], img_folpath))
+    data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
+    x_train, x_test, y_train, y_test = data.get_builtup_data()
     # ml = ml_api.MachineLearning()
     # preprocessed_datas = ml.get_preprocessed_data()
     # model = ml.build_model()
