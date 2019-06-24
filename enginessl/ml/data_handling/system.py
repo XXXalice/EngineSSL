@@ -12,6 +12,7 @@ class DataHandling(kernel.OpponentImage, kernel.Kernel):
     def get_builtup_data(self, flatten=False):
         """
         :return: tuple (self.x_train, self.x_test, self.y_train, self.y_test)
+        x shape: (-1, hw, hw, channel)
         """
         return self.data_handling.data_preprocess(flatten=flatten)
 
