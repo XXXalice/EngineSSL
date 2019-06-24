@@ -14,9 +14,10 @@ class Kernel:
             sys.stderr.write("[InstanceError] Metadata is incomplete.\n")
             exit()
 
-    def get_url(self, keyword, num):
+    def get_url(self, keyword, num, multiple):
         self.mk_dir(keyword)
         get_num = int(self.params['crawler']['target_num']) if num != '' else num
+        get_num *= multiple
         ua = self.params['crawler']['user_agent'] if self.params['crawler']['user_agent'] != None else ""
         mail = self.params['crawler']['mail'] if self.params['crawler']['mail'] != None else ""
         wait = self.params['crawler']['wait_sec'] if self.params['crawler']['wait_sec'] != None else 1.0
