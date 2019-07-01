@@ -159,16 +159,17 @@ class Kernel():
         return param_dict
 
 
-class OpponentImage(Kernel):
+class OpponentImage():
     """
     対立的画像の生成クラス
     データ前処理用クラスを継承している
     """
-    def __init__(self, image_tanks):
+    def __init__(self, image_tanks, params):
         target_dir = image_tanks[-1]
-        print(target_dir)
-        self.decay = self.params['oppoimg']['decay']
-        self.mode = self.params['oppoimg']['mode']
+        target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
+        print(target_path)
+        self.decay = params['oppoimg']['decay']
+        self.mode = params['oppoimg']['mode']
         # self.make_fuzzyimg(decay=self.decay, effect=self.mode)
 
     def exe_oppo(self):
