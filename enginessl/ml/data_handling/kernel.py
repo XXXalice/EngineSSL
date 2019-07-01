@@ -166,10 +166,12 @@ class OpponentImage():
     """
     def __init__(self, image_tanks, params):
         target_dir = image_tanks[-1]
-        target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
-        print(target_path)
+        self.target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
         self.decay = params['oppoimg']['decay']
         self.mode = params['oppoimg']['mode']
+        self.ext = params['crawler']['ext']
+        self.xy = params['ml']['img_size_xy']
+        self.gray = True if params['ml']['grayscale'] else False
         # self.make_fuzzyimg(decay=self.decay, effect=self.mode)
 
     def exe_oppo(self):
@@ -182,9 +184,32 @@ class OpponentImage():
             print('Error in OpponentImg.')
             exit()
 
+    def make_noise(self):
+        from . import effect_func as ef
+        target = self.target_path
+        effect = self.mode
+        size = self.xy
+        grayscale = self.gray
+        e_dict = {
+            's_random': lambda x: ef.simple_random(x),
+            'swap': lambda x: ef.swap(x),
+            'as_random': lambda x: ef.ancestral_scale_random(x),
+            'as_randomv2': lambda x: ef.ancestral_scale_random_v2(x)
+        }
+
+        imgs = sorted(os.listdir(target))
+        imgs = [os.path.join(target, img) for img in imgs]
+        for i, img_path in tqdm(enumerate(imgs)):
+            img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
+            # np.ravelは破壊的
+            flat_img_bin = np.ravel(img_bin)
+            effected_bin = e_dict[effect](flat_img_bin).reshape(size, size, -1)
+            img_name = 'noise_{:03}.{}'.format(i, self.ext)
+            save_img(path=os.path.join(target, img_name), x=effected_bin)
+
+
     def make_fuzzyimg(self, decay, effect, img_save=True):
         from . import effect_func as ef
-
         e_dict = {
             's_random': lambda x: ef.simple_random(x),
             'swap': lambda x: ef.swap(x),
