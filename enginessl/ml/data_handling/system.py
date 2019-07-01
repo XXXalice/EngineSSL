@@ -1,7 +1,7 @@
 from . import kernel
 
 
-class DataHandling(kernel.OpponentImage, kernel.Kernel):
+class DataHandling(kernel.Kernel):
 
     def __init__(self, target_label, image_tanks=[]):
         print('Data processing execution.')
@@ -16,9 +16,9 @@ class DataHandling(kernel.OpponentImage, kernel.Kernel):
         """
         return self.data_handling.data_preprocess(flatten=flatten)
 
-    def oppo_kernel(self, image_tanks=[]):
+    def oppo_kernel(self, image_tanks):
         print('Noise data processing execution.')
-        self.oppo = kernel.OpponentImage(image_tanks)
+        self.oppo = kernel.OpponentImage(image_tanks, self.data_handling.params)
 
     def get_builtup_data_include_noise(self):
         """
