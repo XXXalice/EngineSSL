@@ -2,6 +2,7 @@ import numpy as np
 import sys
 import os
 import gc
+import inspect
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
@@ -164,29 +165,11 @@ class OpponentImage(Kernel):
     データ前処理用クラスを継承している
     """
     def __init__(self, image_tanks):
-        self.multiple_models = False if len(image_tanks) <= 1 else True
-        train, test = [], []
-        if self.multiple_models:
-            Kernel.__init__(self, image_tanks)
-            for d in (self.datas, self.oppo_datas):
-                splited = self.data_split(d)
-                train.append(splited[0])
-                test.append(splited[1])
-        else:
-            Kernel.__init__(self)
-            splited = self.data_split(self.datas)
-            train.append(splited[0])
-            test.append(splited[1])
-        train = sum(train, [])
-        test = sum(test, [])
-        self.data_preprocess_basic(splited_datas=(train, test))
-        self.__gc_vals(train, test)
-        self.ancestors = [self.x_train, self.x_test]
-        self.ancestors_label = [self.y_train, self.y_test]
+        target_dir = image_tanks[-1]
+        print(target_dir)
         self.decay = self.params['oppoimg']['decay']
         self.mode = self.params['oppoimg']['mode']
-        # self.exe_oppo()
-        self.make_fuzzyimg(decay=self.decay, effect=self.mode)
+        # self.make_fuzzyimg(decay=self.decay, effect=self.mode)
 
     def exe_oppo(self):
         self.make_fuzzyimg(decay=self.decay, effect=self.mode)

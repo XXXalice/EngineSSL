@@ -46,6 +46,7 @@ def main():
     image_tanks = list(map(lambda path: path.split('/')[-1], img_folpath))
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     x_train, x_test, y_train, y_test = data.get_builtup_data()
+    noise = data.oppo_kernel(image_tanks)
     # ml = ml_api.MachineLearning()
     # preprocessed_datas = ml.get_preprocessed_data()
     # model = ml.build_model()
