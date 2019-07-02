@@ -55,17 +55,17 @@ class Kernel():
         #         self.oppo_datas.sort()
         #     print('finish. {}'.format(dir_name))
 
-    def read_datas_dir(self):
+    def read_datas_dir(self, datas_dir):
         """
         データ一覧を読み込む
         :return (target, not_target)
         """
         # kernel.py / data_handling / ml で3層掘り下げる
-        here = '/'.join(inspect.stack()[0][1].split('/'))[:-3]
+        here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
         datas_abspath = os.path.join(here, 'data/img')
         target = []
         not_target = []
-        for idx, dir_name in enumerate(self.datas_dir):
+        for idx, dir_name in enumerate(datas_dir):
             dir_abspath = os.path.join(datas_abspath, dir_name)
             for file in os.listdir(dir_abspath):
                 if file == '.DS_Store':
