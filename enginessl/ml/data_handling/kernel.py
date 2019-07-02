@@ -43,17 +43,43 @@ class Kernel():
         self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
         self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
         # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
-        self.img_dir_abspath = []
+        # self.img_dir_abspath = []
+        # for idx, dir_name in enumerate(datas_dir):
+        #     print('dir:', dir_name)
+        #     self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
+        #     if idx == 0:
+        #         self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+        #         self.datas.sort()
+        #     else:
+        #         self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+        #         self.oppo_datas.sort()
+        #     print('finish. {}'.format(dir_name))
+
+    def read_datas_dir(self, datas_dir):
+        """
+        データ一覧を読み込む
+        :return:
+        """
+        # kernel.py / data_handling / ml で3層掘り下げる
+        here = '/'.join(inspect.stack()[0][1].split('/'))[:-3]
+        datas_abspath = os.path.join(here, 'data/img')
+        target = []
+        not_target = []
         for idx, dir_name in enumerate(datas_dir):
-            print('dir:', dir_name)
-            self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
-            if idx == 0:
-                self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                self.datas.sort()
-            else:
-                self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                self.oppo_datas.sort()
-            print('finish. {}'.format(dir_name))
+            dir_abspath = os.path.join(datas_abspath, dir_name)
+            for file in os.listdir(dir_abspath):
+                if file == '.DS_Store':
+                    continue
+                file_abspath = os.path.join(dir_abspath, file)
+                if idx == 0:
+                    target.append(file_abspath)
+                else:
+                    not_target.append(file_abspath)
+            # 1ラベル分読み込むたびsortする
+            target = sorted(target)
+            not_target = sorted(not_target)
+        return (target, not_target)
+
 
 
     def data_split(self, datas, validation=False):

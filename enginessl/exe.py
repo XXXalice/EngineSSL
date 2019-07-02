@@ -47,6 +47,7 @@ def main():
     noise = data.oppo_kernel(image_tanks=image_tanks)
     noise.make_noise()
     x_train, x_test, y_train, y_test = data.get_builtup_data(flatten=False, color_mode='grayscale')
+    print(len(x_train), len(x_test),len(y_train),len(y_test))
     # ml = ml_api.MachineLearning()
     # preprocessed_datas = ml.get_preprocessed_data()
     # model = ml.build_model()
