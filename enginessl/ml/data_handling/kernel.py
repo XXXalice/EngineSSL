@@ -25,35 +25,60 @@ class Kernel():
         self.exec_path = os.path.dirname(os.path.abspath(__file__))
         base = 'enginessl'
         img_dir = 'data/img'
-        datas_dir = get_path_with_glob(self.exec_path, base, img_dir)
-        if '.DS_Store' in datas_dir:
-            datas_dir.remove('.DS_Store')
+        self.datas_dir = get_path_with_glob(self.exec_path, base, img_dir)
+        if '.DS_Store' in self.datas_dir:
+            self.datas_dir.remove('.DS_Store')
         if len(image_tanks) >= 1:
             """ラベル2が複数存在する場合"""
             self.datas_wrapper = []
             target_dir = []
-            for dir_name in datas_dir:
+            for dir_name in self.datas_dir:
                 if dir_name in image_tanks:
                     target_dir.append(dir_name)
             """ターゲットデータディレクトリ更新"""
-            datas_dir = target_dir
+            self.datas_dir = target_dir
         else:
             self.datas_wrapper = None
 
-        self.labels = list(map(lambda label: label.split('_')[0], datas_dir))
+        self.labels = list(map(lambda label: label.split('_')[0], self.datas_dir))
         self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
         # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
-        self.img_dir_abspath = []
+        # self.img_dir_abspath = []
+        # for idx, dir_name in enumerate(datas_dir):
+        #     print('dir:', dir_name)
+        #     self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
+        #     if idx == 0:
+        #         self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+        #         self.datas.sort()
+        #     else:
+        #         self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
+        #         self.oppo_datas.sort()
+        #     print('finish. {}'.format(dir_name))
+
+    def read_datas_dir(self, datas_dir):
+        """
+        データ一覧を読み込む
+        :return (target, not_target)
+        """
+        # kernel.py / data_handling / ml で3層掘り下げる
+        here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
+        datas_abspath = os.path.join(here, 'data/img')
+        target = []
+        not_target = []
         for idx, dir_name in enumerate(datas_dir):
-            print('dir:', dir_name)
-            self.img_dir_abspath.append(os.path.join(self.exec_path.split(base)[0], base, img_dir, dir_name))
-            if idx == 0:
-                self.datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                self.datas.sort()
-            else:
-                self.oppo_datas = [self.img_dir_abspath[idx] + '/' + img_name for img_name in get_path_with_glob(self.exec_path, base, dir_name) if str(img_name) != 'fuzzies']
-                self.oppo_datas.sort()
-            print('finish. {}'.format(dir_name))
+            dir_abspath = os.path.join(datas_abspath, dir_name)
+            for file in os.listdir(dir_abspath):
+                if file == '.DS_Store':
+                    continue
+                file_abspath = os.path.join(dir_abspath, file)
+                if idx == 0:
+                    target.append(file_abspath)
+                else:
+                    not_target.append(file_abspath)
+            # 1ラベル分読み込むたびsortする
+            target = sorted(target)
+            not_target = sorted(not_target)
+        return (target, not_target)
 
 
     def data_split(self, datas, validation=False):
@@ -115,7 +140,7 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def data_preprocess(self, flatten=True, color_mode='grayscale'):
+    def data_preprocess(self, targets=[], not_targets=[], flatten=True, color_mode='grayscale'):
         """
         2つ以上の単語が与えられた際の前処理
         画像のフルパスを受け取る
@@ -130,8 +155,6 @@ class Kernel():
                 x /= 255.0
                 return x
 
-        targets = self.datas
-        not_targets = self.oppo_datas
         x = []
         y = []
         size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)

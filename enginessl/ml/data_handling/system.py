@@ -9,12 +9,18 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         self.data_handling = kernel.Kernel(image_tanks)
         # print('labels :{}'.format(self.oppo.labels))
 
-    def get_builtup_data(self, flatten=False, color_mode='grayscale'):
+    def get_builtup_data(self,targets=[], not_targets=[], flatten=False, color_mode='grayscale'):
         """
         :return: tuple (self.x_train, self.x_test, self.y_train, self.y_test)
         x shape: (-1, hw, hw, channel)
         """
-        return self.data_handling.data_preprocess(flatten=flatten, color_mode=color_mode)
+        return self.data_handling.data_preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
+
+    def read_dirs(self, datas_dir):
+        """
+        :return: tuple (target, not_target)
+        """
+        return self.read_datas_dir(datas_dir=datas_dir)
 
     def oppo_kernel(self, image_tanks):
         print('Noise data processing execution.')
