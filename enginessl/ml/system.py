@@ -1,9 +1,12 @@
+import inspect
+import os
 from . import kernel as mlkernel
 from . import network
 
 class MachineLearning(mlkernel.Kernel):
 
-    def __init__(self, param_path='param.yml'):
+    def __init__(self):
+        param_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'param.yml')
         self.Ml = mlkernel.Kernel(param_path)
 
     def get_datas(self):
