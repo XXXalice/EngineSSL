@@ -48,7 +48,7 @@ def main():
     noise.make_noise()
     targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
-    # ml = ml_api.MachineLearning()
+    ml = ml_api.MachineLearning()
     # preprocessed_datas = ml.get_preprocessed_data()
     # model = ml.build_model()
     # made_model_name = ml.train_model(model=model, datas=preprocessed_datas, save_name=sys.argv[1:])
