@@ -41,7 +41,7 @@ class Kernel():
             self.datas_wrapper = None
 
         self.labels = list(map(lambda label: label.split('_')[0], self.datas_dir))
-        self.params = self.read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
+        self.params = self.__read_yaml(get_path_with_glob(self.exec_path, base, 'param.yml'))
         # self.datas = get_path_with_glob(exec_path, base, '.+datas_dir[0] + '/*.{}'.format(self.params['crawler']['ext']))
         # self.img_dir_abspath = []
         # for idx, dir_name in enumerate(datas_dir):
@@ -168,17 +168,17 @@ class Kernel():
             x = [np.ravel(img_bin) for img_bin in x]
         x = norm(x)
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
-        processed_labels = self.to_onehot([self.y_train, self.y_test])
+        processed_labels = self.__to_onehot([self.y_train, self.y_test])
         self.y_train, self.y_test = processed_labels
         return (self.x_train, self.x_test, self.y_train, self.y_test)
 
-    def to_onehot(self, labels, classes=2):
+    def __to_onehot(self, labels, classes=2):
         processed_labels = []
         for label in labels:
             processed_labels.append(to_categorical(label, num_classes=classes))
         return processed_labels
 
-    def read_yaml(self, uri):
+    def __read_yaml(self, uri):
         import yaml
         try:
             with open(uri, 'r') as d:
