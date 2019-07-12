@@ -168,8 +168,15 @@ class Kernel():
             x = [np.ravel(img_bin) for img_bin in x]
         x = norm(x)
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
+        processed_labels = self.to_onehot([self.y_train, self.y_test])
+        self.y_train, self.y_test = processed_labels
         return (self.x_train, self.x_test, self.y_train, self.y_test)
 
+    def to_onehot(self, labels, classes=2):
+        processed_labels = []
+        for label in labels:
+            processed_labels.append(to_categorical(label, num_classes=classes))
+        return processed_labels
 
     def read_yaml(self, uri):
         import yaml
