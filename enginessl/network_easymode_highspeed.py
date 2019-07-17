@@ -77,8 +77,8 @@ class NetworkHighspeed():
         )
         try:
             os.makedirs('./model', exist_ok=True)
-            model.save('./model/' + save_name[0] + '.' + self.model_ext)
-            made_model_name = save_name[0]+ '.' + self.model_ext
+            model.save('./model/' + save_name + '.' + self.model_ext)
+            made_model_name = save_name+ '.' + self.model_ext
         except Exception as e:
             sys.stderr.write(str(e))
             sys.exit(0)
