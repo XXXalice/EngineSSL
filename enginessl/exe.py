@@ -51,10 +51,11 @@ def main():
     ml = ml_api.MachineLearning()
     model = ml.build_model()
     datas = (x_train, x_test, y_train, y_test)
+    print(y_test)
     made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0])
-    # app = pred_app.PredApp(sys.argv[1], 'not_{}'.format(sys.argv[1]))
-    # app.debug = True
-    # app.run(made_model_name)
+    app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
+    app.debug = True
+    app.run(made_model_name)
 
 def print_model_arch(model):
     model.summary()
