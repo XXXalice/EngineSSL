@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import string
+import inspect
 import numpy as np
 from flask import Flask, request, send_from_directory, render_template, redirect, url_for
 from keras.models import load_model
@@ -26,6 +27,7 @@ class PredApp:
         self.port = 3553
         self.host = 'localhost'
         self.graph = tf.get_default_graph()
+        self.log_path = self.__make_log()
 
     def run(self, made_model_name):
         @self.app.route('/')
@@ -43,15 +45,21 @@ class PredApp:
                         img_path = os.path.join(os.getcwd(), 'uploads', fname)
                         try:
                             model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], made_model_name))
-                            print(model)
                             print(img_path)
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
                             result_class = self.classes[result_status[0].argmax()]
                             result = [result_class, result_status[0]]
+
                         except Exception as e:
                             return render_template('index.html', img_path=img_path, result=str(e))
+
+                        self.__write_log(log_path=self.log_path,
+                                         model=made_model_name,
+                                         image=img_path,
+                                         result=result_class
+                                         )
                         return render_template('index.html', img_path=img_path, result=result)
                     else:
                         return '''
@@ -81,6 +89,32 @@ class PredApp:
 
     def __load_model(self, made_model_name):
         return load_model(made_model_name)
+
+    def __make_log(self):
+        exists_log = False
+        rel_hierarchy = 2
+        toplevel_path = '/'.join(inspect.stack()[0][1].split('/')[:-2])
+        log_dir_path = os.path.join(toplevel_path, 'data')
+        if not 'log.umeume' in os.listdir(log_dir_path):
+            with open(os.path.join(log_dir_path, 'log.umeume'), 'a') as log:
+                log.write('')
+                exists_log = True
+        else:
+            exists_log = True
+        if exists_log:
+            return os.path.join(log_dir_path, 'log.umeume')
+        else:
+            return None
+
+    def __write_log(self, log_path, **info):
+        with open(log_path, 'a+') as log:
+            for key, value in info.items():
+                f = "{}:{}\n".format(key, value)
+                log.write(f)
+            log.write("----------\n")
+
+
+
 
 # if __name__ == '__main__':
 #     a = PredApp()
