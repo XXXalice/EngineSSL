@@ -58,7 +58,8 @@ class PredApp:
                         self.__write_log(log_path=self.log_path,
                                          model=made_model_name,
                                          image=img_path,
-                                         result=result_class
+                                         result=result_class,
+                                         result_value=str(result_status[0][result_status[0].argmax()])
                                          )
                         return render_template('index.html', img_path=img_path, result=result)
                     else:
@@ -93,9 +94,11 @@ class PredApp:
     def __make_log(self):
         exists_log = False
         rel_hierarchy = 2
-        toplevel_path = '/'.join(inspect.stack()[0][1].split('/')[:-2])
+        toplevel_path = '/'.join(inspect.stack()[0][1].split('/')[:-rel_hierarchy])
         log_dir_path = os.path.join(toplevel_path, 'data')
+        print(os.listdir(log_dir_path))
         if not 'log.umeume' in os.listdir(log_dir_path):
+            print('log file init.')
             with open(os.path.join(log_dir_path, 'log.umeume'), 'a') as log:
                 log.write('')
                 exists_log = True
