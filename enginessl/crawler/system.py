@@ -37,6 +37,6 @@ class Clawler(kernel.Kernel):
         data/img配下を全削除
         :return: なし
         """
-        data_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'data')
+        data_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'data', 'img')
         shutil.rmtree(data_path)
         print('init data stacks.')
