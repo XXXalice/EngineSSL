@@ -14,15 +14,17 @@ def make_noise(img_bin, mode):
     e_dict = {
         's_random': lambda x: ef.simple_random(x),
         'n_random': lambda x: ef.normal_random(x),
+        'mizutama': lambda x: ef.mizutama(x),
     }
-    # try:
-    effected = e_dict[mode](img_bin)
-    img_name = make_imgname(mode=mode)
-    # except Exception as e:
-    #     sys.stderr.write(str(e)+'\n')
-    #     exit(0)
-
-    return save_img(path=os.path.join('noise_test', img_name), x=effected)
+    try:
+        effected = e_dict[mode](img_bin)
+        print(effected.shape)
+        img_name = make_imgname(mode=mode)
+    except Exception as e:
+        sys.stderr.write(str(e)+'\n')
+        exit(0)
+    save_img(path=os.path.join('noise_test', img_name), x=effected)
+    return True
 
 def make_imgname(mode):
     tag = np.random.randint(0, 9999)
