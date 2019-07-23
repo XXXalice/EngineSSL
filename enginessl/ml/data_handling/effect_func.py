@@ -34,11 +34,11 @@ def swap(img_bin):
 def use_gradcam(img_bin):
     pass
 
-def mizutama(img_bin):
+def mizutama(img_bin, max=20):
     import cv2
     import numpy as np
     scale = img_bin.shape
-    mizutama_num = np.random.randint(3, 20)
+    mizutama_num = np.random.randint(3, max)
     for i in range(mizutama_num):
         cv2.ellipse(img_bin,
                     ((np.random.randint(0, scale[0]), np.random.randint(0, scale[0])),
