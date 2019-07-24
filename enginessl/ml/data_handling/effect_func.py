@@ -34,7 +34,7 @@ def swap(img_bin):
 def use_gradcam(img_bin):
     pass
 
-def mizutama(img_bin, max=20):
+def mizutama(img_bin, max=25):
     import cv2
     import numpy as np
     scale = img_bin.shape
@@ -49,3 +49,9 @@ def mizutama(img_bin, max=20):
                     cv2.LINE_8
                          )
     return img_bin
+
+def discontinuous_random(img_bin):
+    import cv2
+    import numpy as np
+    scale = img_bin.shape
+
