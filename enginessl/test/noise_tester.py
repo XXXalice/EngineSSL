@@ -15,6 +15,7 @@ def make_noise(img_bin, mode):
         's_random': lambda x: ef.simple_random(x),
         'n_random': lambda x: ef.normal_random(x),
         'mizutama': lambda x: ef.mizutama(x),
+        'rect': lambda x: ef.discontinuous_random(x),
     }
     try:
         effected = e_dict[mode](img_bin)
@@ -22,7 +23,7 @@ def make_noise(img_bin, mode):
         img_name = make_imgname(mode=mode)
     except Exception as e:
         sys.stderr.write(str(e)+'\n')
-        exit(0)
+        raise e
     save_img(path=os.path.join('noise_test', img_name), x=effected)
     return True
 
@@ -44,9 +45,6 @@ def main():
     result = make_noise(img_bin=img_bin, mode=args.mode)
     if result:
         print('succsessed.')
-
-
-
 
 
 if __name__ == '__main__':
