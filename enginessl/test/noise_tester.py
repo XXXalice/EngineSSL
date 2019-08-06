@@ -15,7 +15,7 @@ def make_noise(img_bin, mode):
         's_random': lambda x: ef.simple_random(x),
         'n_random': lambda x: ef.normal_random(x),
         'mizutama': lambda x: ef.mizutama(x),
-        'rect': lambda x: ef.discontinuous_random(x),
+        'snakey': lambda x: ef.snakey_random(x),
     }
     try:
         effected = e_dict[mode](img_bin)
@@ -32,12 +32,31 @@ def make_imgname(mode):
     name = '{}_{:04}.png'.format(mode, tag)
     return name
 
+def delete_file(item):
+    wild = True if item == '.' else False
+    import shutil
+    del_target = os.path.join('noise_test') if wild else os.path.join('noise_test', item)
+    try:
+        shutil.rmtree(path=del_target)
+        if wild:
+            os.makedirs(del_target)
+    except Exception as err:
+        sys.stderr.write(str(err)+'\n')
+        return False
+    return True
+
 def main():
     img_path = './noise_test/test.png'
     parser = argparse.ArgumentParser(description='noise_tester')
     parser.add_argument('-i', '--img', help='img path.')
     parser.add_argument('-m', '--mode', help='noise algorithm')
+    parser.add_argument('-d', '--delete', help='[CAUTION] delete experimental product in ./noise_test/')
     args = parser.parse_args()
+    if args.delete != None:
+        del_result = delete_file(args.delete)
+        message = 'succsessed rm {}'.format(args.delete) if del_result else 'faild rm. try again.'
+        print(message)
+        exit(0)
     if args.img != None:
         img_path = args.img
     img = load_img(img_path, color_mode='grayscale', target_size=(100, 100))
