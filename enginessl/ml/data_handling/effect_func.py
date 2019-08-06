@@ -50,17 +50,18 @@ def mizutama(img_bin, max=25):
                          )
     return img_bin
 
-def discontinuous_random(img_bin, max=25):
+def snakey_random(img_bin, max=25):
     import cv2
     import numpy as np
     scale = img_bin.shape
     rect_num = np.random.randint(5, max)
-    region = lambda :np.random.randint(0, scale[0])
+    color = lambda : np.random.randint(255)
+    region = lambda : np.random.randint(0, scale[0])
     for i in range(rect_num):
         cv2.rectangle(img_bin,
                       pt1=(region(), region()),
                       pt2=(region(), region()),
-                      color=(0, 0, 0),
+                      color=color,
                       thickness=np.random.randint(1,10),
                       lineType=cv2.LINE_8
                       )
