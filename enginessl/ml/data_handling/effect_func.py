@@ -61,7 +61,7 @@ def snakey_random(img_bin, max=25):
         cv2.rectangle(img_bin,
                       pt1=(region(), region()),
                       pt2=(region(), region()),
-                      color=color,
+                      color=color(),
                       thickness=np.random.randint(1,10),
                       lineType=cv2.LINE_8
                       )
