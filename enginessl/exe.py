@@ -52,6 +52,7 @@ def main():
     model = ml.build_model()
     datas = (x_train, x_test, y_train, y_test)
     print(y_test)
+    print(y_train)
     made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0])
     app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     app.debug = True

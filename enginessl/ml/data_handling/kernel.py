@@ -167,7 +167,10 @@ class Kernel():
         if flatten:
             x = [np.ravel(img_bin) for img_bin in x]
         x = norm(x)
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
+        # テストデータが完全に片方に固まってしまうバグの応急措置
+        # ESSLが使えない
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=True)
+        # self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=True)
         processed_labels = self.__to_onehot([self.y_train, self.y_test])
         self.y_train, self.y_test = processed_labels
         return (self.x_train, self.x_test, self.y_train, self.y_test)
