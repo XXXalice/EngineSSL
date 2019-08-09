@@ -59,8 +59,8 @@ class Kernel():
         else:
             return True
 
-    def training(self, model, datas, save_name):
-        return self.user_nn.train(model=model, preprocessing_datas=datas, save_name=save_name)
+    def training(self, model, datas, save_name, es):
+        return self.user_nn.train(model=model, preprocessing_datas=datas, save_name=save_name, es=es)
 
     def fine_tuning(self):
         #dense
