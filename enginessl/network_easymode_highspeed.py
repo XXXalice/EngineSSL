@@ -58,9 +58,10 @@ class NetworkHighspeed():
         model.add(Dense(self.num_classes, activation='softmax'))
         return model
 
-    def train(self, model, preprocessing_datas, save_name):
+    def train(self, model, preprocessing_datas, save_name, es):
         x_train, x_test, y_train, y_test = preprocessing_datas
-        es_cb = EarlyStopping(monitor='val_loss', patience=0, verbose=0, mode='auto')
+        if es:
+            es_cb = EarlyStopping(monitor='val_loss', patience=0, verbose=0, mode='auto')
         model.compile(
             loss='categorical_crossentropy',
             optimizer='Adam',
@@ -73,7 +74,7 @@ class NetworkHighspeed():
             epochs=15,
             validation_data=(x_test, y_test),
             verbose=1,
-            callbacks=[es_cb]
+            callbacks=[es_cb] if es else None
         )
         try:
             os.makedirs('./model', exist_ok=True)
