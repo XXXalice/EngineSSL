@@ -27,9 +27,9 @@ class MachineLearning(mlkernel.Kernel):
         self.model = self.Ml.generate_model()
         return self.model
 
-    def train_model(self, model, datas, save_name):
+    def train_model(self, model, datas, save_name, es=True):
         save_name = save_name.split('_')[0]
-        return self.Ml.training(model=model, datas=datas, save_name=save_name)
+        return self.Ml.training(model=model, datas=datas, save_name=save_name, es=es)
 
     def fine_tuning_model(self):
         pass
