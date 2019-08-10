@@ -78,6 +78,10 @@ class Kernel():
             # 1ラベル分読み込むたびsortする
             target = sorted(target)
             not_target = sorted(not_target)
+            print('target')
+            print(target)
+            print('not_target')
+            print(not_target)
         return (target, not_target)
 
 
@@ -169,8 +173,8 @@ class Kernel():
         x = norm(x)
         # テストデータが完全に片方に固まってしまうバグの応急措置
         # ESSLが使えない
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=True)
-        # self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=True)
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'])
+        # self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
         processed_labels = self.__to_onehot([self.y_train, self.y_test])
         self.y_train, self.y_test = processed_labels
         return (self.x_train, self.x_test, self.y_train, self.y_test)
