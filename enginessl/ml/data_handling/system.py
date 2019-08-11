@@ -16,11 +16,11 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         """
         return self.data_handling.data_preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
 
-    def read_dirs(self, datas_dir):
+    def read_dirs(self, datas_dir, target_label):
         """
         :return: tuple (target, not_target)
         """
-        return self.read_datas_dir(datas_dir=datas_dir)
+        return self.read_datas_dir(datas_dir=datas_dir, target_label=target_label)
 
     def oppo_kernel(self, image_tanks):
         print('Noise data processing execution.')
