@@ -47,18 +47,18 @@ def main():
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     noise = data.oppo_kernel(image_tanks=image_tanks)
     noise.make_noise()
-    targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir)
+    targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
-    ml = ml_api.MachineLearning()
-    model = ml.build_model()
-    datas = (x_train, x_test, y_train, y_test)
-    print(y_test)
-    print(y_train)
-    es = True if p_args.train is 'True' or p_args.train is 'true' else False
-    made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
-    app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
-    app.debug = True
-    app.run(made_model_name)
+    # ml = ml_api.MachineLearning()
+    # model = ml.build_model()
+    # datas = (x_train, x_test, y_train, y_test)
+    # print(y_test)
+    # print(y_train)
+    # es = True if p_args.train is 'True' or p_args.train is 'true' else False
+    # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
+    # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
+    # app.debug = True
+    # app.run(made_model_name)
 
 def print_model_arch(model):
     model.summary()
