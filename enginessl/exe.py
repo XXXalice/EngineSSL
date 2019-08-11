@@ -47,7 +47,7 @@ def main():
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     noise = data.oppo_kernel(image_tanks=image_tanks)
     noise.make_noise()
-    targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir)
+    targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
     ml = ml_api.MachineLearning()
     model = ml.build_model()

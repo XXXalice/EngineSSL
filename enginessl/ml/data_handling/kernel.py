@@ -55,7 +55,7 @@ class Kernel():
         #         self.oppo_datas.sort()
         #     print('finish. {}'.format(dir_name))
 
-    def read_datas_dir(self, datas_dir):
+    def read_datas_dir(self, datas_dir, target_label):
         """
         データ一覧を読み込む
         :return (target, not_target)
@@ -65,7 +65,11 @@ class Kernel():
         datas_abspath = os.path.join(here, 'data/img')
         target = []
         not_target = []
-        for idx, dir_name in enumerate(datas_dir):
+        #ターゲットの画像ディレクトリとそうで無いものの一覧を分け、indexをつけてそれぞれパスを獲得する
+        target_dir = [dir for dir in datas_dir if target_label in dir]
+        not_target_dir = [dir for dir in datas_dir if not target_label in dir]
+        print(target_dir, not_target_dir)
+        for idx, dir_name in enumerate(target_dir + not_target_dir):
             dir_abspath = os.path.join(datas_abspath, dir_name)
             for file in os.listdir(dir_abspath):
                 if file == '.DS_Store':
