@@ -49,6 +49,7 @@ def main():
     noise.make_noise()
     targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
+    #ここまでok
     ml = ml_api.MachineLearning()
     model = ml.build_model()
     datas = (x_train, x_test, y_train, y_test)
