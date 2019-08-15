@@ -39,6 +39,7 @@ class PredApp:
             with self.graph.as_default():
                 if request.method == 'POST':
                     img_file = request.files['img_file']
+                    log_switch = request.args.getlist("log")
                     if img_file and self.__allowed_file(img_file.filename):
                         fname = secure_filename(img_file.filename)
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
@@ -55,12 +56,13 @@ class PredApp:
                         except Exception as e:
                             return render_template('index.html', img_path=img_path, result=str(e))
 
-                        self.__write_log(log_path=self.log_path,
-                                         model=made_model_name,
-                                         image=img_path.split('/')[-1],
-                                         result=result_class,
-                                         result_value=str(result_status[0][result_status[0].argmax()])
-                                         )
+                        if int(log_switch) == 1:
+                            self.__write_log(log_path=self.log_path,
+                                             model=made_model_name,
+                                             image=img_path.split('/')[-1],
+                                             result=result_class,
+                                             result_value=str(result_status[0][result_status[0].argmax()])
+                                             )
                         return render_template('index.html', img_path=img_path, result=result)
                     else:
                         return '''
