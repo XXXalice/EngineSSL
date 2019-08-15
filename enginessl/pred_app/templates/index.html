@@ -9,7 +9,9 @@
     <div class="row">
         <form method="post" action="/pred" enctype="multipart/form-data">
             <input type="file" name="img_file" value="choose">
+            <input type="checkbox" name="log" value=1>
             <input type="submit" value="predict" class="btn">
+
         </form>
             {% if img_path %}
                 <p><img src="{{ img_path }}"></p>
