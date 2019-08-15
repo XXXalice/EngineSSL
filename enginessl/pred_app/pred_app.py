@@ -57,7 +57,7 @@ class PredApp:
 
                         self.__write_log(log_path=self.log_path,
                                          model=made_model_name,
-                                         image=img_path,
+                                         image=img_path.split('/')[-1],
                                          result=result_class,
                                          result_value=str(result_status[0][result_status[0].argmax()])
                                          )
