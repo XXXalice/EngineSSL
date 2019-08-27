@@ -16,6 +16,7 @@ def make_noise(img_bin, mode):
         'n_random': lambda x: ef.normal_random(x),
         'mizutama': lambda x: ef.mizutama(x),
         'rect': lambda x: ef.discontinuous_random(x),
+        'slice': lambda x: ef.slice(x),
     }
     try:
         effected = e_dict[mode](img_bin)

@@ -1,24 +1,5 @@
 def simple_random(img_bin):
-    import random
     import numpy as np
-    # maxis = []
-    # minis = []
-    # li = img_bin.tolist()
-    # li_proto = li[:]
-    # random.shuffle(li)
-    # print(li)
-    # re_bin = np.array(li)
-    # for tensor in range(len(img_bin)-1):
-    #     maxis.append(img_bin[tensor].argmax())
-    #     minis.append(img_bin[tensor].argmin())
-    # for tensor in range(len(img_bin)):
-    #     img_bin[tensor] = random.random(img_bin[tensor])
-    # print(img_bin[0])
-    # print(type(img_bin))
-    # print(maxis)
-    # print(minis)
-
-
     re_bin = np.random.permutation(img_bin)
     return re_bin
 
@@ -47,7 +28,7 @@ def mizutama(img_bin, max=25):
                     (np.random.randint(0, 255)),
                     np.random.randint(1, 10),
                     cv2.LINE_8
-                         )
+                    )
     return img_bin
 
 def discontinuous_random(img_bin, max=25):
@@ -65,3 +46,19 @@ def discontinuous_random(img_bin, max=25):
                       lineType=cv2.LINE_8
                       )
     return img_bin
+
+
+def slice(img_bin, size=40):
+    import numpy as np
+    print(img_bin.shape)
+    scale = img_bin.shape[0] if img_bin.shape[0] == img_bin.shape[1] else 100
+    div_size = size
+    while True:
+        if scale % div_size == 0:
+            break
+        else:
+            div_size -= 1
+            if div_size == 1:
+                break
+    re_bin = np.random.permutation(img_bin.reshape(div_size, -1, 1)).reshape(scale, scale, -1)
+    return re_bin
