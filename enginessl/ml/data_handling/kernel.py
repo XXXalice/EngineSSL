@@ -255,7 +255,11 @@ class OpponentImage():
             's_random': lambda x: ef.simple_random(x),
             'swap': lambda x: ef.swap(x),
             'as_random': lambda  x: ef.ancestral_scale_random(x),
-            'as_randomv2': lambda x: ef.ancestral_scale_random_v2(x)
+            'as_randomv2': lambda x: ef.ancestral_scale_random_v2(x),
+            'n_random': lambda x: ef.normal_random(x),
+            'mizutama': lambda x: ef.mizutama(x),
+            'rect': lambda x: ef.discontinuous_random(x),
+            'slice': lambda x: ef.slice(x),
         }
 
         success_num = 0
