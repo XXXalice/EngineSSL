@@ -24,15 +24,17 @@ def main():
     #ターゲット画像収集用APIをインスタンス化
     c = crawler_api.Clawler([p_args.target])
     c.delete_datas_dir()
+    c.crawl()
+    img_folpath.append(c.save_img(rtn_folpath=True))
 
     #ターゲットではない画像収集用APIをインスタンス化
     if p_args.nottarget != None:
         c.crawl(multiple=len(p_args.nottarget) + 1)
         img_folpath.append(c.save_img(rtn_folpath=True))
         for nt in p_args.nottarget:
-            c = crawler_api.Clawler([nt])
-            c.crawl()
-            img_folpath.append(c.save_img(rtn_folpath=True))
+            not_c = crawler_api.Clawler([nt])
+            not_c.crawl()
+            img_folpath.append(not_c.save_img(rtn_folpath=True))
 
     ''' TODO:
         クローラーapiの改善 done
