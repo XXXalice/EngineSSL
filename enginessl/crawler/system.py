@@ -40,5 +40,5 @@ class Clawler(kernel.Kernel):
         data_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'data', 'img')
         if os.path.exists(data_path):
             shutil.rmtree(data_path)
-            os.makedirs(path=data_path, exist_ok=True)
+            os.makedirs(data_path, exist_ok=True)
             print('init data stacks.')
