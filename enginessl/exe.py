@@ -21,12 +21,14 @@ def main():
     p_args = parser.parse_args()
 
     img_folpath = []
+    #ターゲット画像収集用APIをインスタンス化
     c = crawler_api.Clawler([p_args.target])
     c.delete_datas_dir()
+
+    #ターゲットではない画像収集用APIをインスタンス化
     if p_args.nottarget != None:
-        c.crawl(multiple=len(p_args.nottarget)+1)
+        c.crawl(multiple=len(p_args.nottarget) + 1)
         img_folpath.append(c.save_img(rtn_folpath=True))
-    if p_args.nottarget != None:
         for nt in p_args.nottarget:
             c = crawler_api.Clawler([nt])
             c.crawl()
