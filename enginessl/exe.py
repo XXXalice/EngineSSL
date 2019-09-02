@@ -29,7 +29,6 @@ def main():
 
     #ターゲットではない画像収集用APIをインスタンス化
     if p_args.nottarget != None:
-        # c.crawl(multiple=len(p_args.nottarget) + 1)
         for nt in p_args.nottarget:
             not_c = crawler_api.Clawler([nt])
             not_c.crawl()
@@ -38,7 +37,6 @@ def main():
     # 対立画像を作る
     target_label = str(p_args.target)
     image_tanks = list(map(lambda path: path.split('/')[-1], img_folpath))
-    # image_tanksのtargetが2つ重複している
     print(image_tanks)
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     noise = data.oppo_kernel(image_tanks=image_tanks)
