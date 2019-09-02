@@ -203,7 +203,7 @@ class Kernel():
 class OpponentImage():
 
     def __init__(self, target_dir, image_tanks, params):
-        target_dir = image_tanks[-1] if target_dir == None else target_dir[0]
+        target_dir = target_dir[0] if target_dir != None else image_tanks[-1]
         self.target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
         self.decay = params['oppoimg']['decay']
         self.mode = params['oppoimg']['mode']

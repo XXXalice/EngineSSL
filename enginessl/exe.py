@@ -21,12 +21,13 @@ def main():
     p_args = parser.parse_args()
 
     img_folpath = []
-    not_target_folpath = []
+    target_folpath = []
     #ターゲット画像収集用APIをインスタンス化
     c = crawler_api.Clawler([p_args.target])
     c.delete_datas_dir()
     c.crawl()
     img_folpath.append(c.save_img(rtn_folpath=True))
+    target_folpath.append(c.save_img(rtn_folpath=True))
 
     #ターゲットではない画像収集用APIをインスタンス化
     if p_args.nottarget != None:
@@ -34,12 +35,11 @@ def main():
             not_c = crawler_api.Clawler([nt])
             not_c.crawl()
             img_folpath.append(not_c.save_img(rtn_folpath=True))
-            not_target_folpath.append(not_c.save_img(rtn_folpath=True))
 
     # 対立画像を作る
     target_label = str(p_args.target)
     image_tanks = list(map(lambda path: path.split('/')[-1], img_folpath))
-    nt_image_tanks = list(map(lambda path: path.split('/')[-1], not_target_folpath))
+    nt_image_tanks = list(map(lambda path: path.split('/')[-1], target_folpath))
     print(image_tanks)
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     noise = data.oppo_kernel(target_dir=nt_image_tanks ,image_tanks=image_tanks)
