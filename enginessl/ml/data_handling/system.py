@@ -22,9 +22,9 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         """
         return self.read_datas_dir(datas_dir=datas_dir, target_label=target_label)
 
-    def oppo_kernel(self, image_tanks):
+    def oppo_kernel(self, target_dir, image_tanks):
         print('Noise data processing execution.')
-        self.oppo = kernel.OpponentImage(image_tanks, self.data_handling.params)
+        self.oppo = kernel.OpponentImage(target_dir=target_dir ,image_tanks=image_tanks, params=self.data_handling.params)
         return self.oppo
 
     def make_noise(self):

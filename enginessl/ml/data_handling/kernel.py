@@ -201,12 +201,9 @@ class Kernel():
 
 
 class OpponentImage():
-    """
-    対立的画像の生成クラス
-    データ前処理用クラスを継承している
-    """
-    def __init__(self, image_tanks, params):
-        target_dir = image_tanks[-1]
+
+    def __init__(self, target_dir, image_tanks, params):
+        target_dir = image_tanks[-1] if target_dir == None else target_dir[0]
         self.target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
         self.decay = params['oppoimg']['decay']
         self.mode = params['oppoimg']['mode']
@@ -214,16 +211,6 @@ class OpponentImage():
         self.xy = params['ml']['img_size_xy']
         self.gray = True if params['ml']['grayscale'] else False
         # self.make_fuzzyimg(decay=self.decay, effect=self.mode)
-
-    def exe_oppo(self):
-        self.make_fuzzyimg(decay=self.decay, effect=self.mode)
-        if hasattr(self, 'fuzzies_save_dir'):
-            oppoimgs = [self.fuzzies_save_dir + '/' + oppoimg for oppoimg in os.listdir(self.fuzzies_save_dir)]
-            oppoimgs.sort()
-            return oppoimgs
-        else:
-            print('Error in OpponentImg.')
-            exit()
 
     def make_noise(self):
         from . import effect_func as ef
