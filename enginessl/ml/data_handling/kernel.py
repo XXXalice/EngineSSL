@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from common_handler.path_handler import get_path_with_glob
 from tqdm import tqdm
+from datetime import datetime
 # Generate conflicting images fully automatically :)
 
 # [usage]
@@ -204,7 +205,8 @@ class OpponentImage():
 
     def __init__(self, target_dir, image_tanks, params):
         target_dir = target_dir[0] if target_dir != None else image_tanks[-1]
-        self.target_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img', target_dir)
+        self.img_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-3]), 'data/img')
+        self.target_path = os.path.join(self.img_path, target_dir)
         self.decay = params['oppoimg']['decay']
         self.mode = params['oppoimg']['mode']
         self.ext = params['crawler']['ext']
@@ -234,6 +236,19 @@ class OpponentImage():
             effected_bin = e_dict[effect](flat_img_bin).reshape(size, size, -1)
             img_name = 'noise_{:03}.{}'.format(i, self.ext)
             save_img(path=os.path.join(target, img_name), x=effected_bin)
+
+
+    def make_noise_dir(self, effect_name, target_name):
+        now = datetime.now()
+        current_time = '{y}_{m}_{d}_{h}_{mi}_{s}'.format(y=str(now.year), m=str(now.month), d=str(now.day),
+                                                          h=str(now.hour), mi=str(now.minute), s=str(now.second))
+
+        identifier = 'n'
+        dir_name = '{}_{}_{}_{}'.format(identifier, effect_name, target_name, current_time)
+        dir_path = os.path.join(self.img_path, dir_name)
+        os.makedirs(dir_path, exist_ok=True)
+
+
 
 
     def make_fuzzyimg(self, decay, effect, img_save=True):
