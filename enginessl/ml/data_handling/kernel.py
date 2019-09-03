@@ -251,54 +251,54 @@ class OpponentImage():
 
 
 
-    def make_fuzzyimg(self, decay, effect, img_save=True):
-        from . import effect_func as ef
-        e_dict = {
-            's_random': lambda x: ef.simple_random(x),
-            'n_random': lambda x: ef.normal_random(x),
-            'mizutama': lambda x: ef.mizutama(x),
-            'rect': lambda x: ef.discontinuous_random(x),
-            'slice': lambda x: ef.slice(x),
-        }
-
-        success_num = 0
-        for i, img_bins in enumerate(self.ancestors):
-            flat_img_bins = [*map(lambda img_bin: np.ravel(img_bin), img_bins)]
-            for img_count, flat_img_bin in enumerate(flat_img_bins):
-                # print(flat_img_bin, flat_img_bin.shape)
-                # break
-                try:
-                    effected_bin = e_dict[effect](flat_img_bin)
-                    # self.ancestors[i].append(effected_bin)
-                    # self.ancestors_label[i].append([1])
-                    if i == 0:
-                        self.x_train.append(effected_bin)
-                        self.y_train.append(1)
-                    elif i == 1:
-                        self.x_test.append(effected_bin)
-                        self.y_test.append(1)
-                except:
-                    print('cant generate fuzzyimg.')
-                    continue
-                else:
-                    success_num += 1
-                    if img_save == True:
-                        self.save_fuzzyimg(np_img=effected_bin, num=success_num)
-                    print('generated fuzzyimg. num:{}'.format(success_num))
-        print('fuzzy mode {}'.format(effect))
-        # self.test_show(self.ancestors[0][150])
-
-    def save_fuzzyimg(self, np_img, num):
-        datas_dir_name = get_path_with_glob(self.exec_path, 'enginessl', 'data/img')[0]
-        absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data', abs=True)
-        self.fuzzies_save_dir = os.path.join(absdatas_dir[0], datas_dir_name, 'fuzzies')
-        if not os.path.exists(self.fuzzies_save_dir):
-            os.mkdir(self.fuzzies_save_dir)
-        ex_img = array_to_img(np_img.reshape(100,100,1))
-        ex_img.save(os.path.join(self.fuzzies_save_dir, '{0:03d}.png'.format(num)))
-
-    def anal_ances(self):
-        pass
+    # def make_fuzzyimg(self, decay, effect, img_save=True):
+    #     from . import effect_func as ef
+    #     e_dict = {
+    #         's_random': lambda x: ef.simple_random(x),
+    #         'n_random': lambda x: ef.normal_random(x),
+    #         'mizutama': lambda x: ef.mizutama(x),
+    #         'rect': lambda x: ef.discontinuous_random(x),
+    #         'slice': lambda x: ef.slice(x),
+    #     }
+    #
+    #     success_num = 0
+    #     for i, img_bins in enumerate(self.ancestors):
+    #         flat_img_bins = [*map(lambda img_bin: np.ravel(img_bin), img_bins)]
+    #         for img_count, flat_img_bin in enumerate(flat_img_bins):
+    #             # print(flat_img_bin, flat_img_bin.shape)
+    #             # break
+    #             try:
+    #                 effected_bin = e_dict[effect](flat_img_bin)
+    #                 # self.ancestors[i].append(effected_bin)
+    #                 # self.ancestors_label[i].append([1])
+    #                 if i == 0:
+    #                     self.x_train.append(effected_bin)
+    #                     self.y_train.append(1)
+    #                 elif i == 1:
+    #                     self.x_test.append(effected_bin)
+    #                     self.y_test.append(1)
+    #             except:
+    #                 print('cant generate fuzzyimg.')
+    #                 continue
+    #             else:
+    #                 success_num += 1
+    #                 if img_save == True:
+    #                     self.save_fuzzyimg(np_img=effected_bin, num=success_num)
+    #                 print('generated fuzzyimg. num:{}'.format(success_num))
+    #     print('fuzzy mode {}'.format(effect))
+    #     # self.test_show(self.ancestors[0][150])
+    #
+    # def save_fuzzyimg(self, np_img, num):
+    #     datas_dir_name = get_path_with_glob(self.exec_path, 'enginessl', 'data/img')[0]
+    #     absdatas_dir = get_path_with_glob(self.exec_path, 'enginessl', 'data', abs=True)
+    #     self.fuzzies_save_dir = os.path.join(absdatas_dir[0], datas_dir_name, 'fuzzies')
+    #     if not os.path.exists(self.fuzzies_save_dir):
+    #         os.mkdir(self.fuzzies_save_dir)
+    #     ex_img = array_to_img(np_img.reshape(100,100,1))
+    #     ex_img.save(os.path.join(self.fuzzies_save_dir, '{0:03d}.png'.format(num)))
+    #
+    # def anal_ances(self):
+    #     pass
 
     def return_datafiles(self):
         self.y_train = to_categorical(self.y_train, num_classes=2)
