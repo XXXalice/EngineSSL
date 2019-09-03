@@ -228,15 +228,22 @@ class OpponentImage():
             'slice': lambda x: ef.slice(x),
         }
 
-        imgs = sorted(os.listdir(target))
-        imgs = [os.path.join(target, img) for img in imgs]
-        for i, img_path in tqdm(enumerate(imgs)):
-            img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
-            # np.ravelは破壊的
-            flat_img_bin = np.ravel(img_bin)
-            effected_bin = e_dict[effect](flat_img_bin).reshape(size, size, -1)
-            img_name = 'noise_{:03}.{}'.format(i, self.ext)
-            save_img(path=os.path.join(target, img_name), x=effected_bin)
+        try:
+            imgs = sorted(os.listdir(target))
+            imgs = [os.path.join(target, img) for img in imgs]
+            dir_path = self.make_noise_dir(effect_name=effect, target_name=target.split('/')[-1])
+        except Exception as e:
+            sys.stderr.write(e)
+            print()
+        finally:
+            if dir_path != None:
+                for i, img_path in tqdm(enumerate(imgs)):
+                    img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
+                    # np.ravelは破壊的
+                    flat_img_bin = np.ravel(img_bin)
+                    effected_bin = e_dict[effect](flat_img_bin).reshape(size, size, -1)
+                    img_name = 'noise_{:03}.{}'.format(i, self.ext)
+                    save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
 
 
     def make_noise_dir(self, effect_name, target_name):
@@ -247,8 +254,12 @@ class OpponentImage():
         identifier = 'n'
         dir_name = '{}_{}_{}_{}'.format(identifier, effect_name, target_name, current_time)
         dir_path = os.path.join(self.img_path, dir_name)
-        os.makedirs(dir_path, exist_ok=True)
-
+        try:
+            os.makedirs(dir_path, exist_ok=True)
+        except:
+            return None
+        finally:
+            return dir_path
 
 
 
