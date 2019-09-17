@@ -10,7 +10,7 @@ from pred_app import auto_startup, pred_app
 
 
 def main():
-    wordart.print_logo('big')
+    wordart.print_logo('slant')
     if len(sys.argv) <= 1:
         print(opt.help)
         sys.exit(0)
