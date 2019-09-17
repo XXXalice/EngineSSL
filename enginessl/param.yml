@@ -21,7 +21,7 @@ ml:
 
 oppoimg:
   decay: 0.3
-  mode: 's_random'
+  mode: 'all'
 
 predictapp:
   save_inferenced_img: True
