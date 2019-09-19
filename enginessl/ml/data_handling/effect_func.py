@@ -52,7 +52,8 @@ def snakey_random(img_bin, max=25):
 def slice(img_bin, size=40):
     import numpy as np
     print(img_bin.shape)
-    scale = img_bin.shape[0] if img_bin.shape[0] == img_bin.shape[1] else 100
+    img_bin = img_bin.reshape(100, 100, -1)
+    scale = 100
     div_size = size
     while True:
         if scale % div_size == 0:
@@ -61,5 +62,5 @@ def slice(img_bin, size=40):
             div_size -= 1
             if div_size == 1:
                 break
-    re_bin = np.random.permutation(img_bin.reshape(div_size, -1, 1)).reshape(scale, scale, -1)
+    re_bin = np.random.permutation(img_bin.reshape(div_size, -1, 1))
     return re_bin
