@@ -233,24 +233,25 @@ class OpponentImage():
         try:
             imgs = sorted(os.listdir(target))
             imgs = [os.path.join(target, img) for img in imgs]
-            dir_path = self.make_noise_dir(effect_name=effect, target_name=target.split('/')[-1])
+            # dir_path = self.make_noise_dir(effect_name=effect, target_name=target.split('/')[-1])
         except Exception as e:
             sys.stderr.write(e)
             print()
         finally:
+            target_name = target.split('/')[-1]
             if uniformly == True:
                 exec_effect = e_dict.keys()
             else:
                 exec_effect = effect
-            if dir_path != None:
-                for e in exec_effect:
-                    for i, img_path in tqdm(enumerate(imgs)):
-                        img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
-                        # np.ravelは破壊的
-                        flat_img_bin = np.ravel(img_bin)
-                        effected_bin = e_dict[e](flat_img_bin).reshape(size, size, -1)
-                        img_name = 'noise_{:03}.{}'.format(i, self.ext)
-                        save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
+            for e in exec_effect:
+                dir_path = self.make_noise_dir(effect_name=e, target_name=target_name)
+                for i, img_path in tqdm(enumerate(imgs)):
+                    img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
+                    # np.ravelは破壊的
+                    flat_img_bin = np.ravel(img_bin)
+                    effected_bin = e_dict[e](flat_img_bin).reshape(size, size, -1)
+                    img_name = 'noise_{:03}.{}'.format(i, self.ext)
+                    save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
 
 
     def make_noise_dir(self, effect_name, target_name):
