@@ -56,6 +56,24 @@ class Kernel():
         #         self.oppo_datas.sort()
         #     print('finish. {}'.format(dir_name))
 
+    def get_img_dir(self, target_label, split_tag=True):
+        """
+        imgフォルダのパスをターゲットとnot_targetに分けて取得
+        :param target_label:
+        :return:
+        """
+        here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
+        datas_abspath = os.path.join(here, 'data/img')
+        img_dir = os.listdir(datas_abspath)
+        if split_tag:
+            target_dir = [dir for dir in img_dir if target_label in dir]
+            not_target_dir = img_dir.remove(target_dir[0])
+            result = (target_dir, not_target_dir)
+        else:
+            result = img_dir
+        return result
+
+
     def read_datas_dir(self, datas_dir, target_label):
         """
         データ一覧を読み込む
