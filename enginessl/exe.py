@@ -46,6 +46,7 @@ def main():
     noise.make_noise()
     #ここまで
     targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
+
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
     print(len(x_train), len(x_test), len(y_train), len(y_test))
     print(y_train)
