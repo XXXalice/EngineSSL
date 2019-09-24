@@ -76,6 +76,9 @@ class Kernel():
 
 
     def read_datas_dir(self, datas_dir, target_label):
+        # todo:
+        #get_img_dir()を利用し、それぞれのフォルダごとに変数に画像のフルパスをリスト形式で格納する
+
         """
         データ一覧を読み込む
         :return (target, not_target)
