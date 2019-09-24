@@ -20,6 +20,7 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         """
         :return: tuple (target, not_target)
         """
+        target_dir, not_target_dir = self.get_img_dir(target_label=target_label, split_tag=True)
         return self.read_datas_dir(datas_dir=datas_dir, target_label=target_label)
 
     def oppo_kernel(self, target_dir, image_tanks):
