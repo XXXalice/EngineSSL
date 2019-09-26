@@ -51,7 +51,7 @@ def discontinuous_random(img_bin, max=25):
 def slice(img_bin, size=40):
     import numpy as np
     print(img_bin.shape)
-    scale = img_bin.shape[0] if img_bin.shape[0] == img_bin.shape[1] else 100
+    scale = 100
     div_size = size
     while True:
         if scale % div_size == 0:
