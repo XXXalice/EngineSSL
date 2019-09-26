@@ -13,7 +13,7 @@ from keras.preprocessing.image import load_img, img_to_array, array_to_img, save
 def make_noise(img_bin, mode):
     e_dict = {
         's_random': lambda x: ef.simple_random(x),
-        'n_random': lambda x: ef.normal_random(x),
+        # 'n_random': lambda x: ef.normal_random(x),
         'mizutama': lambda x: ef.mizutama(x),
         'rect': lambda x: ef.discontinuous_random(x),
         'slice': lambda x: ef.slice(x),
@@ -47,7 +47,7 @@ def delete_file(item):
     return True
 
 def main():
-    img_path = './noise_test/test.png'
+    img_path = './noise_test/001.png'
     parser = argparse.ArgumentParser(description='noise_tester')
     parser.add_argument('-i', '--img', help='img path.')
     parser.add_argument('-m', '--mode', help='noise algorithm')
