@@ -248,7 +248,7 @@ class OpponentImage():
         e_dict = {
             's_random': lambda x: ef.simple_random(x),
             'mizutama': lambda x: ef.mizutama(x),
-            'rect': lambda x: ef.snakey_random(x),
+            'rect': lambda x: ef.discontinuous_random()(x),
             'slice': lambda x: ef.slice(x),
         }
 
