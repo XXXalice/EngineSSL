@@ -248,7 +248,7 @@ class OpponentImage():
         e_dict = {
             's_random': lambda x: ef.simple_random(x),
             'mizutama': lambda x: ef.mizutama(x),
-            'rect': lambda x: ef.discontinuous_random()(x),
+            'rect': lambda x: ef.discontinuous_random(x),
             'slice': lambda x: ef.slice(x),
         }
 
@@ -266,12 +266,15 @@ class OpponentImage():
             else:
                 exec_effect = effect
             for e in exec_effect:
+                print(e)
                 dir_path = self.make_noise_dir(effect_name=e, target_name=target_name)
                 for i, img_path in tqdm(enumerate(imgs)):
+                    print(img_path)
                     img_bin = img_to_array(load_img(img_path, grayscale=grayscale, target_size=(size, size)))
                     # np.ravelは破壊的
-                    flat_img_bin = np.ravel(img_bin)
-                    effected_bin = e_dict[e](flat_img_bin).reshape(size, size, -1)
+                    # flat_img_bin = np.ravel(img_bin)
+                    # effected_bin = e_dict[e](flat_img_bin).reshape(size, size, -1)
+                    effected_bin = e_dict[e](img_bin).reshape(size, size, -1)
                     img_name = 'noise_{:03}.{}'.format(i, self.ext)
                     save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
 
