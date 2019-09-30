@@ -1,6 +1,7 @@
 #!/usr/local/var/pyenv/versions/anaconda3-5.2.0/envs/ml/bin/python
 import sys
 import argparse
+import pprint
 from crawler import system as crawler_api
 from ml import system as ml_api
 from ml.data_handling import system as data_api
@@ -46,19 +47,20 @@ def main():
     noise.make_noise()
     #ここまで
     targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
-
+    print('target_image_path')
+    pprint.pprint(targets)
+    print('not_target_image_path')
+    pprint.pprint(not_targets)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
-    print(len(x_train), len(x_test), len(y_train), len(y_test))
-    print(y_train)
-    print(y_test)
-    ml = ml_api.MachineLearning()
-    model = ml.build_model()
-    datas = (x_train, x_test, y_train, y_test)
-    es = True if p_args.train is 'True' or p_args.train is 'true' else False
-    made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
-    app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
-    app.debug = True
-    app.run(made_model_name)
+    print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
+    # ml = ml_api.MachineLearning()
+    # model = ml.build_model()
+    # datas = (x_train, x_test, y_train, y_test)
+    # es = True if p_args.train is 'True' or p_args.train is 'true' else False
+    # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
+    # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
+    # app.debug = True
+    # app.run(made_model_name)
 
 def print_model_arch(model):
     model.summary()
