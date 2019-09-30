@@ -3,6 +3,7 @@ import sys
 import os
 import gc
 import inspect
+import glob
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
@@ -67,18 +68,18 @@ class Kernel():
         datas_abspath = os.path.join(here, 'data/img')
         img_dir = os.listdir(datas_abspath)
         if split_tag:
-            target_dir = [d for d in img_dir if d.startswith(target_label)][0]
-            not_target_dir = [d for d in img_dir if not d == target_dir]
+            target_dir = [d for d in img_dir if d.startswith(target_label)]
+            not_target_dir = [d for d in img_dir if not d == target_dir[0]]
             result = (target_dir, not_target_dir)
         else:
             result = img_dir
         return result
 
 
-    def read_datas_dir(self, datas_dir, target_label):
+    def read_datas_dir(self, target, not_target, target_label, multi_value_mode=False):
         # todo:
         #get_img_dir()を利用し、それぞれのフォルダごとに変数に画像のフルパスをリスト形式で格納する
-
+        #multi_value_mode未実装
         """
         データ一覧を読み込む
         :return (target, not_target)
@@ -86,30 +87,47 @@ class Kernel():
         # kernel.py / data_handling / ml で3層掘り下げる
         here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
         datas_abspath = os.path.join(here, 'data/img')
-        target = []
-        not_target = []
-        #ターゲットの画像ディレクトリとそうで無いものの一覧を分け、indexをつけてそれぞれパスを獲得する
-        target_dir = [dir for dir in datas_dir if target_label in dir]
-        not_target_dir = [dir for dir in datas_dir if not target_label in dir]
-        print(target_dir, not_target_dir)
-        for idx, dir_name in enumerate(target_dir + not_target_dir):
-            dir_abspath = os.path.join(datas_abspath, dir_name)
-            for file in os.listdir(dir_abspath):
-                if file == '.DS_Store':
-                    continue
-                file_abspath = os.path.join(dir_abspath, file)
-                if idx == 0:
-                    target.append(file_abspath)
+        target_img_fullpath = []
+        not_target_img_fullpath = []
+
+        for i, label in enumerate([target, not_target]):
+            for d in label:
+                full_path = os.path.join(datas_abspath, d)
+                img_list = glob.glob(os.path.join(full_path, "*"))
+                if i == 0:
+                    #targetラベル
+                    target_img_fullpath += img_list
                 else:
-                    not_target.append(file_abspath)
-            # 1ラベル分読み込むたびsortする
-            target = sorted(target)
-            not_target = sorted(not_target)
-            print('target')
-            print(target)
-            print('not_target')
-            print(not_target)
-        return (target, not_target)
+                    not_target_img_fullpath += img_list
+
+        print(target_img_fullpath)
+
+        for pathbox in [target_img_fullpath, not_target_img_fullpath]:
+            pathbox = sorted(pathbox)
+
+        return (target_img_fullpath, not_target_img_fullpath)
+        #ターゲットの画像ディレクトリとそうで無いものの一覧を分け、indexをつけてそれぞれパスを獲得する
+        # target_dir = [dir for dir in datas_dir if target_label in dir]
+        # not_target_dir = [dir for dir in datas_dir if not target_label in dir]
+        # print(target_dir, not_target_dir)
+        # for idx, dir_name in enumerate(target_dir + not_target_dir):
+        #     dir_abspath = os.path.join(datas_abspath, dir_name)
+        #     for file in os.listdir(dir_abspath):
+        #         if file == '.DS_Store':
+        #             continue
+        #         file_abspath = os.path.join(dir_abspath, file)
+        #         if idx == 0:
+        #             target.append(file_abspath)
+        #         else:
+        #             not_target.append(file_abspath)
+        #     # 1ラベル分読み込むたびsortする
+        #     target = sorted(target)
+        #     not_target = sorted(not_target)
+        #     print('target')
+        #     print(target)
+        #     print('not_target')
+        #     print(not_target)
+        # return (target, not_target)
 
 
     def data_split(self, datas, validation=False):
