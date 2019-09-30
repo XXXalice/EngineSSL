@@ -67,8 +67,8 @@ class Kernel():
         datas_abspath = os.path.join(here, 'data/img')
         img_dir = os.listdir(datas_abspath)
         if split_tag:
-            target_dir = [dir for dir in img_dir if target_label in dir]
-            not_target_dir = img_dir.remove(target_dir[0])
+            target_dir = [d for d in img_dir if d.startswith(target_label)][0]
+            not_target_dir = [d for d in img_dir if not d == target_dir]
             result = (target_dir, not_target_dir)
         else:
             result = img_dir
