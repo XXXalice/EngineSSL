@@ -96,39 +96,14 @@ class Kernel():
                 img_list = glob.glob(os.path.join(full_path, "*"))
                 if i == 0:
                     #targetラベル
-                    target_img_fullpath += img_list
+                    target_img_fullpath.append(img_list)
                 else:
-                    not_target_img_fullpath += img_list
-
-        print(target_img_fullpath)
+                    not_target_img_fullpath.append(img_list)
 
         for pathbox in [target_img_fullpath, not_target_img_fullpath]:
             pathbox = sorted(pathbox)
 
         return (target_img_fullpath, not_target_img_fullpath)
-        #ターゲットの画像ディレクトリとそうで無いものの一覧を分け、indexをつけてそれぞれパスを獲得する
-        # target_dir = [dir for dir in datas_dir if target_label in dir]
-        # not_target_dir = [dir for dir in datas_dir if not target_label in dir]
-        # print(target_dir, not_target_dir)
-        # for idx, dir_name in enumerate(target_dir + not_target_dir):
-        #     dir_abspath = os.path.join(datas_abspath, dir_name)
-        #     for file in os.listdir(dir_abspath):
-        #         if file == '.DS_Store':
-        #             continue
-        #         file_abspath = os.path.join(dir_abspath, file)
-        #         if idx == 0:
-        #             target.append(file_abspath)
-        #         else:
-        #             not_target.append(file_abspath)
-        #     # 1ラベル分読み込むたびsortする
-        #     target = sorted(target)
-        #     not_target = sorted(not_target)
-        #     print('target')
-        #     print(target)
-        #     print('not_target')
-        #     print(not_target)
-        # return (target, not_target)
-
 
     def data_split(self, datas, validation=False):
         """
