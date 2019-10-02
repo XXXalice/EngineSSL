@@ -120,10 +120,10 @@ class Kernel():
         except Exception as err:
             sys.stdout.write(str(err))
         else:
-            print('splited datas. test:{test}  train:{train}'.format(test=len(self.x_train_raw), train=len(self.x_test_raw)))
+            print('splitted datas. test:{test}  train:{train}'.format(test=len(self.x_train_raw), train=len(self.x_test_raw)))
             return (self.x_train_raw, self.x_test_raw)
 
-    def data_preprocess_basic(self, splited_datas, gray=True, size=(100,100), label=0, precision=np.float32):
+    def data_preprocess_basic(self, splitted_datas, gray=True, size=(100,100), label=0, precision=np.float32):
         """
         単一語句のデータ前処理
         :param splited_datas:
@@ -138,7 +138,7 @@ class Kernel():
         self.x_test = []
         self.y_test = []
         size = [self.params['ml']['img_size_xy']]*2 if not self.params['ml']['img_size_xy'] == None else size
-        for tr_or_ts, valid in enumerate([splited_datas[0], splited_datas[1]]):
+        for tr_or_ts, valid in enumerate([splitted_datas[0], splitted_datas[1]]):
             for img_path in valid:
                 try:
                     img = load_img(img_path, color_mode='grayscale', target_size=size)
