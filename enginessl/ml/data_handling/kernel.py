@@ -164,40 +164,52 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def data_preprocess(self, targets=[], not_targets=[], flatten=True, color_mode='grayscale'):
+    def preprocess(self, targets, not_targets, color_mode='grayscale'):
         """
-        2つ以上の単語が与えられた際の前処理
-        画像のフルパスを受け取る
+        :param targets: 画像のフルパスのリスト
+        :param not_targets: 画像のフルパスのリスト
+        :param color_mode: グレースケール推奨
+        :return: ラベルの格納されたリスト
         """
-        def norm(x):
-            try:
-                x = np.asarray(x)
-            except:
-                pass
-            finally:
-                x = x.astype('float32')
-                x /= 255.0
-                return x
-
         x = []
         y = []
-        size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
-        for idx, datas in enumerate([targets, not_targets]):
-            for data in tqdm(datas):
-                img_bin = img_to_array(load_img(data, color_mode=color_mode, target_size=size))
-                x.append(img_bin)
-                y.append(idx)
-        y = np.asarray(y)
-        if flatten:
-            x = [np.ravel(img_bin) for img_bin in x]
-        x = norm(x)
-        # テストデータが完全に片方に固まってしまうバグの応急措置
-        # ESSLが使えない
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'])
-        # self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
-        processed_labels = self.__to_onehot([self.y_train, self.y_test])
-        self.y_train, self.y_test = processed_labels
-        return (self.x_train, self.x_test, self.y_train, self.y_test)
+
+
+
+    # def data_preprocess(self, targets=[], not_targets=[], flatten=True, color_mode='grayscale'):
+    #     """
+    #     2つ以上の単語が与えられた際の前処理
+    #     画像のフルパスを受け取る
+    #     """
+    #     def norm(x):
+    #         try:
+    #             x = np.asarray(x)
+    #         except:
+    #             pass
+    #         finally:
+    #             x = x.astype('float32')
+    #             x /= 255.0
+    #             return x
+    #
+    #     x = []
+    #     y = []
+    #     size = [self.params['ml']['img_size_xy']] * 2 if not self.params['ml']['img_size_xy'] == None else (100, 100)
+    #     for idx, datas in enumerate([targets, not_targets]):
+    #         for data in tqdm(datas):
+    #             img_bin = img_to_array(load_img(data, color_mode=color_mode, target_size=size))
+    #             x.append(img_bin)
+    #             y.append(idx)
+    #     y = np.asarray(y)
+    #     if flatten:
+    #         x = [np.ravel(img_bin) for img_bin in x]
+    #     x = norm(x)
+    #     # テストデータが完全に片方に固まってしまうバグの応急措置
+    #     # ESSLが使えない
+    #     self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'])
+    #     # self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=self.params['ml']['test_data_rate'], shuffle=False)
+    #     processed_labels = self.__to_onehot([self.y_train, self.y_test])
+    #     self.y_train, self.y_test = processed_labels
+    #     return (self.x_train, self.x_test, self.y_train, self.y_test)
 
     def __to_onehot(self, labels, classes=2):
         processed_labels = []

@@ -11,8 +11,8 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
 
     def get_builtup_data(self,targets=[], not_targets=[], flatten=False, color_mode='grayscale'):
         """
-        :return: tuple (self.x_train, self.x_test, self.y_train, self.y_test)
-        x shape: (-1, hw, hw, channel)
+        画像のフルパスを受け取る
+        :return: 正規化されたデータ、ラベル
         """
         return self.data_handling.data_preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
 
