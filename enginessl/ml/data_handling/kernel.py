@@ -164,6 +164,18 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
+    def preprocess(self, targets, not_targets, color_mode='grayscale'):
+        """
+        :param targets: 画像のフルパスのリスト
+        :param not_targets: 画像のフルパスのリスト
+        :param color_mode: グレースケール推奨
+        :return: ラベルの格納されたリスト
+        """
+        x = []
+        y = []
+
+
+
     def data_preprocess(self, targets=[], not_targets=[], flatten=True, color_mode='grayscale'):
         """
         2つ以上の単語が与えられた際の前処理
