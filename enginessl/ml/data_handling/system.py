@@ -14,7 +14,8 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         画像のフルパスを受け取る
         :return: 正規化されたデータ、ラベル
         """
-        return self.data_handling.data_preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
+        self.data_handling.split_train_test(targets=targets, not_targets=not_targets, reset=True)
+        return self.data_handling.preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
 
     def read_dirs(self, target_label):
         """
