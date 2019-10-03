@@ -166,6 +166,7 @@ class Kernel():
 
     def preprocess(self, targets, not_targets, color_mode='grayscale'):
         """
+        keras最強の最強のImageDataGenerator使用版
         :param targets: 画像のフルパスのリスト
         :param not_targets: 画像のフルパスのリスト
         :param color_mode: グレースケール推奨
