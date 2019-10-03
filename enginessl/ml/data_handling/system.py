@@ -16,7 +16,7 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         """
         return self.data_handling.data_preprocess(targets=targets, not_targets=not_targets, flatten=flatten, color_mode=color_mode)
 
-    def read_dirs(self, datas_dir, target_label):
+    def read_dirs(self, target_label):
         """
         :return: target type=list
                     ターゲット画像のリストをくるんだリスト
