@@ -4,6 +4,7 @@ import os
 import gc
 import inspect
 import glob
+import shutil
 from keras.preprocessing.image import load_img, img_to_array, array_to_img, save_img , ImageDataGenerator
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
@@ -164,7 +165,33 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def preprocess(self, targets, not_targets, color_mode='grayscale'):
+    def split_train_test(self, targets, not_targets, reset=True):
+        """
+        ImageDataGeneratorのために画像をフォルダごとに分ける
+        :param targets:
+        :param not_targets:
+        :return:
+        """
+        here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
+        stack_dir = os.path.join(here, 'data', '.prepare')
+        makes = ['', 'train', 'validation']
+        try:
+            for work in makes:
+                if reset:
+                    try:
+                        shutil.rmtree(os.path.join(stack_dir, work))
+                    except:
+                        sys.stderr.write('\n not exist prepare dir!')
+                os.makedirs(os.path.join(stack_dir, work))
+        except:
+            sys.stderr.write('\n cant making prepare dirs.')
+            return IOError()
+
+        rate = self.params['ml']['test_data_rate']
+
+
+
+    def preprocess(self, targets_dir, not_targets_dir, color_mode='grayscale'):
         """
         keras最強の最強のImageDataGenerator使用版
         :param targets: 画像のフルパスのリスト
@@ -174,6 +201,9 @@ class Kernel():
         """
         x = []
         y = []
+
+        train_datagen = ImageDataGenerator(rescale=1./255)
+        test_datagen = ImageDataGenerator(rescale=1./255)
 
 
 
