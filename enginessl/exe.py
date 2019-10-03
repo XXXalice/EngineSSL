@@ -46,7 +46,7 @@ def main():
     noise = data.oppo_kernel(target_dir=nt_image_tanks ,image_tanks=image_tanks)
     noise.make_noise()
     #ここまで
-    targets, not_targets = data.read_dirs(datas_dir=data.data_handling.datas_dir, target_label=target_label)
+    targets, not_targets = data.read_dirs(target_label=target_label)
     print('target_image_path')
     pprint.pprint(targets)
     print('not_target_image_path')
