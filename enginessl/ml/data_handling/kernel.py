@@ -188,6 +188,9 @@ class Kernel():
 
         # rateごとに各フォルダに配置する
         rate = self.params['ml']['test_data_rate']
+        for i, label in enumerate([targets, not_targets]):
+            for img in label:
+                pass
 
 
 
