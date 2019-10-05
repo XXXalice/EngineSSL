@@ -164,7 +164,7 @@ class Kernel():
         print('data shape {}'.format(self.x_train[0].shape))
         print('train {}  test {}'.format(len(self.x_train), len(self.x_test)))
 
-    def split_train_test(self, targets, not_targets, reset=True):
+    def split_train_test(self, targets, not_targets):
         """
         ImageDataGeneratorのために画像をフォルダごとに分ける
         :param targets:
@@ -173,23 +173,19 @@ class Kernel():
         """
         here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
         stack_dir = os.path.join(here, 'data', '.prepare')
+        shutil.rmtree(stack_dir)
         makes = ['', 'train', 'validation']
         for work in makes:
-            if reset:
-                try:
-                    shutil.rmtree(os.path.join(stack_dir, work))
-                except:
-                    sys.stderr.write('\n not exist prepare dir!')
             os.makedirs(os.path.join(stack_dir, work))
-            with open(os.path.join(stack_dir, work, 'label.txt', 'w')) as f:
+            with open(os.path.join(stack_dir, work, 'label.txt'), 'w') as f:
                 pass
 
         # rateごとに各フォルダに配置する
         rate = self.params['ml']['test_data_rate']
         work_dir = None
-        f_train = open(os.path.join(stack_dir, 'train', 'label.txt', 'w'))
-        f_validation = open(os.path.join(stack_dir, 'validation', 'label.txt', 'w'))
-        for i, label in enumerate([targets, not_targets]):
+        f_train = open(os.path.join(stack_dir, 'train', 'label.txt'), 'w')
+        f_validation = open(os.path.join(stack_dir, 'validation', 'label.txt'), 'w')
+        for i, label in enumerate([*targets, *not_targets]):
             for num, img in enumerate(label):
                 if num < int(rate * len(label)):
                     #validationフォルダに入れる際
@@ -200,8 +196,10 @@ class Kernel():
                     work_dir = 'train'
                     write_label_file = f_train
                 set_dir = os.path.join(stack_dir, work_dir)
-                new = shutil.move(img, set_dir)
-                write_label_file.write(i + '\n')
+                _ = shutil.move(img, set_dir)
+                write_label_file.write(str(i) + '\n')
+        f_train.close()
+        f_validation.close()
 
 
 
