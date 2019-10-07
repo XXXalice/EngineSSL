@@ -166,7 +166,6 @@ class Kernel():
 
     def split_train_test(self, targets, not_targets):
         """
-        ImageDataGeneratorのために画像をフォルダごとに分ける
         :param targets:
         :param not_targets:
         :return:
@@ -204,24 +203,22 @@ class Kernel():
                 write_label_file.write(str(i) + '\n')
         f_train.close()
         f_validation.close()
+        return os.path.join(stack_dir, 'train'), os.path.join(stack_dir, 'validation')
 
 
 
 
 
-    def preprocess(self, targets_dir, not_targets_dir, color_mode='grayscale'):
+    def preprocess(self, train, valid, color_mode='grayscale'):
         """
-        keras最強の最強のImageDataGenerator使用版
-        :param targets: 画像のフルパスのリスト
-        :param not_targets: 画像のフルパスのリスト
+        :param train: 学習用画像フォルダ
+        :param valid: テスト用画像フォルダ
         :param color_mode: グレースケール推奨
         :return: ラベルの格納されたリスト
         """
         x = []
         y = []
 
-        train_datagen = ImageDataGenerator(rescale=1./255)
-        test_datagen = ImageDataGenerator(rescale=1./255)
 
 
 
