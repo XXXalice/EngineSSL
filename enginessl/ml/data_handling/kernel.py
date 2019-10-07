@@ -217,9 +217,7 @@ class Kernel():
         :return: ラベルの格納されたリスト
         """
         train_x = []
-        train_y = []
         test_x = []
-        test_y = []
         train_label_file = open(os.path.join(train, 'label.txt'), 'r')
         valid_label_file = open(os.path.join(valid, 'label.txt'), 'r')
         try:
