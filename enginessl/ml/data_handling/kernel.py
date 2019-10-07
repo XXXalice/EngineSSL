@@ -216,10 +216,31 @@ class Kernel():
         :param color_mode: グレースケール推奨
         :return: ラベルの格納されたリスト
         """
-        x = []
-        y = []
+        train_x = []
+        train_y = []
+        test_x = []
+        test_y = []
+        train_label_file = open(os.path.join(train, 'label.txt'), 'r')
+        valid_label_file = open(os.path.join(valid, 'label.txt'), 'r')
+        try:
+            train_label = [int(label.strip()) for label in train_label_file.readlines()]
+            valid_label = [int(label.strip()) for label in valid_label_file.readlines()]
+        finally:
+            train_label_file.close()
+            valid_label_file.close()
+        imgs = glob.glob(os.path.join(train, "*.png"))
+        class_num = max(train_label) + 1
+        for idx, img in enumerate(imgs):
+            img_bin = img_to_array(load_img(img, color_mode=color_mode, target_size=(self.params['ml']['img_size_xy'], self.params['ml']['img_size_xy']))) / 255.0
+            train_x.append(img_bin)
+        train_y = to_categorical(train_label, num_classes=class_num)
+        imgs = glob.glob(os.path.join(valid, "*.png"))
+        for idx, img in enumerate(imgs):
+            img_bin = img_to_array(load_img(img, color_mode=color_mode, target_size=(self.params['ml']['img_size_xy'], self.params['ml']['img_size_xy']))) / 255.0
+            test_x.append(img_bin)
+        test_y = to_categorical(valid_label, num_classes=class_num)
 
-
+        return train_x, train_y, test_x, test_y
 
 
     # def data_preprocess(self, targets=[], not_targets=[], flatten=True, color_mode='grayscale'):
