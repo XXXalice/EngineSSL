@@ -9,13 +9,13 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         self.data_handling = kernel.Kernel(image_tanks)
         # print('labels :{}'.format(self.oppo.labels))
 
-    def get_builtup_data(self,targets=[], not_targets=[], flatten=False, color_mode='grayscale'):
+    def get_builtup_data(self,targets=[], not_targets=[], color_mode='grayscale'):
         """
         画像のフルパスを受け取る
         :return: 正規化されたデータ、ラベル
         """
         train, valid = self.data_handling.split_train_test(targets=targets, not_targets=not_targets)
-        self.data_handling.preprocess(train=train, valid=valid, color_mode=color_mode)
+        return self.data_handling.preprocess(train=train, valid=valid, color_mode=color_mode)
 
     def read_dirs(self, target_label):
         """
