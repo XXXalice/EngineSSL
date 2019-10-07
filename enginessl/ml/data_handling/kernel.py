@@ -325,7 +325,7 @@ class OpponentImage():
                     # flat_img_bin = np.ravel(img_bin)
                     # effected_bin = e_dict[e](flat_img_bin).reshape(size, size, -1)
                     effected_bin = e_dict[e](img_bin).reshape(size, size, -1)
-                    img_name = 'noise_{:03}.{}'.format(i, self.ext)
+                    img_name = '{}_{:03}.{}'.format(e ,i, self.ext)
                     save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
 
 
