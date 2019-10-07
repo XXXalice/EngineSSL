@@ -52,7 +52,7 @@ def main():
     print('not_target_image_path')
     pprint.pprint(not_targets)
     # WIP
-    # x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, flatten=False, color_mode='grayscale')
+    x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, color_mode='grayscale')
     # print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
     # ml = ml_api.MachineLearning()
     # model = ml.build_model()
