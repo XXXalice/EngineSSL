@@ -13,7 +13,7 @@ crawler:
 
 ml:
   model: 'origin' # 'origin': originalNN in ./ml/network.py
-  use_easymode: True # use ./network_easymode.py
+  use_easymode: False # use ./network_easymode.py
   test_data_rate: 0.3
   grayscale: True
   img_size_xy: 100 # must 71 < num
