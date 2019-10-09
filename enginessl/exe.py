@@ -53,12 +53,12 @@ def main():
     pprint.pprint(not_targets)
     # WIP
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, color_mode='grayscale')
-    # print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
-    # ml = ml_api.MachineLearning()
-    # model = ml.build_model()
-    # datas = (x_train, x_test, y_train, y_test)
-    # es = True if p_args.train is 'True' or p_args.train is 'true' else False
-    # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
+    print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
+    ml = ml_api.MachineLearning()
+    model = ml.build_model()
+    datas = (x_train, x_test, y_train, y_test)
+    es = True if p_args.train is 'True' or p_args.train is 'true' else False
+    made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
     # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     # app.debug = True
     # app.run(made_model_name)
