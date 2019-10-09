@@ -20,6 +20,7 @@ class Kernel():
                 self.user_nn = network.TestNet(self.params)
         self.ances_model = None
         self.train_data = None
+        return self.user_nn
 
     def generate_model(self, app='MobileNetV2'):
         #easymodeがオンになって居た場合それを使用する
