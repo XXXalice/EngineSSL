@@ -16,7 +16,7 @@ class Kernel():
                 import network_easymode_highspeed
                 self.user_nn = network_easymode_highspeed.NetworkHighspeed(self.params)
             else:
-                import network
+                from . import network
                 self.user_nn = network.TestNet(self.params)
         self.ances_model = None
         self.train_data = None

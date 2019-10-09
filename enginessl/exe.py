@@ -58,7 +58,7 @@ def main():
     model = ml.build_model()
     datas = (x_train, x_test, y_train, y_test)
     es = True if p_args.train is 'True' or p_args.train is 'true' else False
-    made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
+    # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
     # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     # app.debug = True
     # app.run(made_model_name)
