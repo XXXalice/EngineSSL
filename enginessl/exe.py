@@ -29,6 +29,7 @@ def main():
     c.crawl()
     img_folpath.append(c.save_img(rtn_folpath=True))
     target_folpath.append(c.save_img(rtn_folpath=True))
+    es = True if p_args.train is 'True' or p_args.train is 'true' else False
 
     #ターゲットではない画像収集用APIをインスタンス化
     if p_args.nottarget != None:
@@ -57,7 +58,6 @@ def main():
     ml = ml_api.MachineLearning()
     model = ml.build_model()
     datas = (x_train, x_test, y_train, y_test)
-    es = True if p_args.train is 'True' or p_args.train is 'true' else False
     # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
     # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     # app.debug = True
