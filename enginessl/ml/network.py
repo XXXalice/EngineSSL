@@ -6,4 +6,5 @@ class TestNet():
     def __init__(self, params):
         self.wh = params['ml']['img_size_xy']
 
-
+    def say(self, message):
+        print(message)
