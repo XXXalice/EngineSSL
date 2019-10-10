@@ -56,8 +56,8 @@ def main():
     print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
     ml = ml_api.MachineLearning()
     # WIP
-    datas = (x_train, x_test, y_train, y_test)
-    model = ml.build_model(num_classes=len(x_test[0]))
+    datas = (x_train, y_train, x_test, y_test)
+    model = ml.build_model(num_classes=len(y_train[0]))
     model_name = ml.train(model=model, datas=datas, name=p_args.target)
     # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     # app.debug = True
