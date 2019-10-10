@@ -8,9 +8,9 @@ class TestNet():
         self.channel = 1 if params['ml']['grayscale'] == True else 3
 
 
-    def generate_model(self, datas):
+    def generate_model(self, num_classes):
         self.x_train, self.x_test, self.y_train, self.y_test = datas
-        self.num_classes = len(self.x_test[0])
+        self.num_classes = num_classes
         model = Sequential()
         model.add(Conv2D(32, (3, 3), padding='same', activation='relu',input_shape=(self.hw, self.hw, self.channel)))
         model.add(Conv2D(32, (3, 3), activation='relu'))
