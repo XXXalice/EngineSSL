@@ -8,8 +8,9 @@ from keras.optimizers import Adam
 
 class TestNet():
     def __init__(self, params):
-        self.hw = params['ml']['img_size_xy']
-        self.channel = 1 if params['ml']['grayscale'] == True else 3
+        self.params = params
+        self.hw = self.params['ml']['img_size_xy']
+        self.channel = 1 if self.params['ml']['grayscale'] == True else 3
 
 
     def generate_model(self, num_classes):
@@ -41,14 +42,14 @@ class TestNet():
         self.hist = model.fit(
             x_train,
             y_train,
-            batch_size=10,
-            epochs=5,
+            batch_size=5,
+            epochs=30,
             verbose=1,
             validation_data=(x_test, y_test),
             callbacks=[es_cb] if es else None
         )
         os.makedirs('./model', exist_ok=True)
-        model_name = name + self.param['ml']['savemodel_ext']
+        model_name = name + self.params['ml']['savemodel_ext']
         model.save(os.path.join('model', model_name))
         print('the operation has ended.')
         return model_name
