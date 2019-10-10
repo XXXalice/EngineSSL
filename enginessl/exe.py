@@ -54,7 +54,6 @@ def main():
     pprint.pprint(not_targets)
     x_train, x_test, y_train, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, color_mode='grayscale')
     print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
-    print('x_train.shape:', x_train, ' x_test.shape:', x_test, 'y_train.shape:', y_train, 'y_test.shape:', y_test)
     ml = ml_api.MachineLearning()
     # WIP
     datas = (x_train, x_test, y_train, y_test)
