@@ -9,10 +9,9 @@ class MachineLearning(mlkernel.Kernel):
         param_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'param.yml')
         self.ml = mlkernel.Kernel(param_path)
         self.user_nn = self.ml.user_nn
-        self.user_nn.say('hello')
 
-    def build_model(self):
-        self.model = self.ml.generate_model()
+    def build_model(self, datas):
+        self.model = self.user_nn.generate_model(datas=datas)
         return self.model
 
     def train_model(self, model, datas, save_name, es=True):
