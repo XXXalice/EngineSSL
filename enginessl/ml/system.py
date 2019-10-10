@@ -1,7 +1,6 @@
 import inspect
 import os
 from . import kernel as mlkernel
-from . import network
 
 class MachineLearning(mlkernel.Kernel):
 
@@ -10,13 +9,12 @@ class MachineLearning(mlkernel.Kernel):
         self.ml = mlkernel.Kernel(param_path)
         self.user_nn = self.ml.user_nn
 
-    def build_model(self, datas):
-        self.model = self.user_nn.generate_model(datas=datas)
+    def build_model(self, num_classes):
+        self.model = self.user_nn.generate_model(num_classes=num_classes)
         return self.model
 
-    def train_model(self, model, datas, save_name, es=True):
-        save_name = save_name.split('_')[0]
-        return self.ml.training(model=model, datas=datas, save_name=save_name, es=es)
+    def train(self, name, model, datas, es):
+        return self.user_nn.train(name=name ,model=model, datas=datas, es=es)
 
     def fine_tuning_model(self):
         pass
