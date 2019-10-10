@@ -57,7 +57,7 @@ def main():
     ml = ml_api.MachineLearning()
     # WIP
     datas = (x_train, x_test, y_train, y_test)
-    model = ml.build_model(datas=datas)
+    model = ml.build_model(num_classes=len(x_test[0]))
     # made_model_name = ml.train_model(model=model, datas=datas, save_name=image_tanks[0], es=es)
     # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
     # app.debug = True
