@@ -238,7 +238,7 @@ class Kernel():
             test_x.append(img_bin)
         test_y = to_categorical(valid_label, num_classes=class_num)
         train_x = np.array(train_x, dtype=np.float32)
-        test_x = np.array(test_y, dtype=np.float32)
+        test_x = np.array(test_x, dtype=np.float32)
 
         return train_x, train_y, test_x, test_y
 
