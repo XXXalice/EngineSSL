@@ -43,7 +43,7 @@ class TestNet():
                 x_train,
                 y_train,
                 batch_size=10,
-                epoces=5,
+                epochs=5,
                 verbose=1,
                 validation_data=(x_test, y_test),
                 callbacks=[es_cb]
