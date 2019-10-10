@@ -237,6 +237,8 @@ class Kernel():
             img_bin = img_to_array(load_img(img, color_mode=color_mode, target_size=(self.params['ml']['img_size_xy'], self.params['ml']['img_size_xy']))) / 255.0
             test_x.append(img_bin)
         test_y = to_categorical(valid_label, num_classes=class_num)
+        train_x = np.array(train_x, dtype=np.float32)
+        test_x = np.array(test_y, dtype=np.float32)
 
         return train_x, train_y, test_x, test_y
 
