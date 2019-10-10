@@ -1,6 +1,10 @@
-#use original NN (for expart)
+import os
+import sys
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
+from keras.callbacks import EarlyStopping
+from keras.optimizers import Adam
+
 
 class TestNet():
     def __init__(self, params):
@@ -9,7 +13,6 @@ class TestNet():
 
 
     def generate_model(self, num_classes):
-        self.x_train, self.x_test, self.y_train, self.y_test = datas
         self.num_classes = num_classes
         model = Sequential()
         model.add(Conv2D(32, (3, 3), padding='same', activation='relu',input_shape=(self.hw, self.hw, self.channel)))
@@ -25,5 +28,35 @@ class TestNet():
         model.add(Dense(self.num_classes, activation='softmax'))
         return model
 
-    def say(self, message):
+    def train(self, name, model, datas, es=True, optimizer=Adam()):
+        x_train, x_test, y_train, y_test = datas
+        if es:
+            es_cb = EarlyStopping(monitor='val_loss', patience=3, verbose=0, mode='auto')
+
+        try:
+            model.compile(
+                loss='categorical_crossentropy',
+                optimizer=optimizer,
+                metrics=['accuracy']
+            )
+            self.hist = model.fit(
+                x_train,
+                y_train,
+                batch_size=10,
+                epoces=5,
+                verbose=1,
+                validation_data=(x_test, y_test),
+                callbacks=[es_cb]
+            )
+            os.makedirs('./model', exist_ok=True)
+            model_name = name + self.param['ml']['savemodel_ext']
+            model.save(os.path.join('model', model_name))
+            print('the operation has ended.')
+            return model_name
+        except Exception as e:
+            sys.stderr.write(str(e)+'\n')
+            sys.exit(0)
+
+
+    def __say(self, message):
         print(message)
