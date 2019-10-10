@@ -15,7 +15,7 @@ class TestNet():
     def generate_model(self, num_classes):
         self.num_classes = num_classes
         model = Sequential()
-        model.add(Conv2D(32, (3, 3), padding='same', activation='relu',input_shape=(self.hw, self.hw, self.channel)))
+        model.add(Conv2D(32, (3, 3), activation='relu',input_shape=(self.hw, self.hw, self.channel)))
         model.add(Conv2D(32, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(rate=0.25))
@@ -29,33 +29,29 @@ class TestNet():
         return model
 
     def train(self, name, model, datas, es=True, optimizer=Adam()):
-        x_train, x_test, y_train, y_test = datas
+        x_train, y_train, x_test, y_test = datas
         if es:
             es_cb = EarlyStopping(monitor='val_loss', patience=3, verbose=0, mode='auto')
 
-        try:
-            model.compile(
-                loss='categorical_crossentropy',
-                optimizer=optimizer,
-                metrics=['accuracy']
-            )
-            self.hist = model.fit(
-                x_train,
-                y_train,
-                batch_size=10,
-                epochs=5,
-                verbose=1,
-                validation_data=(x_test, y_test),
-                callbacks=[es_cb]
-            )
-            os.makedirs('./model', exist_ok=True)
-            model_name = name + self.param['ml']['savemodel_ext']
-            model.save(os.path.join('model', model_name))
-            print('the operation has ended.')
-            return model_name
-        except Exception as e:
-            sys.stderr.write(str(e)+'\n')
-            sys.exit(0)
+        model.compile(
+            loss='categorical_crossentropy',
+            optimizer=optimizer,
+            metrics=['accuracy']
+        )
+        self.hist = model.fit(
+            x_train,
+            y_train,
+            batch_size=10,
+            epochs=5,
+            verbose=1,
+            validation_data=(x_test, y_test),
+            callbacks=[es_cb] if es else None
+        )
+        os.makedirs('./model', exist_ok=True)
+        model_name = name + self.param['ml']['savemodel_ext']
+        model.save(os.path.join('model', model_name))
+        print('the operation has ended.')
+        return model_name
 
 
     def __say(self, message):
