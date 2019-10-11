@@ -206,9 +206,6 @@ class Kernel():
         return os.path.join(stack_dir, 'train'), os.path.join(stack_dir, 'validation')
 
 
-
-
-
     def preprocess(self, train, valid, color_mode='grayscale'):
         """
         :param train: 学習用画像フォルダ
@@ -323,6 +320,7 @@ class OpponentImage():
             'rect': lambda x: ef.discontinuous_random(x),
             'slice': lambda x: ef.slice(x),
         }
+        self.labels = e_dict.keys()
 
         try:
             imgs = sorted(os.listdir(target))
@@ -349,6 +347,8 @@ class OpponentImage():
                     effected_bin = e_dict[e](img_bin).reshape(size, size, -1)
                     img_name = '{}_{:03}.{}'.format(e ,i, self.ext)
                     save_img(path=os.path.join(dir_path, img_name), x=effected_bin)
+
+        return self.labels
 
 
     def make_noise_dir(self, effect_name, target_name):

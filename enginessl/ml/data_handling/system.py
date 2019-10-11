@@ -17,6 +17,9 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         train, valid = self.data_handling.split_train_test(targets=targets, not_targets=not_targets)
         return self.data_handling.preprocess(train=train, valid=valid, color_mode=color_mode)
 
+    def get_label_name(self):
+        self.data_handling
+
     def read_dirs(self, target_label):
         """
         :return: target type=list
@@ -38,9 +41,10 @@ class DataHandling(kernel.OpponentImage ,kernel.Kernel):
         self.oppo = kernel.OpponentImage(target_dir=target_dir ,image_tanks=image_tanks, params=self.data_handling.params)
         return self.oppo
 
-    def make_noise(self):
+    def make_noise(self, target):
         print('Making noise data.')
-        self.oppo.make_noise()
+        labels = self.oppo.make_noise()
+        return labels.insert(0, target)
 
     def get_builtup_data_include_noise(self):
         """
