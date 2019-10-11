@@ -16,15 +16,13 @@ class TestNet():
     def generate_model(self, num_classes):
         self.num_classes = num_classes
         model = Sequential()
-        model.add(Conv2D(32, (3, 3), activation='relu',input_shape=(self.hw, self.hw, self.channel)))
-        model.add(Conv2D(32, (3, 3), activation='relu'))
+        model.add(Conv2D(16, (3, 3), activation='relu',input_shape=(self.hw, self.hw, self.channel)))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(rate=0.25))
-        model.add(Conv2D(64, (3, 3), activation='relu'))
-        model.add(Conv2D(64, (3, 3), activation='relu'))
+        model.add(Conv2D(32, (3, 3), activation='relu'))
         model.add(Dropout(rate=0.25))
         model.add(Flatten())
-        model.add(Dense(512, activation='relu'))
+        model.add(Dense(256, activation='relu'))
         model.add(Dropout(rate=0.25))
         model.add(Dense(self.num_classes, activation='softmax'))
         return model
@@ -32,7 +30,7 @@ class TestNet():
     def train(self, name, model, datas, es=True, optimizer=Adam()):
         x_train, y_train, x_test, y_test = datas
         if es:
-            es_cb = EarlyStopping(monitor='val_loss', patience=3, verbose=0, mode='auto')
+            es_cb = EarlyStopping(monitor='val_loss', patience=7, verbose=1, mode='auto')
 
         model.compile(
             loss='categorical_crossentropy',

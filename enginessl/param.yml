@@ -1,5 +1,5 @@
 crawler:
-  target_num: 20
+  target_num: 50
   user_agent: 'Mozilla/5.0'
   mail: 'euthanasia045@gmail.com'
   wait_sec: 0.1
@@ -17,7 +17,7 @@ ml:
   test_data_rate: 0.3
   grayscale: True
   img_size_xy: 100 # must 71 < num
-  savemodel_ext: 'h5'
+  savemodel_ext: '.h5'
 
 oppoimg:
   decay: 0.3
