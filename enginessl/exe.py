@@ -45,7 +45,7 @@ def main():
     print(image_tanks)
     data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
     noise = data.oppo_kernel(target_dir=nt_image_tanks ,image_tanks=image_tanks)
-    noise.make_noise()
+    labels = noise.make_noise()
     #ここまで
     targets, not_targets = data.read_dirs(target_label=target_label)
     print('target_image_path')
