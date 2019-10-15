@@ -223,13 +223,13 @@ class Kernel():
         finally:
             train_label_file.close()
             valid_label_file.close()
-        imgs = glob.glob(os.path.join(train, "*.png"))
+        imgs = sorted(glob.glob(os.path.join(train, "*.png")))
         class_num = max(train_label) + 1
         for idx, img in enumerate(imgs):
             img_bin = img_to_array(load_img(img, color_mode=color_mode, target_size=(self.params['ml']['img_size_xy'], self.params['ml']['img_size_xy']))) / 255.0
             train_x.append(img_bin)
         train_y = to_categorical(train_label, num_classes=class_num)
-        imgs = glob.glob(os.path.join(valid, "*.png"))
+        imgs = sorted(glob.glob(os.path.join(valid, "*.png")))
         for idx, img in enumerate(imgs):
             img_bin = img_to_array(load_img(img, color_mode=color_mode, target_size=(self.params['ml']['img_size_xy'], self.params['ml']['img_size_xy']))) / 255.0
             test_x.append(img_bin)
