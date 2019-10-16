@@ -14,8 +14,7 @@
 
         </form>
             {% if img_path %}
-                <p><img src="{{ img_path }}"></p>
-                <p>{{ img_path }}</p>
+                <p><img src="/{{ img_path }}"></p>
             {% endif %}
         <div id="predicted_status">
             {% if result %}
