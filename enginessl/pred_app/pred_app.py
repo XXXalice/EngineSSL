@@ -29,7 +29,7 @@ class PredApp:
         self.graph = tf.get_default_graph()
         self.log_path = self.__make_log()
 
-    def run(self, made_model_name):
+    def run(self, model_name):
         @self.app.route('/')
         def admin_test():
             return render_template('admin.html')
@@ -44,20 +44,20 @@ class PredApp:
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
                         img_path = os.path.join(os.getcwd(), 'uploads', fname)
                         try:
-                            model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], made_model_name))
+                            model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], model_name))
                             print(img_path)
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
                             result_class = self.classes[result_status[0].argmax()]
-                            result = [result_class, result_status[0]]
+                            result = [result_class, result_status]
 
                         except Exception as e:
                             return render_template('index.html', img_path=img_path, result=str(e))
 
                         if request.form.get('log'):
                             self.__write_log(log_path=self.log_path,
-                                             model=made_model_name,
+                                             model=model_name,
                                              image=img_path.split('/')[-1],
                                              result=result_class,
                                              result_value=str(result_status[0][result_status[0].argmax()])
