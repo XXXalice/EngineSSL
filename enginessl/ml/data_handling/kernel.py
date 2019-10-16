@@ -320,7 +320,7 @@ class OpponentImage():
             'rect': lambda x: ef.discontinuous_random(x),
             'slice': lambda x: ef.slice(x),
         }
-        self.labels = list(e_dict.keys())
+        self.labels = sorted(list(e_dict.keys()))
 
         try:
             imgs = sorted(os.listdir(target))
