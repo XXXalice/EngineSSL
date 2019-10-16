@@ -58,9 +58,9 @@ def main():
     datas = (x_train, y_train, x_test, y_test)
     model = ml.build_model(num_classes=len(y_train[0]))
     model_name = ml.train(model=model, datas=datas, name=p_args.target)
-    # app = pred_app.PredApp(image_tanks[0], 'not_{}'.format(image_tanks[0]))
-    # app.debug = True
-    # app.run(made_model_name)
+    app = pred_app.PredApp(labels)
+    app.debug = True
+    app.run(model_name=model_name)
 
 def print_model_arch(model):
     model.summary()
