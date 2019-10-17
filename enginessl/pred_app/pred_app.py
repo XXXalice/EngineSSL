@@ -19,6 +19,7 @@ class PredApp:
         self.app = Flask(__name__, static_url_path="")
         self.classes = args if len(args) != 1 else args[0]
         self.img_size = 100
+        print(self.classes)
         self.upload_folder = os.path.join(here, 'uploads')
         os.makedirs(self.upload_folder, exist_ok=True)
         self.app.config['UPLOAD_FOLDER'] = self.upload_folder
@@ -42,9 +43,11 @@ class PredApp:
                     if img_file and self.__allowed_file(img_file.filename):
                         fname = secure_filename(img_file.filename)
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
-                        img_path = os.path.join('uploads', fname)
+                        img_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]), 'uploads', fname)
                         try:
                             model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], model_name))
+                            print(img_path)
+                            print(os.listdir())
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
@@ -52,6 +55,7 @@ class PredApp:
                             result = [result_class, result_status]
 
                         except Exception as e:
+                            print(e)
                             return render_template('index.html', img_path=img_path, result=str(e))
 
                         if request.form.get('log'):
