@@ -45,8 +45,6 @@ class PredApp:
                         img_path = os.path.join('uploads', fname)
                         try:
                             model = self.__load_model(os.path.join(self.app.config['MODEL_DIR'], model_name))
-                            print(img_path)
-                            print(os.listdir())
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
