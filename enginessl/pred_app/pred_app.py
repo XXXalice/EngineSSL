@@ -56,7 +56,7 @@ class PredApp:
 
                         except Exception as e:
                             print(e)
-                            return render_template('index.html', img_path=img_path, result=str(e))
+                            return render_template('index.html', img_path='uploads/{}'.format(fname), result=str(e))
 
                         if request.form.get('log'):
                             self.__write_log(log_path=self.log_path,
@@ -65,7 +65,7 @@ class PredApp:
                                              result=result_class,
                                              result_value=str(result_status[0][result_status[0].argmax()])
                                              )
-                        return render_template('index.html', img_path=img_path, result=result)
+                        return render_template('index.html', img_path='uploads/{}'.format(fname), result=result)
                     else:
                         return '''
                         <p>許可されていない拡張子です</p>
