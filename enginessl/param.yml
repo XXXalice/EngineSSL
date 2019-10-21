@@ -25,3 +25,4 @@ oppoimg:
 
 predictapp:
   save_inferenced_img: True
+  bias: 96.5
