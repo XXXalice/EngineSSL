@@ -18,7 +18,7 @@ def preprocessing_judgement(pred):
 
 
 def bias_judgement(score, threshold):
-    if score >= threshold:
+    if score >= float(threshold):
         return 'target'
     else:
         return 'not_target'
