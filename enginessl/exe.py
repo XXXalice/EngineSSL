@@ -8,7 +8,7 @@ from ml.data_handling import system as data_api
 from etc import system_metadata as opt
 from common_handler.hyper_handler import get_static_labels
 from etc import wordart
-from pred_app import auto_startup, pred_app
+from pred_app import pred_app
 
 
 def main():

@@ -8,7 +8,7 @@ from flask import Flask, request, send_from_directory, render_template, redirect
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
-from app_system.kernel import preprocessing_judgement
+from .app_system.kernel import preprocessing_judgement
 
 # measure of multi threads bug in keras.
 import tensorflow as tf
