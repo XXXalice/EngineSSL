@@ -8,6 +8,7 @@ from flask import Flask, request, send_from_directory, render_template, redirect
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
+from app_system.kernel import preprocessing_judgement
 
 # measure of multi threads bug in keras.
 import tensorflow as tf
@@ -51,8 +52,9 @@ class PredApp:
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
-                            result_class = self.classes[result_status[0].argmax()]
-                            result = [result_class, result_status]
+                            # result_class = self.classes[result_status[0].argmax()]
+                            # result = [result_class, result_status]
+                            result = [preprocessing_judgement(result_status), result_status[0]]
 
                         except Exception as e:
                             print(e)
