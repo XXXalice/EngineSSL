@@ -64,7 +64,7 @@ class PredApp:
                             self.__write_log(log_path=self.log_path,
                                              model=model_name,
                                              image=img_path.split('/')[-1],
-                                             result=result_class,
+                                             result=preprocessing_judgement(result_status),
                                              result_value=str(result_status[0][result_status[0].argmax()])
                                              )
                         return render_template('index.html', img_path='uploads/{}'.format(fname), result=result)
