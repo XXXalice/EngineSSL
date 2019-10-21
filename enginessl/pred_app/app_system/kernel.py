@@ -8,14 +8,20 @@ def preprocessing_judgement(pred):
     :param pred: model.predict()の戻り値
     :return: 未定
     """
-    if pred[0].argmax() != 0:
-        # 判断がnot_targetだったら
+    if pred[0].argmax() == 0:
+        # 判断がtargetだったら
         params = read_yaml()
-        bias_judgement(score=pred[0].max(), threshold=params['predictapp']['bias'])
+        result = bias_judgement(score=pred[0].max(), threshold=params['predictapp']['bias'])
+    else:
+        result = 'not_target'
+        return result
 
 
 def bias_judgement(score, threshold):
-    pass
+    if score >= threshold:
+        return 'target'
+    else:
+        return 'not_target'
 
 
 def read_yaml():
