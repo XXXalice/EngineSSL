@@ -11,14 +11,15 @@ def preprocessing_judgement(pred):
     if pred[0].argmax() == 0:
         # 判断がtargetだったら
         params = read_yaml()
-        result = bias_judgement(score=pred[0].max(), threshold=params['predictapp']['bias'])
+        result = bias_judgement(score=max(pred[0]), threshold=params['predictapp']['bias'])
     else:
         result = 'not_target'
-        return result
+    return result
 
 
 def bias_judgement(score, threshold):
-    if score >= threshold:
+    print(score)
+    if score >= float(threshold) / 100:
         return 'target'
     else:
         return 'not_target'
