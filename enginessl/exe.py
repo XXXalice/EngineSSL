@@ -12,7 +12,6 @@ from pred_app import pred_app
 
 
 def main():
-    wordart.print_logo('slant')
     if len(sys.argv) <= 1:
         print(opt.help)
         sys.exit(0)
@@ -21,7 +20,11 @@ def main():
     parser.add_argument('-nt', '--nottarget', help='not target name.', nargs='*')
     parser.add_argument('-tr', '--train', help='train status.', nargs='*')
     parser.add_argument('-r', '--reuse', help='Launch the app on an existing model.', nargs='*')
+    parser.add_argument('-f', '--font', help='起動時のフォント')
     p_args = parser.parse_args()
+
+    font = p_args.font if p_args.font != None else 'slant'
+    wordart.print_logo(font)
 
     if p_args.reuse == None:
         img_folpath = []
