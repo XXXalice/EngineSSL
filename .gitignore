@@ -119,4 +119,12 @@ enginessl/uploads
 
 pred_app/uploads
 
-enginessl/model
+enginessl/*.h5
+
+enginessl/_deprecated
+
+_experiment
+
+credential.json
+
+settings.yaml
