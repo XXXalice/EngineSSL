@@ -8,7 +8,6 @@ gauth.LocalWebserverAuth()
 drive = GoogleDrive(gauth)
 
 models = glob.glob("*.h5")
-print(models)
 for model in tqdm(models):
     f = drive.CreateFile({"title": model})
     f.SetContentFile(model)
