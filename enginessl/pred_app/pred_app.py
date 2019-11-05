@@ -42,8 +42,10 @@ class PredApp:
                 if request.method == 'POST':
                     img_file = request.files['img_file']
                     if img_file and self.__allowed_file(img_file.filename):
-                        fname = self.__jis_check(img_file.filename)
+                        jis = self.__jis_check(img_file.filename)
                         fname = secure_filename(img_file.filename)
+                        if jis:
+                            fname = self.__random_str(n=5) + '.' + fname
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
                         img_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]), 'uploads', fname)
                         try:
