@@ -170,7 +170,9 @@ class Kernel():
         :param not_targets:
         :return:
         """
+
         here = '/'.join(inspect.stack()[0][1].split('/')[:-3])
+        os.makedirs(os.path.join(here, 'data', '.prepare'), exist_ok=True)
         stack_dir = os.path.join(here, 'data', '.prepare')
         shutil.rmtree(stack_dir)
         makes = ['', 'train', 'validation']
