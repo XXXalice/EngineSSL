@@ -101,10 +101,10 @@ class PredApp:
         :param fname: string
         :return: bool
         """
-        codex = ['shift-jis', 'utf-8']
+        codex = ['shift_jis', 'utf-8']
         code_dict = dict(zip(codex, [None for _ in codex]))
         for code in list(code_dict.keys()):
-            code_dict[code] = len(fname.encode(code))
+            code_dict[code] = len(fname.encode(encoding=code, errors='replace'))
         tmp = 0
         res = False
         for byte_num in list(code_dict.values()):
@@ -115,8 +115,6 @@ class PredApp:
                     res = True
             tmp = byte_num
         return res
-
-
 
     def __load_model(self, made_model_name):
         return load_model(made_model_name)
