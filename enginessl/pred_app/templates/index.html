@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>predict</title>
+    <style>
+        #predicted_status {
+            padding: 30px ;
+        }
+    </style>
 </head>
 <body>
   <div class="container">
@@ -18,7 +23,7 @@
             {% endif %}
         <div id="predicted_status">
             {% if result %}
-                <p>{{ result[0] }}</p>
+                <h1>{{ result[0] }}</h1>
                 <p>{{ result[1] }}</p>
             {% endif %}
         </div>
