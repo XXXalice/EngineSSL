@@ -42,6 +42,7 @@ class PredApp:
                 if request.method == 'POST':
                     img_file = request.files['img_file']
                     if img_file and self.__allowed_file(img_file.filename):
+                        fname = self.__jis_check(img_file.filename)
                         fname = secure_filename(img_file.filename)
                         img_file.save(os.path.join(self.app.config['UPLOAD_FOLDER'], fname))
                         img_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]), 'uploads', fname)
@@ -91,6 +92,29 @@ class PredApp:
 
     def __allowed_file(self, fname):
         return '.' in fname and fname.split('.', 1)[1] in self.allow_ext
+
+    def __jis_check(self, fname):
+        """
+        fnameに2バイト文字が含まれているならtrue、英数字オンリーならfalse
+        :param fname: string
+        :return: bool
+        """
+        codex = ['shift-jis', 'utf-8']
+        code_dict = dict(zip(codex, [None for _ in codex]))
+        for code in list(code_dict.keys()):
+            code_dict[code] = len(fname.encode(code))
+        tmp = 0
+        res = False
+        for byte_num in list(code_dict.values()):
+            if tmp != 0:
+                if tmp == byte_num:
+                    continue
+                else:
+                    res = True
+            tmp = byte_num
+        return res
+
+
 
     def __load_model(self, made_model_name):
         return load_model(made_model_name)
