@@ -27,10 +27,12 @@ class TestNet():
         model.add(Dense(self.num_classes, activation='softmax'))
         return model
 
-    def train(self, name, model, datas, es=True, optimizer=Adam()):
+    def train(self, name, model, datas, es, optimizer=Adam()):
         x_train, y_train, x_test, y_test = datas
-        if es:
+        if es != 'none':
             es_cb = EarlyStopping(monitor='val_loss', patience=7, verbose=1, mode='auto')
+        else:
+            print('Not use callback!')
 
         model.compile(
             loss='categorical_crossentropy',
