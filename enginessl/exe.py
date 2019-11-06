@@ -18,13 +18,14 @@ def main():
     parser = argparse.ArgumentParser(description='engine ssl')
     parser.add_argument('-t', '--target', help='target name.')
     parser.add_argument('-nt', '--nottarget', help='not target name.', nargs='*')
-    parser.add_argument('-tr', '--train', help='train status.', nargs='*')
+    parser.add_argument('-tr', '--train', help='train status.')
     parser.add_argument('-r', '--reuse', help='Launch the app on an existing model.', nargs='*')
     parser.add_argument('-f', '--font', help='起動時のフォント')
     p_args = parser.parse_args()
 
     font = p_args.font if p_args.font != None else 'slant'
     wordart.print_logo(font)
+    print(p_args.train)
 
     if p_args.reuse == None:
         img_folpath = []
