@@ -94,7 +94,7 @@ class TestNet():
             plt.plot(self.hist.history['val_loss'], linestyle='-', label='val_loss')
             plt.title('loss')
             plt.legend()
-            plt.savefig(os.path.join(data_graphs_dir, "{}.png".format(model_name)))
-            plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name)))
+            plt.savefig(os.path.join(data_graphs_dir, "{}.png".format(model_name.split('.')[0])))
+            plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name.split('.')[0])))
     def __say(self, message):
         print(message)
