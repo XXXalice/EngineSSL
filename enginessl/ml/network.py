@@ -66,6 +66,35 @@ class TestNet():
         print('the operation has ended.')
         return model_name
 
-
+    def draw_graph(self, model_name):
+        """
+        グラフ描画
+        :return: 未定
+        """
+        import inspect
+        import os
+        import matplotlib
+        matplotlib.use('Agg')
+        here = "".join(inspect.stack()[0][1].split("/")[:-2])
+        data_dir = os.path.join(here, "data")
+        data_graphs_dir = os.path.join(data_dir, "graphs")
+        pred_app_dir = os.path.join(here, "pred_app")
+        pred_app_graphs_dir = os.path.join(pred_app_dir, "graphs")
+        os.makedirs(data_graphs_dir)
+        os.makedirs(pred_app_graphs_dir)
+        from matplotlib import pyplot as plt
+        if hasattr(self, 'hist'):
+            plt.subplot(1, 2, 1)
+            plt.plot(self.hist.history['acc'], label='acc')
+            plt.plot(self.hist.history['val_acc'], linestyle='-', label='val_acc')
+            plt.title('acc')
+            plt.legend()
+            plt.subplot(1, 2, 2)
+            plt.plot(self.hist.history['loss'], label='loss')
+            plt.plot(self.hist.history['val_loss'], linestyle='-', label='val_loss')
+            plt.title('loss')
+            plt.legend()
+            plt.savefig(os.path.join(data_graphs_dir, "{}.png".format(model_name)))
+            plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name)))
     def __say(self, message):
         print(message)
