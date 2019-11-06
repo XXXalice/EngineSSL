@@ -25,7 +25,6 @@ def main():
 
     font = p_args.font if p_args.font != None else 'slant'
     wordart.print_logo(font)
-    print(p_args.train)
 
     if p_args.reuse == None:
         img_folpath = []

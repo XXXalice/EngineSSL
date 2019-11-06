@@ -33,6 +33,7 @@ class TestNet():
             es_cb = EarlyStopping(monitor='val_loss', patience=7, verbose=1, mode='auto')
         else:
             print('Not use callback!')
+            es_cb = None
 
         model.compile(
             loss='categorical_crossentropy',
@@ -46,7 +47,7 @@ class TestNet():
             epochs=30,
             verbose=1,
             validation_data=(x_test, y_test),
-            callbacks=[es_cb] if es else None
+            callbacks=[es_cb]
         )
         os.makedirs('./model', exist_ok=True)
         model_name = name + self.params['ml']['savemodel_ext']
