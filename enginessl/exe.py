@@ -35,7 +35,6 @@ def main():
         c.crawl()
         img_folpath.append(c.save_img(rtn_folpath=True))
         target_folpath.append(c.save_img(rtn_folpath=True))
-        # es = True if p_args.train is 'True' or p_args.train is 'true' else False
 
         #ターゲットではない画像収集用APIをインスタンス化
         if p_args.nottarget != None:
@@ -48,17 +47,11 @@ def main():
         target_label = str(p_args.target)
         image_tanks = list(map(lambda path: path.split('/')[-1], img_folpath))
         nt_image_tanks = list(map(lambda path: path.split('/')[-1], target_folpath))
-        # print(image_tanks)
         data = data_api.DataHandling(target_label=target_label ,image_tanks=image_tanks)
         noise = data.oppo_kernel(target_dir=nt_image_tanks ,image_tanks=image_tanks)
         labels = noise.make_noise()
         labels.insert(0, str(p_args.target))
-        #ここまで
         targets, not_targets = data.read_dirs(target_label=target_label)
-        # print('target_image_path')
-        # pprint.pprint(targets)
-        # print('not_target_image_path')
-        # pprint.pprint(not_targets)
         x_train, y_train, x_test, y_test = data.get_builtup_data(targets=targets, not_targets=not_targets, color_mode='grayscale')
         print('num: x_train:', len(x_train), ' x_test:', len(x_test), 'y_train:', len(y_train), 'y_test:', len(y_test))
         ml = ml_api.MachineLearning()

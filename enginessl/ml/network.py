@@ -40,15 +40,26 @@ class TestNet():
             optimizer=optimizer,
             metrics=['accuracy']
         )
-        self.hist = model.fit(
-            x_train,
-            y_train,
-            batch_size=5,
-            epochs=30,
-            verbose=1,
-            validation_data=(x_test, y_test),
-            callbacks=[es_cb]
-        )
+        if es_cb != None:
+            self.hist = model.fit(
+                x_train,
+                y_train,
+                batch_size=5,
+                epochs=30,
+                verbose=1,
+                validation_data=(x_test, y_test),
+                callbacks=[es_cb]
+            )
+        else:
+            self.hist = model.fit(
+                x_train,
+                y_train,
+                batch_size=5,
+                epochs=30,
+                verbose=1,
+                validation_data=(x_test, y_test),
+            )
+
         os.makedirs('./model', exist_ok=True)
         model_name = name + self.params['ml']['savemodel_ext']
         model.save(os.path.join('model', model_name))
