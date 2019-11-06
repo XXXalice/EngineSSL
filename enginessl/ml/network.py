@@ -75,7 +75,7 @@ class TestNet():
         import os
         import matplotlib
         matplotlib.use('Agg')
-        here = "".join(inspect.stack()[0][1].split("/")[:-2])
+        here = "/".join(inspect.stack()[0][1].split("/")[:-2])
         data_dir = os.path.join(here, "data")
         data_graphs_dir = os.path.join(data_dir, "graphs")
         pred_app_dir = os.path.join(here, "pred_app")
@@ -94,7 +94,7 @@ class TestNet():
             plt.plot(self.hist.history['val_loss'], linestyle='-', label='val_loss')
             plt.title('loss')
             plt.legend()
-            plt.savefig(os.path.join(data_graphs_dir, "{}.png".format(model_name)))
-            plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name)))
+            plt.savefig(os.path.join(data_graphs_dir, "{}.png".format(model_name.split('.')[0])))
+            plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name.split('.')[0])))
     def __say(self, message):
         print(message)
