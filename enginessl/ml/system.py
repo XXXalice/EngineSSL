@@ -17,7 +17,7 @@ class MachineLearning(mlkernel.Kernel):
         return self.user_nn.train(name=name ,model=model, datas=datas, es=es)
 
     def draw_graph(self, model_name):
-        self.draw_graph(model_name=model_name)
+        self.user_nn.draw_graph(model_name=model_name)
 
     def fine_tuning_model(self):
         pass
