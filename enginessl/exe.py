@@ -58,6 +58,7 @@ def main():
         datas = (x_train, y_train, x_test, y_test)
         model = ml.build_model(num_classes=len(y_train[0]))
         model_name = ml.train(model=model, datas=datas, name=p_args.target, es=p_args.train)
+        ml.draw_graph(model_name=model_name)
     else:
         labels = get_static_labels()
         labels.insert(0, str(p_args.reuse[0]))
