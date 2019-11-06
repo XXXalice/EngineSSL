@@ -75,7 +75,7 @@ class TestNet():
         import os
         import matplotlib
         matplotlib.use('Agg')
-        here = "".join(inspect.stack()[0][1].split("/")[:-2])
+        here = "/".join(inspect.stack()[0][1].split("/")[:-2])
         data_dir = os.path.join(here, "data")
         data_graphs_dir = os.path.join(data_dir, "graphs")
         pred_app_dir = os.path.join(here, "pred_app")
