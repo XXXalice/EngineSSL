@@ -26,6 +26,9 @@
                 <h1>{{ result[0] }}</h1>
                 <p>{{ result[1] }}</p>
             {% endif %}
+            {% if graph_path %}
+                <p><img src="/{{ graph_path }}"></p>
+            {% endif %}
         </div>
     </div>
   </div>
