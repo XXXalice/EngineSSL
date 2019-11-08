@@ -85,6 +85,10 @@ class PredApp:
 
         self.__startup_browser(port=self.port, host=self.host)
 
+        @self.app.route('/favicon.ico')
+        def favicon():
+            return self.app.send_static_file("favicon.ico")
+
     def __startup_browser(self, port=3553, host='localhost'):
         try:
             self.app.run(host=host, port=port)
