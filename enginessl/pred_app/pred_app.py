@@ -42,8 +42,7 @@ class PredApp:
         @self.app.route('/pred', methods=['GET', 'POST'])
         def pred():
             with self.graph.as_default():
-                graph_img = "{}.png".format(model_name.split(".")[0])
-                print(graph_img)
+                graph_path = "{}.png".format(model_name.split(".")[0])
                 if request.method == 'POST':
                     img_file = request.files['img_file']
                     if img_file and self.__allowed_file(img_file.filename):
@@ -64,7 +63,7 @@ class PredApp:
 
                         except Exception as e:
                             print(e)
-                            return render_template('index.html', img_path='uploads/{}'.format(fname), result=str(e), graph_path='graphs/{}'.format(graph_img))
+                            return render_template('index.html', img_path='uploads/{}'.format(fname), result=str(e), graph_path='graphs/{}'.format(graph_path))
 
                         if request.form.get('log'):
                             self.__write_log(log_path=self.log_path,
@@ -73,13 +72,13 @@ class PredApp:
                                              result=preprocessing_judgement(result_status),
                                              result_value=str(result_status[0][result_status[0].argmax()])
                                              )
-                        return render_template('index.html', img_path='uploads/{}'.format(fname), result=result, graph_path='graphs/{}'.format(graph_img))
+                        return render_template('index.html', img_path='uploads/{}'.format(fname), result=result, graph_path='graphs/{}'.format(graph_path))
                     else:
                         return '''
                         <p>許可されていない拡張子です</p>
                         '''
                 else:
-                    return render_template('index.html', graph_path='graphs/{}'.format(graph_img))
+                    return render_template('index.html', graph_path='graphs/{}'.format(graph_path))
 
         @self.app.route('/uploads/<fname>')
         def uploaded_file(fname):
