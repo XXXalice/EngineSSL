@@ -1,6 +1,5 @@
 import os
 import sys
-import glob
 import random
 import string
 import inspect
@@ -18,7 +17,7 @@ import tensorflow as tf
 class PredApp:
     def __init__(self, *args):
         here = '/'.join(inspect.stack()[0][1].split('/')[:-1])
-        self.app = Flask(__name__, static_url_path="")
+        self.app = Flask(__name__)
         self.classes = args if len(args) != 1 else args[0]
         self.img_size = 100
         print(self.classes)
@@ -63,7 +62,7 @@ class PredApp:
 
                         except Exception as e:
                             print(e)
-                            return render_template('index.html', img_path='uploads/{}'.format(fname), result=str(e), graph_path='graphs/{}'.format(graph_path))
+                            return render_template('index.html', img_path='uploads/{}'.format(fname), result=str(e), graph_path='static/graphs/{}'.format(graph_path))
 
                         if request.form.get('log'):
                             self.__write_log(log_path=self.log_path,
@@ -72,13 +71,13 @@ class PredApp:
                                              result=preprocessing_judgement(result_status),
                                              result_value=str(result_status[0][result_status[0].argmax()])
                                              )
-                        return render_template('index.html', img_path='uploads/{}'.format(fname), result=result, graph_path='graphs/{}'.format(graph_path))
+                        return render_template('index.html', img_path='uploads/{}'.format(fname), result=result, graph_path='static/graphs/{}'.format(graph_path))
                     else:
                         return '''
                         <p>許可されていない拡張子です</p>
                         '''
                 else:
-                    return render_template('index.html', graph_path='graphs/{}'.format(graph_path))
+                    return render_template('index.html', graph_path='static/graphs/{}'.format(graph_path))
 
         @self.app.route('/uploads/<fname>')
         def uploaded_file(fname):

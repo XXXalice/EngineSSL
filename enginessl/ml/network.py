@@ -79,7 +79,7 @@ class TestNet():
         data_dir = os.path.join(here, "data")
         data_graphs_dir = os.path.join(data_dir, "graphs")
         pred_app_dir = os.path.join(here, "pred_app")
-        pred_app_graphs_dir = os.path.join(pred_app_dir, "graphs")
+        pred_app_graphs_dir = os.path.join(pred_app_dir, "static", "graphs")
         os.makedirs(data_graphs_dir, exist_ok=True)
         os.makedirs(pred_app_graphs_dir, exist_ok=True)
         from matplotlib import pyplot as plt
