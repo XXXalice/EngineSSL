@@ -54,3 +54,5 @@ It is a classifier creation method that combines web technology and deep learnin
 * Google (https://www.google.com/)
 * Web Services by Yahoo! JAPAN（https://developer.yahoo.co.jp/about）
 * Twitter (https://twitter.com/)
+
+**Thanks for all the services**
