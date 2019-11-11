@@ -128,3 +128,5 @@ _experiment
 credential.json
 
 settings.yaml
+
+*.sec
