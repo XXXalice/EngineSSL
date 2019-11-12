@@ -4,12 +4,12 @@ import os
 import urllib.request
 import urllib.parse
 import pprint
-import base64
-
+import ast
 class UseApis:
     def __init__(self, base="", server_name=""):
         self.base = base
         self.server = server_name
+        self.mode = None
 
     def load_secrets(self, sec_path):
         try:
@@ -23,6 +23,12 @@ class UseApis:
             print(e)
 
     def construct_url(self, **query):
+        try:
+            if query["output"] == "json":
+                self.mode = "json"
+        except:
+            self.mode = "xml"
+
         if self.base[-1:] != "?":
             self.base += "?"
         query_strings = []
@@ -41,6 +47,9 @@ class UseApis:
             print(e)
         finally:
             print("operation has ended.")
+        if self.mode == "json":
+            body_dic = ast.literal_eval(body.decode())
+            body = json.dumps(body_dic, ensure_ascii=False)
         return body
 
     def xml2json(self, xml):
