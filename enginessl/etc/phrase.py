@@ -1,4 +1,3 @@
-import xmljson
 import json
 from lxml.etree import parse
 import os
@@ -21,9 +20,9 @@ class UseApis:
             print(e)
 
     def construct_url(self, **query):
-        if self.base[-1:] != "?"
+        if self.base[-1:] != "?":
             self.base += "?"
-            query_strings = []
+        query_strings = []
         for param, value in query.items():
             query_strings.append("{}={}".format(str(param), str(value)))
         self.base += "&".join(query_strings)
