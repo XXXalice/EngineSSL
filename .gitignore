@@ -127,6 +127,8 @@ _experiment
 
 credential.json
 
+client_secrets.json
+
 settings.yaml
 
 *.sec
