@@ -125,7 +125,7 @@ enginessl/_deprecated
 
 _experiment
 
-credential.json
+credentials.json
 
 client_secrets.json
 
