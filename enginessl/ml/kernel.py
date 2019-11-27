@@ -95,4 +95,8 @@ class Kernel():
             return
 
     def pred_bias(self):
+        """
+        閾値の枚数からの推定
+        :return: 閾値の百分率
+        """
         img_num = self.params['crawler']['target_num']
