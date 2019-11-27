@@ -18,6 +18,11 @@ class Kernel():
             else:
                 from . import network
                 self.user_nn = network.TestNet(self.params)
+        if self.params['predictapp']['use_your_threshold'] != True:
+            # paramに記載した記載した閾値を使用しない場合
+            self.bias = self.pred_bias()
+
+
         self.ances_model = None
         self.train_data = None
 
@@ -88,3 +93,6 @@ class Kernel():
         except Exception as err:
             sys.stdout.write(str(err))
             return
+
+    def pred_bias(self):
+        img_num = self.params['crawler']['target_num']
