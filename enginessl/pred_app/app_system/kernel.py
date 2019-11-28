@@ -2,7 +2,7 @@ import inspect
 import os
 import yaml
 
-def preprocessing_judgement(pred):
+def preprocessing_judgement(pred, bias):
     """
     前処理判断
     :param pred: model.predict()の戻り値
@@ -11,7 +11,7 @@ def preprocessing_judgement(pred):
     if pred[0].argmax() == 0:
         # 判断がtargetだったら
         params = read_yaml()
-        result = bias_judgement(score=max(pred[0]), threshold=params['predictapp']['bias'])
+        result = bias_judgement(score=max(pred[0]), threshold=bias)
     else:
         result = 'not_target'
     return result
