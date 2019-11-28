@@ -21,8 +21,8 @@ class Kernel():
         if self.params['predictapp']['use_your_threshold'] != True:
             # paramに記載した記載した閾値を使用しない場合
             self.bias = self.pred_bias()
-
-
+        else:
+            self.bias = self.params['predictapp']['bias']
         self.ances_model = None
         self.train_data = None
 
