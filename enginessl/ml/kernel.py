@@ -99,4 +99,24 @@ class Kernel():
         閾値の枚数からの推定
         :return: 閾値の百分率
         """
-        img_num = self.params['crawler']['target_num']
+        default = 90
+        bias = 0.0
+        IMG_NUM = adjuster = self.params['crawler']['target_num']
+        if IMG_NUM >= 100:
+            bias += 2.0
+            adjuster -= IMG_NUM
+            while True:
+                if adjuster <= 0 or bias >= 8.0:
+                    break
+                else:
+                    bias += 0.3
+                    adjuster -= 20
+        elif IMG_NUM < 100:
+            while True:
+                if adjuster <= 0:
+                    break
+                else:
+                    bias -= 0.5
+                    adjuster -= 5
+        default += bias
+        return default
