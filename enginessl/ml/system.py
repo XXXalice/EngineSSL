@@ -8,6 +8,7 @@ class MachineLearning(mlkernel.Kernel):
         param_path = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-2]), 'param.yml')
         self.ml = mlkernel.Kernel(param_path)
         self.user_nn = self.ml.user_nn
+        self.bias = self.ml.bias
 
     def build_model(self, num_classes):
         self.model = self.user_nn.generate_model(num_classes=num_classes)

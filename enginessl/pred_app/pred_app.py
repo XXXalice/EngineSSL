@@ -4,7 +4,7 @@ import random
 import string
 import inspect
 import numpy as np
-from flask import Flask, request, send_from_directory, render_template, redirect, url_for
+from flask import Flask, request, send_from_directory, render_template
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
@@ -15,7 +15,7 @@ import tensorflow as tf
 
 
 class PredApp:
-    def __init__(self, *args):
+    def __init__(self, *args, bias):
         here = '/'.join(inspect.stack()[0][1].split('/')[:-1])
         self.app = Flask(__name__)
         self.classes = args if len(args) != 1 else args[0]
@@ -32,6 +32,7 @@ class PredApp:
         self.host = 'localhost'
         self.graph = tf.get_default_graph()
         self.log_path = self.__make_log()
+        self.bias = bias
 
     def run(self, model_name):
         @self.app.route('/')
@@ -56,7 +57,7 @@ class PredApp:
                             propreccing_img = img_to_array(load_img(img_path, grayscale=True, target_size=(self.img_size, self.img_size)))
                             infer_target = np.array([propreccing_img]).astype('float32') / 255
                             result_status = model.predict(infer_target, verbose=0, batch_size=1)
-                            result = [preprocessing_judgement(result_status), result_status[0]]
+                            result = [preprocessing_judgement(pred=result_status, bias=self.bias), result_status[0]]
 
                         except Exception as e:
                             print(e)
@@ -66,7 +67,7 @@ class PredApp:
                             self.__write_log(log_path=self.log_path,
                                              model=model_name,
                                              image=img_path.split('/')[-1],
-                                             result=preprocessing_judgement(result_status),
+                                             result=preprocessing_judgement(pred=result_status, bias=self.bias),
                                              result_value=str(result_status[0][result_status[0].argmax()])
                                              )
                         return render_template('index.html', img_path='uploads/{}'.format(fname), result=result, graph_path='static/graphs/{}'.format(graph_path))

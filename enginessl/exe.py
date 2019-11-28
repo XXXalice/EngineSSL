@@ -64,7 +64,7 @@ def main():
         labels.insert(0, str(p_args.reuse[0]))
         model_name = p_args.reuse[0] + '.h5'
 
-    app = pred_app.PredApp(labels)
+    app = pred_app.PredApp(labels, bias=ml.bias)
     app.debug = True
     app.run(model_name=model_name)
 
