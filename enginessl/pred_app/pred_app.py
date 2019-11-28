@@ -4,7 +4,7 @@ import random
 import string
 import inspect
 import numpy as np
-from flask import Flask, request, send_from_directory, render_template, redirect, url_for
+from flask import Flask, request, send_from_directory, render_template
 from keras.models import load_model
 from keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
