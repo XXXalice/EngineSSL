@@ -111,7 +111,7 @@ venv.bak/
 
 .idea/
 
-*.logs
+.cralwer_logs
 
 enginessl/data/
 

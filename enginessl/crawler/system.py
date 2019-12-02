@@ -42,3 +42,6 @@ class Clawler(kernel.Kernel):
             shutil.rmtree(data_path)
             os.makedirs(data_path, exist_ok=True)
             print('init data stacks.')
+
+    def write_crawl_stat(self):
+        here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
