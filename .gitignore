@@ -111,6 +111,8 @@ venv.bak/
 
 .idea/
 
+.cralwer_logs
+
 enginessl/data/
 
 enginessl/uploads
