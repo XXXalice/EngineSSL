@@ -111,6 +111,8 @@ venv.bak/
 
 .idea/
 
+*.logs
+
 enginessl/data/
 
 enginessl/uploads
