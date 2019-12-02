@@ -45,3 +45,9 @@ class Clawler(kernel.Kernel):
 
     def write_crawl_stat(self):
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
+        crawler_logs_path = os.path.join(here, '.crawler_logs')
+        os.makedirs(crawler_logs_path, exist_ok=True)
+        with open(crawler_logs_path, 'w') as log:
+            status = [self.keyword, self.num]
+            log.write(':'.join(status))
+
