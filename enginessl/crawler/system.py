@@ -50,5 +50,5 @@ class Clawler(kernel.Kernel):
         os.makedirs(crawler_logs_path, exist_ok=True)
         with open(crawler_logs_path, 'w') as log:
             status = [self.keyword, self.num]
-            log.write(':'.join(status))
+            log.write(':'.join(status) + '\n')
 
