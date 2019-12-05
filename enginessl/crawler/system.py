@@ -17,6 +17,7 @@ class Clawler(kernel.Kernel):
         self.urls = None
 
     def crawl(self, multiple=1):
+        self.write_crawl_stat()
         self.urls = super().get_url(self.keyword, num=self.num, multiple=multiple)
         print(len(self.urls))
 
