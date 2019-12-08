@@ -1,0 +1,14 @@
+# core.autocrlf autoAdapt
+* text=auto
+
+# Use as text file in essl
+*.umeume text
+
+# Scripts
+*.py text eol=lf
+*.sh text eol=lf
+
+# Binary files
+*.jpg -text
+*.png -text
+*.h5 -text
