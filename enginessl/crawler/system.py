@@ -44,11 +44,22 @@ class Clawler(kernel.Kernel):
             os.makedirs(data_path, exist_ok=True)
             print('init data stacks.')
 
-    def write_crawl_stat(self):
+    def write_crawl_stat(self, del_mode=False):
+        """
+        直近のクロール枚数を保持してファイルに書き込む
+        del_mode(bool)
+        Trueでログリフレッシュ
+        """
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
         crawler_logs_path = os.path.join(here, '.crawler_logs')
         os.makedirs(crawler_logs_path, exist_ok=True)
-        with open(crawler_logs_path, 'w') as log:
+        mode = 'a' if del_mode == False else 'w'
+        with open(crawler_logs_path, mode=mode) as log:
             status = [self.keyword, self.num]
             log.write(':'.join(status) + '\n')
 
+    def read_crawl_stat(self):
+        """
+        write_crawl_statで書き込まれたログを
+        :return:
+        """
