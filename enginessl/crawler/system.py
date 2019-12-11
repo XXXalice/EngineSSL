@@ -49,6 +49,7 @@ class Clawler(kernel.Kernel):
         直近のクロール枚数を保持してファイルに書き込む
         del_mode(bool)
         Trueでログリフレッシュ
+        :return: なし
         """
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
         crawler_logs_path = os.path.join(here, '.crawler_logs')
@@ -58,8 +59,15 @@ class Clawler(kernel.Kernel):
             status = [self.keyword, self.num]
             log.write(':'.join(status) + '\n')
 
-    def read_crawl_stat(self):
+    def read_crawl_stat(self, target):
         """
-        write_crawl_statで書き込まれたログを
-        :return:
+        write_crawl_statで書き込まれたログを読み込む
+        :return: クロール枚数
         """
+        import re
+        here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
+        crawler_logs_path = os.path.join(here, '.crawler_logs')
+        with open(crawler_logs_path, 'r') as log:
+            logs = log.readlines()
+            num = [keyword.split(':')[0] for keyword in logs if re.match(r'^{}:.+'.format(target))]
+        return num
