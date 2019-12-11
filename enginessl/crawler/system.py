@@ -62,7 +62,7 @@ class Clawler(kernel.Kernel):
     def read_crawl_stat(self, target):
         """
         write_crawl_statで書き込まれたログを読み込む
-        :return: クロール枚数
+        :return: クロール枚数（int）
         """
         import re
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
