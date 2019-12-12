@@ -53,7 +53,6 @@ class Clawler(kernel.Kernel):
         """
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
         crawler_logs_path = os.path.join(here, '.crawler_logs')
-        os.makedirs(crawler_logs_path, exist_ok=True)
         mode = 'a' if del_mode == False else 'w'
         with open(crawler_logs_path, mode=mode) as log:
             status = [self.keyword, self.num]
