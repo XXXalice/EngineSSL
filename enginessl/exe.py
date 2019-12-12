@@ -33,6 +33,7 @@ def main():
         c = crawler_api.Clawler([p_args.target])
         c.delete_datas_dir()
         c.crawl()
+        c.write_crawl_stat()
         img_folpath.append(c.save_img(rtn_folpath=True))
         target_folpath.append(c.save_img(rtn_folpath=True))
 
@@ -59,12 +60,16 @@ def main():
         model = ml.build_model(num_classes=len(y_train[0]))
         model_name = ml.train(model=model, datas=datas, name=p_args.target, es=p_args.train)
         ml.draw_graph(model_name=model_name)
+        bias = ml.bias
     else:
+        c = crawler_api.Clawler([p_args.reuse])
+        num = c.read_crawl_stat(p_args.reuse)
         labels = get_static_labels()
-        labels.insert(0, str(p_args.reuse[0]))
-        model_name = p_args.reuse[0] + '.h5'
+        labels.insert(0, str(p_args.reuse))
+        model_name = p_args.reuse + '.h5'
+        bias = num
 
-    app = pred_app.PredApp(labels, bias=ml.bias)
+    app = pred_app.PredApp(labels, bias=bias)
     app.debug = True
     app.run(model_name=model_name)
 
