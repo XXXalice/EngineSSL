@@ -12,9 +12,9 @@ class Clawler(kernel.Kernel):
     """
     def __init__(self, arg):
         self.keyword = arg[0]
-        self.num = int(arg[1]) if len(arg)!=1 else 0
         super().__init__()
         self.urls = None
+        self.num = self.params['crawler']['target_num']
 
     def crawl(self, multiple=1):
         self.write_crawl_stat()
@@ -53,10 +53,9 @@ class Clawler(kernel.Kernel):
         """
         here = os.path.join('/'.join(inspect.stack()[0][1].split('/')[:-1]))
         crawler_logs_path = os.path.join(here, '.crawler_logs')
-        os.makedirs(crawler_logs_path, exist_ok=True)
         mode = 'a' if del_mode == False else 'w'
         with open(crawler_logs_path, mode=mode) as log:
-            status = [self.keyword, self.num]
+            status = [self.keyword, str(self.num)]
             log.write(':'.join(status) + '\n')
 
     def read_crawl_stat(self, target):
