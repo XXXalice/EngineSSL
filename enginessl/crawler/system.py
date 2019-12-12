@@ -12,9 +12,9 @@ class Clawler(kernel.Kernel):
     """
     def __init__(self, arg):
         self.keyword = arg[0]
-        self.num = int(arg[1]) if len(arg)!=1 else 0
         super().__init__()
         self.urls = None
+        self.num = self.params['crawler']['target_num']
 
     def crawl(self, multiple=1):
         self.write_crawl_stat()
