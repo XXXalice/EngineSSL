@@ -55,7 +55,7 @@ class Clawler(kernel.Kernel):
         crawler_logs_path = os.path.join(here, '.crawler_logs')
         mode = 'a' if del_mode == False else 'w'
         with open(crawler_logs_path, mode=mode) as log:
-            status = [self.keyword, self.num]
+            status = [self.keyword, str(self.num)]
             log.write(':'.join(status) + '\n')
 
     def read_crawl_stat(self, target):
