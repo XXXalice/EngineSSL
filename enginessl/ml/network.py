@@ -98,3 +98,14 @@ class TestNet():
             plt.savefig(os.path.join(pred_app_graphs_dir, "{}.png".format(model_name.split('.')[0])))
     def __say(self, message):
         print(message)
+
+if __name__ == '__main__':
+    decoy_param = {
+        'ml':{
+            'img_size_xy': 100,
+            'grayscale': True
+        }
+    }
+    network = TestNet(decoy_param)
+    model = network.generate_model(5)
+    model.summary()
