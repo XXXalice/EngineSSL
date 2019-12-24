@@ -20,6 +20,10 @@ ml:
   img_size_xy: 100 # must 71 < num
   savemodel_ext: '.h5'
 
+oppoimg:
+  decay: 0.3
+  mode: 'all'
+
 predictapp:
   save_inferenced_img: True
   use_your_threshold: True
