@@ -1,7 +1,7 @@
 #!/usr/local/var/pyenv/versions/anaconda3-5.2.0/envs/ml/bin/python
 import sys
 import argparse
-import pprint
+import time
 from crawler import system as crawler_api
 from ml import system as ml_api
 from ml.data_handling import system as data_api
@@ -9,6 +9,20 @@ from etc import system_metadata as opt
 from common_handler.hyper_handler import get_static_labels
 from etc import wordart
 from pred_app import pred_app
+
+class BuildTime:
+    """
+    時間測定用
+    """
+    def __init__(self):
+        pass
+
+    def start(self):
+        self.start_time = time.time()
+
+    def end(self):
+        elapsed_time = time.time() - self.start_time
+        return elapsed_time
 
 
 def main():
@@ -22,6 +36,11 @@ def main():
     parser.add_argument('-r', '--reuse', help='Launch the app on an existing model.', nargs='*')
     parser.add_argument('-f', '--font', help='起動時のフォント')
     p_args = parser.parse_args()
+
+    # 実行時間測定
+    ti = BuildTime()
+    ti.start()
+
 
     font = p_args.font if p_args.font != None else 'slant'
     wordart.print_logo(font)
@@ -68,6 +87,10 @@ def main():
         labels.insert(0, str(p_args.reuse))
         model_name = p_args.reuse + '.h5'
         bias = num
+
+    # 経過時間
+    elapsed_time = ti.end()
+    print('elapsed_time: {}'.format(elapsed_time))
 
     app = pred_app.PredApp(labels, bias=bias)
     app.debug = True
