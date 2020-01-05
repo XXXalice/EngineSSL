@@ -8,9 +8,9 @@ def preprocessing_judgement(pred, bias):
     :param pred: model.predict()の戻り値
     :return: 未定
     """
+
+    # 判断がtargetだったら
     if pred[0].argmax() == 0:
-        # 判断がtargetだったら
-        params = read_yaml()
         result = bias_judgement(score=max(pred[0]), threshold=bias)
     else:
         result = 'not_target'
