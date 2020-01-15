@@ -2,10 +2,11 @@ import inspect
 import os
 import yaml
 
+
 def preprocessing_judgement(pred, bias):
     """
     前処理判断
-    :param pred: model.predict()の戻り値
+    :pred bias: model.predict()の戻り値
     :return: 未定
     """
 
@@ -19,6 +20,7 @@ def preprocessing_judgement(pred, bias):
 
 def bias_judgement(score, threshold):
     print(score)
+
     if score >= float(threshold) / 100:
         return 'target'
     else:
