@@ -2,7 +2,7 @@
 crawler:
   target_num: 150
   user_agent: 'Mozilla/5.0'
-  mail: 'euthanasia045@gmail.com'
+  mail: 'your mail'
   wait_sec: 0.1
   ext: 'png'
 
@@ -27,4 +27,4 @@ oppoimg:
 predictapp:
   save_inferenced_img: True
   use_your_threshold: True
-  bias: 80
+  bias: 80vrqqwefa
