@@ -117,7 +117,7 @@ enginessl/data/
 
 enginessl/pred_app/uploads/
 
-enginessl/*.h5
+enginessl/model/*.h5
 
 enginessl/_deprecated
 
