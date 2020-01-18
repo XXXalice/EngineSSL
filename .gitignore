@@ -115,7 +115,7 @@ venv.bak/
 
 enginessl/data/
 
-enginessl/uploads
+enginessl/uploads/
 
 *.h5
 
