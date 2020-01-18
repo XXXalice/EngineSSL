@@ -115,13 +115,9 @@ venv.bak/
 
 enginessl/data/
 
-enginessl/uploads
+enginessl/pred_app/uploads/
 
-*.h5
-
-pred_app/uploads
-
-enginessl/*.h5
+enginessl/model/*.h5
 
 enginessl/_deprecated
 

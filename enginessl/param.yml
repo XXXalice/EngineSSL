@@ -27,4 +27,4 @@ oppoimg:
 predictapp:
   save_inferenced_img: True
   use_your_threshold: True
-  bias: 80vrqqwefa
+  bias: 80
