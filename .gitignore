@@ -115,11 +115,7 @@ venv.bak/
 
 enginessl/data/
 
-enginessl/uploads/
-
-*.h5
-
-pred_app/uploads
+enginessl/pred_app/uploads/
 
 enginessl/*.h5
 
